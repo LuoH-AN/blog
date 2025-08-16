@@ -57,8 +57,8 @@ const blogConfig = {
 
 	// 自己部署的 Twikoo 服务
 	twikoo: {
-		envId: 'https://twikoo.enltlh.me/',
-		preload: 'https://twikoo.enltlh.me/',
+		envId: 'https://twikoo.enltlh.me/.netlify/functions/twikoo',
+		preload: 'https://twikoo.enltlh.me/.netlify/functions/twikoo',
 	},
 }
 
