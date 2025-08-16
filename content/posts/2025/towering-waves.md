@@ -2,7 +2,8 @@
 title: 大浪滔天 - 其一
 description: 滔天的浪惊醒了神明，而神明只是挥挥手，浪便退了。
 image: https://ibeds.enltlh.me/file/s1/GfOQ8RDX.jpeg
-date: 2025-08-16 11:14:19
+date: 2025-08-16 14:29:07
+updated: 2025-08-16 14:29:07
 categories: [诗词]
 tags: [诗词, 写作]
 ---
