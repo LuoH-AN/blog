@@ -68,6 +68,7 @@ export default defineAppConfig({
 			},
 		] satisfies Nav,
 		/** 页脚版权信息底部的其他信息 */
+		message: '<a href="https://icp.gov.moe/?keyword=20250355" target="_blank">萌ICP备20250355号</a>',
 	},
 
 	/** 左侧栏顶部 Logo */
