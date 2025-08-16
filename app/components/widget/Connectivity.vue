@@ -19,10 +19,10 @@ const contentStyle = computed<CSSProperties>(() => ({
 	:style="contentStyle"
 >
 	<p class="tech-stack-info">
-		🔗 域名 续费至2026年
-		📑 博客 由 Nuxt Content 进行驱动
-		📷 图片 托管于 落憾图床
-		⚡ 部署 由 Vercel 提供支持
+		🔗 域名 续费至2026年 <br>
+		📑 博客 由 Nuxt Content 进行驱动 <br>
+		📷 图片 托管于 落憾图床 <br>
+		⚡ 部署 由 Vercel 提供支持 <br>
 	</p>
 </ZWidget>
 </template>
