@@ -50,7 +50,7 @@ export default defineAppConfig({
 				items: [
 					{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
 					{ icon: 'ph:flying-saucer-bold', text: '异次元旅行', url: 'https://travel.moe/go.html?travel=on' },
-					{ icon: 'game-icons:cigale'， text: '揪蝉', url: 'https://jiuchan.org/' },
+					{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
 				],
 			},
 			{
