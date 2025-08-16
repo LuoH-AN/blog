@@ -46,7 +46,6 @@ defineProps<{
 	}
 
 	> .widget-card {
-		padding: 0.2rem 0.8rem;
 		border-radius: 0.8rem;
 		background-color: var(--c-bg-2);
 

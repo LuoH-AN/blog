@@ -22,7 +22,7 @@ const blogConfig = {
 		name: '署名-非商业性使用-相同方式共享 4.0 国际',
 		url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans',
 	},
-	favicon: 'https://pichub.enltlh.me/i/1/2025/f43108354987fcab.png',
+	favicon: 'https://cdn2.enltlh.me/pichub/1/2025/19e0fab452a27b75.png',
 	language: 'zh-CN',
 	timeEstablished: '2024-04-19',
 	timezone: 'Asia/Shanghai',
@@ -91,7 +91,6 @@ export const routeRules = <NitroConfig['routeRules']>{
 	'/api/stats': { prerender: true, headers: { 'Content-Type': 'application/json' } },
 	'/atom.xml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },
 	'/favicon.ico': { redirect: { to: blogConfig.favicon } },
-	'/zhilu.opml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },
 }
 
 export default blogConfig

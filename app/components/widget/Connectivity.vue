@@ -18,13 +18,11 @@ const contentStyle = computed<CSSProperties>(() => ({
 	content-class="seasonal"
 	:style="contentStyle"
 >
-	<!-- TODO: 优化技术架构展示 -->
-	<p>域名迁移到 .site，备案并续费到 2035年7月，托管于 Vercel；博客由 Nuxt Content v3 驱动，使用去图图床。</p>
-	<p>
-		获得省级、国家级认证如下：<br>
-		江苏:<span class="seasonal-emoji">跳转反诈宣传</span><br>
-		重庆:<span class="seasonal-emoji">DNS污染</span><br>
-		移动:<span class="seasonal-emoji">多省阻断解析</span>
+	<p class="tech-stack-info">
+		🔗 域名 续费至2026年
+		📑 博客 由 Nuxt Content 进行驱动
+		📷 图片 托管于 落憾图床
+		⚡ 部署 由 Vercel 提供支持
 	</p>
 </ZWidget>
 </template>
@@ -44,10 +42,23 @@ const contentStyle = computed<CSSProperties>(() => ({
 		background-image: var(--seasonal-bg);
 		z-index: -1;
 	}
+	border: none;
+	box-shadow: none;
+}
+
+.tech-stack-info {
+	background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('https://cdn2.enltlh.me/pichub/1/2025/b1679340b26e666e.png');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	padding: 1rem;
+	border-radius: 8px;
+	color: #333;
+	border: none;
+	box-shadow: none;
 }
 
 .seasonal-emoji::before, .seasonal-emoji::after {
-	// 文明用语😋
 	content: var(--seasonal-emoji, "\1F595");
 }
 </style>

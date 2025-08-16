@@ -65,9 +65,9 @@ export default defineEventHandler(async (event) => {
 		],
 		language: blogConfig.language, // RSS 2.0
 		generator: {
-			$uri: 'https://github.com/L33Z22L11/blog-v3',
+			$uri: 'https://github.com/luoh-an',
 			$version: version,
-			_: 'Zhilu Blog',
+			_: 'LuoH Blog',
 		},
 		icon: blogConfig.favicon,
 		logo: blogConfig.author.avatar, // Ratio should be 2:1

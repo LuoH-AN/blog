@@ -10,7 +10,7 @@ export default defineAppConfig({
 
 	article: {
 		categories: <{ [category: string]: { icon: string, color?: string } }>{
-			诗词: { icon: 'ph:mouse-bold', color: '#3af' },
+			诗词: { icon: 'ph:notepad-bold', color: '#3af' },
 			生活: { icon: 'ph:shooting-star-bold', color: '#3ba' },
 			代码: { icon: 'ph:code-bold', color: '#77f' },
 			未分类: { icon: 'ph:folder-dotted-bold' },
@@ -40,10 +40,8 @@ export default defineAppConfig({
 		/** 侧边栏底部图标导航 */
 		iconNav: [
 			{ icon: 'ph:house-bold', text: '个人主页', url: blogConfig.author.homepage },
-			/** { icon: 'ri:qq-line', text: '交流群: 169994096', url: 'https://jq.qq.com/?_wv=1027&k=lQfNSeEd' }, **/
 			{ icon: 'ph:github-logo-bold', text: 'GitHub: LuoH-AN', url: 'https://github.com/LuoH-AN' },
 			{ icon: 'ph:rss-simple-bold', text: 'Atom订阅', url: '/atom.xml' },
-			{ icon: 'ph:subway-bold', text: '开往', url: 'https://www.travellings.cn/go-by-clouds.html' },
 		] satisfies NavItem[],
 		/** 页脚站点地图 */
 		nav: [
@@ -51,7 +49,6 @@ export default defineAppConfig({
 				title: '探索',
 				items: [
 					{ icon: 'ph:rss-simple-bold', text: 'Atom订阅', url: '/atom.xml' },
-					{ icon: 'ph:subway-bold', text: '开往', url: 'https://www.travellings.cn/' },
 					{ icon: 'ph:flying-saucer-bold', text: '异次元旅行', url: 'https://travel.moe/go.html?travel=on' },
 				],
 			},
@@ -59,30 +56,26 @@ export default defineAppConfig({
 				title: '社交',
 				items: [
 					{ icon: 'ph:github-logo-bold', text: 'LuoH-AN', url: 'https://github.com/LuoH-AN' },
-					/** { icon: 'ri:qq-line', text: '群: 169994096', url: 'https://jq.qq.com/?_wv=1027&k=lQfNSeEd' }, **/
 					{ icon: 'ph:envelope-simple-bold', text: blogConfig.author.email, url: `mailto:${blogConfig.author.email}` },
 				],
 			},
 			{
 				title: '信息',
 				items: [
-					{ icon: 'simple-icons:nuxtdotjs', text: 'Nuxt开源博客主题', url: 'https://github.com/L33Z22L11/blog-v3' },
-					{ icon: 'ph:swatches-bold', text: '主题和组件文档', url: 'https://blog.zhilu.site/theme' },
-					/** { icon: 'ph:certificate-bold', text: '萌备20246888号', url: 'https://icp.gov.moe/?keyword=20246888' }, **/
+					{ icon: 'simple-icons:nuxtdotjs', text: '博客主题', url: 'https://github.com/L33Z22L11/blog-v3' },
 				],
 			},
 		] satisfies Nav,
 		/** 页脚版权信息底部的其他信息 */
-		message: '<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener nofollow" data-v-e2b95aa8="">陕ICP备2025072742号-3</a>',
 	},
 
 	/** 左侧栏顶部 Logo */
 	header: {
-		logo: 'https://weavatar.com/avatar/47c0f2e82b76d9b10eb3023df9e02e4e3fdbeaf5b74b842063f207971e7fbe7b?s=160',
+		logo: 'https://cn.cravatar.com/avatar/ec4f5f6d61b9e1552ae451be26ba29fc?d=initials&name=EnLtLH',
 		/** 展示标题文本，否则展示纯 Logo */
 		showTitle: true,
 		subtitle: blogConfig.subtitle,
-		emojiTail: ['📄', '🦌', '🙌', '🐟', '🏖️'],
+		emojiTail: ['😝', '😸', '🍃'],
 	},
 
 	pagination: {
@@ -113,7 +106,7 @@ export default defineAppConfig({
 
 	stats: {
 		/** 归档页面每年标题对应的年龄 */
-		birthYear: 2003,
+		birthYear: 2011,
 		/** blog-stats widget 的预置文本 */
 		wordCount: '约10万',
 	},
