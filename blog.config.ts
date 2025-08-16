@@ -50,15 +50,15 @@ const blogConfig = {
 		// 自己部署的 Umami 统计服务
 		{ 'src': 'https://umami.enltlh.me/script.js', 'data-website-id': 'd755863f-e0ed-4f4b-b30c-f76cc31a4f98', 'defer': true },
 		// 自己网站的 Cloudflare Insights 统计服务
-		{ 'src': 'https://static.cloudflareinsights.com/beacon.min.js', 'data-cf-beacon': '{"token": "97a4fe32ed8240ac8284e9bffaf03962"}', 'defer': true },
+		{ 'src': 'https://static.cloudflareinsights.com/beacon.min.js', 'data-cf-beacon': '{"token": "6345aad7054b4beb97d8ff650caf169f"}', 'defer': true },
 		// Twikoo 评论系统
 		{ src: 'https://gcore.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js', defer: true },
 	],
 
 	// 自己部署的 Twikoo 服务
 	twikoo: {
-		envId: 'https://twikoo-enltlh.netlify.app/',
-		preload: 'https://twikoo-enltlh.netlify.app/',
+		envId: 'https://twikoo.enltlh.me/',
+		preload: 'https://twikoo.enltlh.me/',
 	},
 }
 
