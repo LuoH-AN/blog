@@ -5,9 +5,7 @@ onMounted(() => {
 	// @ts-expect-error windows上有twikoo实例
 	window.twikoo?.init?.({
 		envId: appConfig.twikoo?.envId,
-		// twikoo 会把挂载后的元素变为 #twikoo
 		el: '#twikoo',
-		// 已移除自定义 placeholder 配置
 	})
 })
 </script>
@@ -34,7 +32,6 @@ onMounted(() => {
 }
 
 :deep(#twikoo) {
-	/* --- 您原有的样式 (保留) --- */
 	margin: 2em 0;
 
 	.tk-admin-container {
@@ -120,13 +117,6 @@ onMounted(() => {
 	}
 
     .tk-submit {
-        .tk-avatar {
-            display: none;
-        }
-        .tk-main,
-        .tk-row.actions {
-            margin-left: 0;
-        }
         .tk-col {
             display: flex;
             flex-direction: column;
