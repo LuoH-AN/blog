@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@10.13.1",
-  "homepage": "https://github.com/luoh-an/blog-",
+  "homepage": "https://github.com/luoh-an/blog",
   "scripts": {
     "prepare": "pnpx rimraf .data node_modules/.cache && nuxt prepare",
     "dev": "nuxt dev --no-qr",

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-const appConfig = useAppConfig()
-const timeEstablished = appConfig.timeEstablished
-
 const blogLog = [
 	{ date: '2024-04-19', content: '发布第一篇文章' },
 	{ date: '2024-04-10', content: '迁移至 Nuxt' },
@@ -12,78 +9,110 @@ const blogLog = [
 
 <template>
   <ZWidget card title="更新日志">
-    <div class="timeline">
-      <div v-for="(item, index) in blogLog" :key="index" class="timeline-item">
-        <span class="timeline-date">{{ item.date }}</span>
-        <p class="timeline-content">{{ item.content }}</p>
-      </div>
-    </div>
+    <ul class="timeline">
+      <li v-for="(item, index) in blogLog" :key="index" class="timeline-item">
+        <span class="date">{{ item.date }}</span>
+        <p class="content">{{ item.content }}</p>
+      </li>
+    </ul>
   </ZWidget>
 </template>
 
 <style scoped>
-/* 时间线容器 */
+/* 定义基础变量 */
+.timeline {
+  --line-color: #c9c9c9;
+  --c-text-2: var(--custom-c-text-2, #374151);
+  --c-text-3: var(--custom-c-text-3, #9ca3af);
+  --font-monospace: var(--custom-font-monospace, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+}
+
+/* 暗黑模式变量 */
+.dark .timeline {
+  --line-color: #4b5563;
+  --c-text-2: var(--custom-dark-c-text-2, #d1d5db);
+  --c-text-3: var(--custom-dark-c-text-3, #9ca3af);
+}
+
+/* 核心布局 */
 .timeline {
   position: relative;
-  /* 在左侧为时间线和点留出空间 */
-  padding-left: 1.75rem; /* 28px */
+  list-style: none;
+  padding: 0.2rem 0;
+  margin: 0 0 0 0.8rem;
 }
 
-/* 垂直的时间线 */
-.timeline::before {
-  content: '';
-  position: absolute;
-  top: 0.5rem; /* 从第一个点的顶部之后开始 */
-  bottom: 0.5rem; /* 在最后一个点的底部之前结束 */
-  left: 0.5rem; /* 8px, 距离容器左侧 */
-  width: 2px;
-  background-color: #e5e7eb; /* 浅灰色 */
-}
-
+/* 时间轴项目 */
 .timeline-item {
   position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
-/* 为除最后一项外的所有项添加底部间距 */
-.timeline-item:not(:last-child) {
-  margin-bottom: 1.5rem; /* 24px */
+.timeline-item:last-child {
+  margin-bottom: 0;
 }
 
-/* 每个时间项前面的“点” */
+/* 所有项目的线段（包括最后一个） */
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 0.25rem;
+  top: 0.5rem;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100%; /* 默认高度，用于连接下一个节点 */
+  background-color: var(--line-color);
+}
+
+/* --- 核心修改 --- */
+/* 单独为最后一个项目的线段调整高度 */
+.timeline-item:last-child::after {
+  /*
+   * calc(100% - 0.75rem) 是关键
+   * 100% 是整个列表项内容的高度
+   * 0.75rem 约等于内容文字行高的一半，从底部减去这个值
+   * 可以让线的末端在视觉上与最后一行文字的中心对齐
+  */
+  height: calc(100% - 0.75rem);
+}
+
+/* 时间轴圆点 */
 .timeline-item::before {
   content: '';
   position: absolute;
-  /* 将点定位在线上 */
-  /* 计算: left = (线的left值 8px) - (容器的padding-left 28px) + (点宽度 10px / 2) = -15px */
-  left: -1.375rem; /* -22px */
-  top: 0.35rem; /* 垂直对齐日期文本 */
-  width: 10px;
-  height: 10px;
+  z-index: 1;
+  left: 0.25rem;
+  top: 0.5rem;
+  transform: translateY(-50%) translateX(-50%);
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
-  background-color: #9ca3af; /* 中等灰色 */
+  background-color: var(--c-text-2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* 第一个点的样式，使其更大更突出 */
-.timeline-item:first-child::before {
-  width: 14px;
-  height: 14px;
-  background-color: #4b5563; /* 深灰色 */
-  /* 为更大的点重新计算left位置 */
-  left: -1.5rem; /* -24px */
-  top: 0.25rem; /* 调整垂直对齐 */
+/* 悬停时的辉光和放大效果 */
+.timeline-item:hover::before {
+  box-shadow: 0 0 8px var(--c-text-2);
+  transform: translateY(-50%) translateX(-50%) scale(1.5);
 }
 
-.timeline-date {
+/* 日期样式 */
+.date {
   display: block;
-  color: #9ca3af; /* 日期的浅色文本 */
-  font-size: 0.875rem; /* 14px */
-  line-height: 1.25rem; /* 20px */
+  font-family: var(--font-monospace);
+  font-size: 0.875rem;
+  color: var(--c-text-3);
+  margin-bottom: 0.3rem;
 }
 
-.timeline-content {
-  margin: 0.25rem 0 0; /* 4px 顶部外边距 */
-  color: #374151; /* 内容的标准文本颜色 */
-  font-size: 1rem; /* 16px */
-  line-height: 1.5rem; /* 24px */
+/* 内容样式 */
+.content {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--c-text-2);
 }
 </style>

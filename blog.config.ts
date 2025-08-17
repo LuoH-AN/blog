@@ -13,7 +13,7 @@ const blogConfig = {
 	description: '建此博客，以示吾思。话天篆地，自由吾心。',
 	author: {
 		name: '落憾_EnLtLH',
-		avatar: 'https://ibeds.enltlh.me/file/s1/Tl01iYAr.jpg',
+		avatar: 'https://cdn2.enltlh.me/pichub/1/2025/2231d2da22a739df.jpg',
 		email: 'enltlh@gmail.com',
 		homepage: 'https:/blog.enltlh.me/',
 	},

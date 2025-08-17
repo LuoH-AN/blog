@@ -21,7 +21,8 @@ onMounted(() => {
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
 .z-comment {
 	margin: 3rem 1rem;
 
@@ -31,7 +32,7 @@ onMounted(() => {
 	}
 }
 
-:deep(#twikoo) {
+#twikoo {
 	margin: 2em 0;
 
 	.tk-admin-container {
@@ -131,18 +132,22 @@ onMounted(() => {
         }
     }
 
-    .el-textarea__inner {
+    .el-textarea__inner,
+    .tk-meta-input .el-input-group {
         border-radius: 12px !important;
         background-color: #e3e3e382;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        border: 1px solid var(--c-border, #dcdfe6);
+    }
+
+    .el-textarea__inner {
         min-height: 120px;
         padding: 1rem;
-        transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .tk-meta-input .el-input-group {
-        border-radius: 12px;
         overflow: hidden;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        background-color: transparent;
     }
 
     .tk-meta-input .el-input-group__prepend {
@@ -166,6 +171,26 @@ onMounted(() => {
     .tk-preview,
     .tk-send {
         border-radius: 8px !important;
+    }
+}
+
+.dark #twikoo {
+    .el-textarea__inner,
+    .tk-meta-input .el-input-group {
+        background-color: #1e1e1e;
+        border-color: #404040;
+        color: #e0e0e0;
+    }
+
+    .tk-meta-input .el-input-group__prepend {
+        background-color: #2c2c2e;
+        color: #ccc;
+        border-right: 1px solid #404040;
+    }
+
+    .tk-meta-input .el-input__inner {
+        background-color: #1e1e1e;
+        color: #e0e0e0;
     }
 }
 </style>

@@ -39,8 +39,6 @@ const contentStyle = computed<CSSProperties>(() => ({
 		opacity: 0.2;
 		inset: 0;
 		border-radius: 0.8rem;
-		background: center / cover;
-		background-image: var(--seasonal-bg);
 		z-index: -1;
 	}
 	border: none;
@@ -48,18 +46,20 @@ const contentStyle = computed<CSSProperties>(() => ({
 }
 
 .tech-stack-info {
-	background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('https://cdn2.enltlh.me/pichub/1/2025/b1679340b26e666e.png');
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
 	padding: 1rem;
 	border-radius: 8px;
 	color: #333;
 	border: none;
 	box-shadow: none;
+	transition: background-color 0.3s, color 0.3s; /* 添加平滑过渡效果 */
 }
 
 .seasonal-emoji::before, .seasonal-emoji::after {
 	content: var(--seasonal-emoji, "\1F595");
 }
+
+.dark .tech-stack-info {
+	color: #e6e6e6; /* 浅灰色文字 */
+}
+
 </style>
