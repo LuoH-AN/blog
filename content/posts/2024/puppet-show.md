@@ -4,7 +4,7 @@ description: 那人恍若提线木偶，被财阀肆意摆弄着。
 image: https://cdn2.enltlh.me/pichub/1/2025/4630228b36529b02.jpg
 date: 2024-05-03
 categories: [诗词]
-tags: [诗词, 写作, 杂记]
+tags: [写作, 杂记]
 recommend: true
 ---
 

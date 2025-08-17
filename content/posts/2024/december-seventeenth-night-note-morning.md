@@ -4,7 +4,7 @@ description: 坐在教室的窗户旁，朦胧的太阳映在我的书桌。
 image: https://cdn2.enltlh.me/pichub/1/2025/1e289af2b8d7a168.jpg
 date: 2024-12-17
 categories: [诗词]
-tags: [诗词, 写作, 杂记]
+tags: [写作, 杂记]
 ---
 
 ::poetry

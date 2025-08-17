@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const blogLog = [
+  { date: '2025-08-16', content: '加入 揪蝉'},
 	{ date: '2024-04-19', content: '发布第一篇文章' },
 	{ date: '2024-04-10', content: '迁移至 Nuxt' },
 	{ date: '2023-04-23', content: '迁移至 Hexo 使用 Anzhiyu 主题' },

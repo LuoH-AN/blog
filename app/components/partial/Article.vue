@@ -56,6 +56,11 @@ const categoryIcon = computed(() => getCategoryIcon(categoryLabel.value))
 				</span>
 			</ClientOnly>
 
+			<span v-for="tag in tags" :key="tag" class="article-tag">
+				<Icon name="ph:tag-bold" />
+				{{ tag }}
+			</span>
+
 			<span v-if="readingTime?.words" class="article-words">
 				<Icon name="ph:paragraph-bold" />
 				{{ formatNumber(readingTime?.words) }}字
@@ -109,6 +114,10 @@ const categoryIcon = computed(() => getCategoryIcon(categoryLabel.value))
 
 .article-category {
 	color: var(--cg-color);
+}
+
+.article-tag {
+	color: var(--c-text-2);
 }
 
 .article-cover {

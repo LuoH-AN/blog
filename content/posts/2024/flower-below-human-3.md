@@ -4,7 +4,7 @@ description: 酒洒满地，剑气肆意，好生快哉！
 image: https://cdn2.enltlh.me/pichub/1/2025/3feb97f9e6ad0cae.jpg
 date: 2024-04-28
 categories: [诗词]
-tags: [诗词, 写作, 花下人]
+tags: [写作, 花下人]
 ---
 
 ::poetry

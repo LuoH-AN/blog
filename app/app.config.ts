@@ -42,6 +42,7 @@ export default defineAppConfig({
 			{ icon: 'ph:house-bold', text: '个人主页', url: blogConfig.author.homepage },
 			{ icon: 'ph:github-logo-bold', text: 'GitHub: LuoH-AN', url: 'https://github.com/LuoH-AN' },
 			{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
+			{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
 		] satisfies NavItem[],
 		/** 页脚站点地图 */
 		nav: [
@@ -63,7 +64,7 @@ export default defineAppConfig({
 			{
 				title: '信息',
 				items: [
-					{ icon: 'simple-icons:nuxtdotjs', text: '博客主题', url: 'https://github.com/L33Z22L11/blog-v3' },
+					{ icon: 'simple-icons:nuxtdotjs', text: '开源主题', url: 'https://github.com/L33Z22L11/blog-v3' },
 				],
 			},
 		] satisfies Nav,
@@ -73,7 +74,7 @@ export default defineAppConfig({
 
 	/** 左侧栏顶部 Logo */
 	header: {
-		logo: 'https://cn.cravatar.com/avatar/ec4f5f6d61b9e1552ae451be26ba29fc?d=initials&name=EnLtLH',
+		logo: 'https://cdn2.enltlh.me/pichub/1/2025/2231d2da22a739df.jpg',
 		/** 展示标题文本，否则展示纯 Logo */
 		showTitle: true,
 		subtitle: blogConfig.subtitle,
@@ -104,7 +105,7 @@ export default defineAppConfig({
 
 	/** 风格化 blog-stats widget */
 	seasonal: {
-		// widgetBackground: 'https://wsrv.nl/?url=i2.hdslb.com/bfs/archive/46165212e09842103752c453d7987a470059760b.jpg@320w',
+		// widgetBackground: 'https://cdn2.enltlh.me/pichub/1/2025/2231d2da22a739df.jpg',
 		// emoji: '🧧',
 	},
 
