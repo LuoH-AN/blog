@@ -96,6 +96,8 @@ export default defineAppConfig({
 				{ icon: 'ph:files-bold', text: '文章', url: '/' },
 				{ icon: 'ph:link-bold', text: '友链', url: '/link' },
 				{ icon: 'ph:archive-bold', text: '归档', url: '/archive' },
+				{ icon: 'ph:tag-bold', text: '标签', url: '/tags' },
+				{ icon: 'ph:user-bold', text: '关于', url: '/about' },
 			],
 		},
 	] satisfies Nav,

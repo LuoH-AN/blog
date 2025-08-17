@@ -1,10 +1,11 @@
 ---
 title: 花下人 - 其二
 description: 纷纷白发飘在空中，度过了百余春秋。
-image: https://ibeds.enltlh.me/file/s1/2vI84rT0.jpeg
+image: https://cdn2.enltlh.me/pichub/1/2025/ca1e287d1e363d93.jpg
 date: 2024-04-24
 categories: [诗词]
 tags: [诗词, 写作, 花下人]
+recommend: true
 ---
 
 ::poetry

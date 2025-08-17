@@ -45,18 +45,20 @@ onMounted(() => {
 	<ZhiluHeader to="/" />
 </div>
 
-<!-- TODO 谨慎升级 预计2025-10-25下线 -->
+<!-- TODO 谨慎升级 预计2025-10-25下线 
 <Alert v-if="displayWarning" type="warning" style="margin: 1em;">
 	<template #title>
 		<span style="flex-grow: 1;">主题用户谨慎合并上游</span>
 		<Icon name="ph:x-bold" style="cursor: pointer;" @click="hideWarning" />
 	</template>
 	<p style="margin: 0.5em 0;">
-		已升级 Nuxt 4 / Nuxt Content 3，具有大量破坏性更改且功能实现尚不完善，建议非必要不合并上游。
+		已升级 Nuxt 4 / Nuxt Content 3，具有大量破坏性更改且功能实现尚不完善，建议非必要不合并上游。-->
 		<!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
+<!--
 		<ProseA href="https://github.com/L33Z22L11/blog-v3/pull/20" target="_blank">PR</ProseA>
 	</p>
 </Alert>
+-->
 
 <PostSlide v-if="listRecommended.length && page === 1 && !category" :list="listRecommended" />
 

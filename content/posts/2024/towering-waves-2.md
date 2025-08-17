@@ -1,10 +1,11 @@
 ---
 title: 大浪滔天 - 其二
 description: 滔天的浪激怒了凡圣，顶着神明威压，献祭自身。
-image: https://ibeds.enltlh.me/file/s1/NvfHom7Q.jpeg
+image: https://cdn2.enltlh.me/pichub/1/2025/cd50a5ada30c9b0a.jpg
 date: 2024-04-20
 categories: [诗词]
 tags: [诗词, 写作, 大浪滔天]
+recommend: true
 ---
 
 ::poetry
