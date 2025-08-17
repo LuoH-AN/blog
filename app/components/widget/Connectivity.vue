@@ -28,7 +28,7 @@ const contentStyle = computed<CSSProperties>(() => ({
 </template>
 
 <style lang="scss" scoped>
-.seasonal {
+:deep(.seasonal) {
 	position: relative;
 	overflow: hidden;
 	z-index: 0;
@@ -38,6 +38,7 @@ const contentStyle = computed<CSSProperties>(() => ({
 		position: absolute;
 		opacity: 0.2;
 		inset: 0;
+		border-radius: 0.8rem;
 		background: center / cover;
 		background-image: var(--seasonal-bg);
 		z-index: -1;
