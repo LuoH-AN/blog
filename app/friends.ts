@@ -28,5 +28,5 @@ export default [{
 		archs: [],
 		date: '2025-08-17',
 		comment: '',
-	}
-] satisfies FeedGroup[]
+	}]
+}] satisfies FeedGroup[]
