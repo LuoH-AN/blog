@@ -27,5 +27,17 @@ export default [{
 		archs: [],
 		date: '2025-08-17',
 		comment: '',
+	}, {
+		author: 'Mo的记事簿',
+		sitenick: '',
+		title: 'Mo的记事簿',
+		desc: '万年鸽王，哈哈OvO',
+		link: 'https://blog.xiowo.net/',
+		feed: 'https://blog.zhilu.site/atom.xml',
+		icon: 'https://unavatar.webp.se/blog.xiowo.net?w',
+		avatar: 'https://blog.xiowo.net/img/avatar.png',
+		archs: [],
+		date: '2025-08-18',
+		comment: '',
 	}]
 }] satisfies FeedGroup[]
