@@ -39,5 +39,17 @@ export default [{
 		archs: [],
 		date: '2025-08-18',
 		comment: '',
+	}, {
+		author: '清羽飞扬',
+		sitenick: '',
+		title: '清羽飞扬',
+		desc: '柳影曳曳，清酒孤灯，扬笔撒墨，心境如霜',
+		link: 'https://blog.liushen.fun/',
+		feed: 'https://blog.liushen.fun/atom.xml',
+		icon: 'https://unavatar.webp.se/blog.liushen.fun?w',
+		avatar: 'https://blog.liushen.fun/info/avatar.ico',
+		archs: [],
+		date: '2025-08-18',
+		comment: '',
 	}]
 }] satisfies FeedGroup[]
