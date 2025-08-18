@@ -13,27 +13,27 @@ layoutStore.setAside(['blog-stats', 'blog-log'])
 const { data: listRaw } = await useArticleIndex()
 
 const articlesByTag = computed(() => {
-    const result: Record<string, any[]> = {}
-    const articles = sort(listRaw.value, a => new Date(a.date || 0).getTime(), true)
-    for (const article of articles) {
-        if (article.tags) {
-            for (const tag of article.tags) {
-                if (!result[tag]) {
-                    result[tag] = []
-                }
-                result[tag].push(article)
-            }
-        }
-    }
-    return result
+	const result: Record<string, any[]> = {}
+	const articles = sort(listRaw.value, a => new Date(a.date || 0).getTime(), true)
+	for (const article of articles) {
+		if (article.tags) {
+			for (const tag of article.tags) {
+				if (!result[tag]) {
+					result[tag] = []
+				}
+				result[tag].push(article)
+			}
+		}
+	}
+	return result
 })
 
 const sortedTags = computed(() => {
-    return Object.keys(articlesByTag.value).sort((a, b) => {
-        const aCount = articlesByTag.value[a]?.length || 0
-        const bCount = articlesByTag.value[b]?.length || 0
-        return bCount - aCount
-    })
+	return Object.keys(articlesByTag.value).sort((a, b) => {
+		const aCount = articlesByTag.value[a]?.length || 0
+		const bCount = articlesByTag.value[b]?.length || 0
+		return bCount - aCount
+	})
 })
 </script>
 
@@ -48,9 +48,9 @@ const sortedTags = computed(() => {
 			<h2 class="tag-name">
 				{{ tag }}
 			</h2>
-            <div class="tag-info">
-                <span>{{ articlesByTag[tag]?.length }}篇</span>
-            </div>
+			<div class="tag-info">
+				<span>{{ articlesByTag[tag]?.length }}篇</span>
+			</div>
 		</div>
 
 		<menu class="archive-list">

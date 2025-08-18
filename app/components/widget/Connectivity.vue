@@ -31,6 +31,8 @@ const contentStyle = computed<CSSProperties>(() => ({
 :deep(.seasonal) {
 	position: relative;
 	overflow: hidden;
+	border: none;
+	box-shadow: none;
 	z-index: 0;
 
 	&::before {
@@ -41,16 +43,14 @@ const contentStyle = computed<CSSProperties>(() => ({
 		border-radius: 0.8rem;
 		z-index: -1;
 	}
-	border: none;
-	box-shadow: none;
 }
 
 .tech-stack-info {
 	padding: 1rem;
-	border-radius: 8px;
-	color: #333;
 	border: none;
+	border-radius: 8px;
 	box-shadow: none;
+	color: #333;
 	transition: background-color 0.3s, color 0.3s; /* 添加平滑过渡效果 */
 }
 
@@ -59,7 +59,6 @@ const contentStyle = computed<CSSProperties>(() => ({
 }
 
 .dark .tech-stack-info {
-	color: #e6e6e6; /* 浅灰色文字 */
+	color: #E6E6E6; /* 浅灰色文字 */
 }
-
 </style>

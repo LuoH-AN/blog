@@ -1,5 +1,4 @@
 import type { FeedGroup } from '~/types/feed'
-import { getGhAvatar } from './utils/img'
 
 /**
 {
@@ -15,7 +14,7 @@ import { getGhAvatar } from './utils/img'
 	date: '2025-08-03',
 	comment: '评价',
 }
-*/
+ */
 export default [
-	
+
 ] satisfies FeedGroup[]
