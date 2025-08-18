@@ -8,7 +8,7 @@ useSeoMeta({
 })
 
 const layoutStore = useLayoutStore()
-layoutStore.setAside(['blog-stats', 'blog-log'])
+layoutStore.setAside(['blog-stats', 'connectivity', 'blog-log', 'poetry'])
 
 const { data: listRaw } = await useArticleIndex()
 
