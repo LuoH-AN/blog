@@ -54,7 +54,7 @@ const blogConfig = {
 		// Twikoo 评论系统
 		{ src: 'https://gcore.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js', defer: true },
 		// 今日诗词 SDK
-		{ src: 'https://sdk.jinrishici.com/v2/browser/jinrishici.js', charset: 'utf-8', defer: true },
+		{ src: 'https://sdk.jinrishici.com/v2/browser/jinrishici.js', defer: true },
 	],
 
 	// 自己部署的 Twikoo 服务
