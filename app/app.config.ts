@@ -65,11 +65,13 @@ export default defineAppConfig({
 				title: '信息',
 				items: [
 					{ icon: 'simple-icons:nuxtdotjs', text: '开源主题', url: 'https://github.com/L33Z22L11/blog-v3' },
+					{ icon: 'ph:certificate-bold', text: '萌ICP备20250355号', url: 'https://icp.gov.moe/?keyword=20250355' },
+					{ icon: 'ph:certificate-bold', text: '雾ICP备20110419号', url: 'https://icp.wudu.ltd/id.php?keyword=20110419' },
 				],
 			},
 		] satisfies Nav,
 		/** 页脚版权信息底部的其他信息 */
-		message: '<a href="https://icp.gov.moe/?keyword=20250355" target="_blank">萌ICP备20250355号</a>',
+		message: '',
 	},
 
 	/** 左侧栏顶部 Logo */
