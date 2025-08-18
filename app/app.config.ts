@@ -11,8 +11,6 @@ export default defineAppConfig({
 	article: {
 		categories: <{ [category: string]: { icon: string, color?: string } }>{
 			诗词: { icon: 'ph:notepad-bold', color: '#3af' },
-			生活: { icon: 'ph:shooting-star-bold', color: '#3ba' },
-			代码: { icon: 'ph:code-bold', color: '#77f' },
 			未分类: { icon: 'ph:folder-dotted-bold' },
 		},
 		defaultCategoryIcon: 'ph:folder-bold',
@@ -43,6 +41,7 @@ export default defineAppConfig({
 			{ icon: 'ph:github-logo-bold', text: 'GitHub: LuoH-AN', url: 'https://github.com/LuoH-AN' },
 			{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
 			{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
+			{ icon: 'ph:subway-bold', text: '开往-友链接力', url:'https://www.travellings.cn/go.html'},
 		] satisfies NavItem[],
 		/** 页脚站点地图 */
 		nav: [
@@ -52,6 +51,7 @@ export default defineAppConfig({
 					{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
 					{ icon: 'ph:flying-saucer-bold', text: '异次元旅行', url: 'https://travel.moe/go.html?travel=on' },
 					{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
+					{ icon: 'ph:subway-bold', text: '开往-友链接力', url:'https://www.travellings.cn/go.html'},
 				],
 			},
 			{
