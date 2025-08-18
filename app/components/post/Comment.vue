@@ -21,7 +21,7 @@ onMounted(() => {
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .z-comment {
 	margin: 3rem 1rem;
@@ -117,83 +117,80 @@ onMounted(() => {
 		transition: background-color 0.1s;
 	}
 
-	.tk-submit {
-		.tk-col {
-			display: flex;
-			flex-direction: column;
-		}
+    .tk-submit {
+        .tk-col {
+            display: flex;
+            flex-direction: column;
+        }
+        .tk-input {
+            order: 1;
+        }
+        .tk-meta-input {
+            order: 2;
+            margin-top: 0.75rem;
+            margin-bottom: 0;
+        }
+    }
 
-		.tk-input {
-			order: 1;
-		}
+    .el-textarea__inner,
+    .tk-meta-input .el-input-group {
+        border-radius: 12px !important;
+        background-color: #e3e3e382;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        border: 1px solid var(--c-border, #dcdfe6);
+    }
 
-		.tk-meta-input {
-			order: 2;
-			margin-top: 0.75rem;
-			margin-bottom: 0;
-		}
-	}
+    .el-textarea__inner {
+        min-height: 120px;
+        padding: 1rem;
+    }
 
-	.el-textarea__inner,
-	.tk-meta-input .el-input-group {
-		border: 1px solid var(--c-border, #DCDFE6);
-		border-radius: 12px;
-		background-color: #E3E3E382;
-		transition: border-color 0.2s, box-shadow 0.2s;
-	}
+    .tk-meta-input .el-input-group {
+        overflow: hidden;
+        background-color: transparent;
+    }
 
-	.el-textarea__inner {
-		min-height: 120px;
-		padding: 1rem;
-	}
+    .tk-meta-input .el-input-group__prepend {
+        background-color: #FFFFFF;
+        border: none;
+        color: #555;
+        padding: 0 1.25rem;
+    }
 
-	.tk-meta-input .el-input-group {
-		overflow: hidden;
-		background-color: transparent;
-	}
+    .tk-meta-input .el-input__inner {
+        background-color: #e3e3e382;
+        border: none;
+    }
 
-	.tk-meta-input .el-input-group__prepend {
-		padding: 0 1.25rem;
-		border: none;
-		background-color: #FFF;
-		color: #555;
-	}
+    .el-textarea__inner:focus,
+    .tk-meta-input .el-input-group:focus-within {
+        border-color: #409EFF !important;
+        box-shadow: 0 0 0 1px #409EFF;
+    }
 
-	.tk-meta-input .el-input__inner {
-		border: none;
-		background-color: #E3E3E382;
-	}
-
-	.el-textarea__inner:focus,
-	.tk-meta-input .el-input-group:focus-within {
-		border-color: #409EFF;
-		box-shadow: 0 0 0 1px #409EFF;
-	}
-
-	.tk-preview,
-	.tk-send {
-		border-radius: 8px;
-	}
+    .tk-preview,
+    .tk-send {
+        border-radius: 8px !important;
+    }
 }
 
 .dark #twikoo {
-	.el-textarea__inner,
-	.tk-meta-input .el-input-group {
-		border-color: #404040;
-		background-color: #1E1E1E;
-		color: #E0E0E0;
-	}
+    .el-textarea__inner,
+    .tk-meta-input .el-input-group {
+        background-color: #1e1e1e;
+        border-color: #404040;
+        color: #e0e0e0;
+    }
 
-	.tk-meta-input .el-input-group__prepend {
-		border-right: 1px solid #404040;
-		background-color: #2C2C2E;
-		color: #CCC;
-	}
+    .tk-meta-input .el-input-group__prepend {
+        background-color: #2c2c2e;
+        color: #ccc;
+        border-right: 1px solid #404040;
+    }
 
-	.tk-meta-input .el-input__inner {
-		background-color: #1E1E1E;
-		color: #E0E0E0;
-	}
+    .tk-meta-input .el-input__inner {
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+    }
 }
-
 </style>
