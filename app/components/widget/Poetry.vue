@@ -50,7 +50,7 @@ onMounted(() => {
 			{{ poetryData.content }}
 		</div>
 		<div class="info">
-			【<span class="clickable" @click="searchOnBing(poetryData!.dynasty)">{{ poetryData.dynasty }}</span>】<span class="clickable" @click="searchOnBing(poetryData!.author)">{{ poetryData.author }}</span>《<span class="clickable" @click="searchOnBing(poetryData!.title)">{{ poetryData.title }}</span>》
+			【<span v-tip="{ content: `搜索: ${poetryData!.dynasty}` }" class="clickable" @click="searchOnBing(poetryData!.dynasty)">{{ poetryData.dynasty }}</span>】<span v-tip="{ content: `搜索: ${poetryData!.author}` }" class="clickable" @click="searchOnBing(poetryData!.author)">{{ poetryData.author }}</span>《<span v-tip="{ content: `搜索: ${poetryData!.title}` }" class="clickable" @click="searchOnBing(poetryData!.title)">{{ poetryData.title }}</span>》
 		</div>
 	</div>
 	<div v-else class="loading">
@@ -77,6 +77,7 @@ onMounted(() => {
 			cursor: pointer;
 			&:hover {
 				text-decoration: underline;
+				color: var(--c-brand);
 			}
 		}
 	}

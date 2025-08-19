@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const blogLog = [
+	{ date: '2025-08-17', content: '加入 萌ICP备 雾ICP备' },
 	{ date: '2025-08-16', content: '加入 揪蝉' },
 	{ date: '2024-04-19', content: '发布第一篇文章' },
 	{ date: '2024-04-10', content: '迁移至 Nuxt' },
