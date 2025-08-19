@@ -8,6 +8,11 @@ const poetryData = ref<{
 
 const error = ref<string | null>(null)
 
+const searchOnBing = (query: string) => {
+	const url = `https://www.bing.com/search?q=${encodeURIComponent(query)}`
+	window.open(url, '_blank')
+}
+
 onMounted(() => {
 	// 确保 jinrishici SDK 已加载
 	if (typeof window.jinrishici !== 'undefined') {
@@ -45,7 +50,7 @@ onMounted(() => {
 			{{ poetryData.content }}
 		</div>
 		<div class="info">
-			【{{ poetryData.dynasty }}】{{ poetryData.author }}《{{ poetryData.title }}》
+			【<span class="clickable" @click="searchOnBing(poetryData!.dynasty)">{{ poetryData.dynasty }}</span>】<span class="clickable" @click="searchOnBing(poetryData!.author)">{{ poetryData.author }}</span>《<span class="clickable" @click="searchOnBing(poetryData!.title)">{{ poetryData.title }}</span>》
 		</div>
 	</div>
 	<div v-else class="loading">
@@ -57,16 +62,23 @@ onMounted(() => {
 <style lang="scss" scoped>
 .poetry-content {
 	.sentence {
-		font-size: 1.2em;
-		line-height: 1.6;
-		text-align: center;
-		margin-bottom: 1em;
+        font-size: 1em;
+        line-height: 0;
+        margin-bottom: 0.1em;
+        text-align: center;
+	    padding: 0.8rem;
 	}
 
 	.info {
 		text-align: right;
 		font-size: 0.9em;
 		color: var(--c-text-2);
+		.clickable {
+			cursor: pointer;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
 	}
 }
 

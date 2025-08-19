@@ -51,7 +51,7 @@ const contentStyle = computed<CSSProperties>(() => ({
 	border-radius: 8px;
 	box-shadow: none;
 	color: #333;
-	transition: background-color 0.3s, color 0.3s; /* 添加平滑过渡效果 */
+	transition: background-color 0.3s, color 0.3s;
 }
 
 .seasonal-emoji::before, .seasonal-emoji::after {
@@ -59,6 +59,6 @@ const contentStyle = computed<CSSProperties>(() => ({
 }
 
 .dark .tech-stack-info {
-	color: #E6E6E6; /* 浅灰色文字 */
+	color: #E6E6E6;
 }
 </style>

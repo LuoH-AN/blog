@@ -22,7 +22,7 @@ const blogLog = [
 </template>
 
 <style lang="scss" scoped>
-/* 定义基础变量 */
+
 .timeline {
 	--line-color: #C9C9C9;
 	--c-text-2: var(--custom-c-text-2, #374151);
@@ -30,14 +30,12 @@ const blogLog = [
 	--font-monospace: var(--custom-font-monospace, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
 }
 
-/* 暗黑模式变量 */
 .dark .timeline {
 	--line-color: #4B5563;
 	--c-text-2: var(--custom-dark-c-text-2, #D1D5DB);
 	--c-text-3: var(--custom-dark-c-text-3, #9CA3AF);
 }
 
-/* 核心布局 */
 .timeline {
 	position: relative;
 	margin: 0 0 0 0.8rem;
@@ -45,7 +43,6 @@ const blogLog = [
 	list-style: none;
 }
 
-/* 时间轴项目 */
 .timeline-item {
 	position: relative;
 	margin-bottom: 1.5rem;
@@ -56,33 +53,22 @@ const blogLog = [
 	margin-bottom: 0;
 }
 
-/* 所有项目的线段（包括最后一个） */
 .timeline-item::after {
 	content: "";
 	position: absolute;
 	top: 0.5rem;
 	left: 0.25rem;
 	width: 1px;
-	height: 100%; /* 默认高度，用于连接下一个节点 */
+	height: 100%;
 	background-color: var(--line-color);
 	transform: translateX(-50%);
 	z-index: 0;
 }
 
-/* --- 核心修改 --- */
-
-/* 单独为最后一个项目的线段调整高度 */
 .timeline-item:last-child::after {
-	/*
-   * calc(100% - 0.75rem) 是关键
-   * 100% 是整个列表项内容的高度
-   * 0.75rem 约等于内容文字行高的一半，从底部减去这个值
-   * 可以让线的末端在视觉上与最后一行文字的中心对齐
-  */
 	height: calc(100% - 0.75rem);
 }
 
-/* 时间轴圆点 */
 .timeline-item::before {
 	content: "";
 	position: absolute;
@@ -97,13 +83,11 @@ const blogLog = [
 	z-index: 1;
 }
 
-/* 悬停时的辉光和放大效果 */
 .timeline-item:hover::before {
 	box-shadow: 0 0 8px var(--c-text-2);
 	transform: translateY(-50%) translateX(-50%) scale(1.5);
 }
 
-/* 日期样式 */
 .date {
 	display: block;
 	margin-bottom: 0.3rem;
@@ -112,7 +96,6 @@ const blogLog = [
 	color: var(--c-text-3);
 }
 
-/* 内容样式 */
 .content {
 	margin: 0;
 	font-size: 0.875rem;
