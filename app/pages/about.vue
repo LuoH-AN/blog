@@ -1,9 +1,32 @@
 <script setup lang="ts">
+import { useUmamiStats } from '~/composables/useUmamiStats'
+import { ref, onMounted } from 'vue'
+
 const appConfig = useAppConfig()
 useSeoMeta({
 	title: '关于',
 	description: `关于 ${appConfig.author.name} 以及这个博客的一切。`,
 })
+
+const { stats, loading, error, fetchStats } = useUmamiStats()
+
+onMounted(() => {
+  fetchStats('month')
+})
+
+const timeRanges = [
+  { label: '日', value: 'day' as const },
+  { label: '周', value: 'week' as const },
+  { label: '月', value: 'month' as const },
+  { label: '年', value: 'year' as const }
+]
+
+const selectedRange = ref('month')
+
+const switchRange = (range: 'day' | 'week' | 'month' | 'year') => {
+  selectedRange.value = range
+  fetchStats(range)
+}
 
 const layoutStore = useLayoutStore()
 
@@ -21,7 +44,6 @@ const age = new Date().getFullYear() - birthYear
 	</header>
 
 	<div class="cards-grid">
-		<!-- Card 1: Intro -->
 		<div class="card intro-card">
 			<p>你好, 很高兴认识你👋</p>
 			<h2>我叫 {{ appConfig.author.name }}</h2>
@@ -29,7 +51,6 @@ const age = new Date().getFullYear() - birthYear
 			<Icon name="ph:rocket-launch-bold" class="card-bg-icon" />
 		</div>
 
-		<!-- Card 2: Born -->
 		<div class="card info-card">
 			<div class="info-item special-info-item">
 				<span class="label">生于</span>
@@ -42,7 +63,6 @@ const age = new Date().getFullYear() - birthYear
 			<Icon name="ph:calendar-blank-bold" class="card-bg-icon" />
 		</div>
 
-		<!-- Card 3: Motto -->
 		<div class="card motto-card">
 			<span class="label">座右铭</span>
 			<p>人生须尽欢</p>
@@ -50,7 +70,6 @@ const age = new Date().getFullYear() - birthYear
 			<Icon name="ph:heart-bold" class="card-bg-icon" />
 		</div>
 
-		<!-- Card 4: Tech -->
 		<div class="card tech-card">
 			<span class="label">关注偏好</span>
 			<h3>数码科技</h3>
@@ -58,14 +77,12 @@ const age = new Date().getFullYear() - birthYear
 			<Icon name="ph:desktop-tower-bold" class="card-bg-icon" />
 		</div>
 
-		<!-- Card 5: Music -->
 		<div class="card music-card">
 			<span class="label">音乐偏好</span>
 			<h3>周杰伦，周深</h3>
 			<Icon name="ph:music-notes-simple-bold" class="card-bg-icon" />
 		</div>
 
-		<!-- Card 6: Personality -->
 		<div class="card info-card personality-card">
 			<span class="label">性格</span>
 			<div class="content-center">
@@ -76,7 +93,6 @@ const age = new Date().getFullYear() - birthYear
 			<Icon name="ph:user-focus-bold" class="card-bg-icon" />
 		</div>
 
-		<!-- Card 7: Specialty -->
 		<div class="card specialty-card">
 			<span class="label">特长</span>
 			<p class="specialty-text">
@@ -88,7 +104,6 @@ const age = new Date().getFullYear() - birthYear
 			<Icon name="ph:game-controller-bold" class="card-bg-icon" />
 		</div>
 
-		<!-- Card 8: Contact -->
 		<div class="card contact-card">
 			<span class="label">联系我</span>
 			<div class="contact-links">
@@ -103,6 +118,47 @@ const age = new Date().getFullYear() - birthYear
 				</a>
 			</div>
 			<Icon name="ph:address-book-bold" class="card-bg-icon" />
+		</div>
+
+		<div class="card stats-card">
+			<span class="label">网站统计</span>
+			<div v-if="loading" class="stats-loading">
+				加载中...
+			</div>
+			<div v-else-if="error" class="stats-error">
+				{{ error }}
+			</div>
+			<div v-else-if="stats" class="stats-content">
+				<div class="stats-grid">
+					<div class="stat-item">
+						<span class="stat-value">{{ stats.pageviews.value }}</span>
+						<span class="stat-label">浏览量</span>
+					</div>
+					<div class="stat-item">
+						<span class="stat-value">{{ stats.visitors.value }}</span>
+						<span class="stat-label">访客数</span>
+					</div>
+					<div class="stat-item">
+						<span class="stat-value">{{ stats.visits.value }}</span>
+						<span class="stat-label">访问次数</span>
+					</div>
+					<div class="stat-item">
+						<span class="stat-value">{{ Math.round(stats.totaltime.value / 60) }}</span>
+						<span class="stat-label">分钟停留</span>
+					</div>
+				</div>
+				<div class="time-range-selector">
+					<button
+						v-for="range in timeRanges"
+						:key="range.value"
+						:class="{ active: selectedRange === range.value }"
+						@click="switchRange(range.value)"
+					>
+						{{ range.label }}
+					</button>
+				</div>
+			</div>
+			<Icon name="ph:chart-line-bold" class="card-bg-icon" />
 		</div>
 	</div>
 </div>
@@ -144,8 +200,8 @@ const age = new Date().getFullYear() - birthYear
 	justify-content: center;
 	position: relative;
 	overflow: hidden;
-	min-height: 220px; // Slightly increased height
-	padding: 2rem 1.5rem; // Increased padding for content spacing
+	min-height: 220px;
+	padding: 2rem 1.5rem;
 	border-radius: 1.5rem;
 	text-align: center;
 	transition: none;
@@ -160,7 +216,7 @@ const age = new Date().getFullYear() - birthYear
 		top: 1rem;
 		left: 1.5rem;
 		margin: 0;
-		font-size: 0.8rem; // Smaller label
+		font-size: 0.8rem;
 	}
 
 	.card-bg-icon {
@@ -180,7 +236,7 @@ const age = new Date().getFullYear() - birthYear
 
 	h2 {
 		margin: 0.5rem 0;
-		font-size: 3rem; // Larger content text
+		font-size: 3rem;
 		font-weight: bold;
 	}
 }
@@ -188,7 +244,7 @@ const age = new Date().getFullYear() - birthYear
 .info-card {
 	align-items: stretch;
 	justify-content: center;
-	padding: 2.5rem 1.5rem; // More vertical padding
+	padding: 2.5rem 1.5rem;
 	background: linear-gradient(to right, rgb(178 235 201), rgb(231 195 114), rgb(227 101 105));
 	color: #333;
 
@@ -203,21 +259,17 @@ const age = new Date().getFullYear() - birthYear
 
 		.label {
 			flex-shrink: 0;
-			position: static; // Override absolute positioning
+			position: static;
 			width: 100%;
 			margin-bottom: 0.5rem;
 			text-align: left;
 		}
 	}
 
-	.content-center {
-		// A wrapper to help center content when label is absolute
-	}
-
 	.value {
 		display: block;
 		width: 100%;
-		font-size: 2.5rem; // Larger content text
+		font-size: 2.5rem;
 		font-weight: bold;
 		text-align: center;
 	}
@@ -225,7 +277,7 @@ const age = new Date().getFullYear() - birthYear
 	.value-small {
 		display: block;
 		width: 100%;
-		font-size: 2rem; // Larger content text
+		font-size: 2rem;
 		font-weight: bold;
 		text-align: center;
 	}
@@ -257,7 +309,7 @@ const age = new Date().getFullYear() - birthYear
 
 	p {
 		margin: 0;
-		font-size: 2.5rem; // Larger content text
+		font-size: 2.5rem;
 		font-weight: bold;
 		line-height: 1.2;
 	}
@@ -272,7 +324,7 @@ const age = new Date().getFullYear() - birthYear
 
 	h3 {
 		margin: 0.5rem 0;
-		font-size: 3rem; // Larger content text
+		font-size: 3rem;
 		font-weight: bold;
 	}
 
@@ -293,7 +345,7 @@ const age = new Date().getFullYear() - birthYear
 	color: white;
 
 	h3 {
-		font-size: 2.5rem; // Larger content text
+		font-size: 2.5rem;
 		font-weight: bold;
 	}
 }
@@ -345,6 +397,78 @@ const age = new Date().getFullYear() - birthYear
 	}
 }
 
+.stats-card {
+	grid-column: 1 / -1;
+	background: linear-gradient(to right, rgb(106 27 154), rgb(171 71 188));
+	color: white;
+}
+
+.stats-card .label {
+	color: rgba(255, 255, 255, 0.9);
+}
+
+.stats-content {
+	width: 100%;
+}
+
+.stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.stat-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5rem;
+}
+
+.stat-value {
+	font-size: 2rem;
+	font-weight: bold;
+	margin-bottom: 0.25rem;
+}
+
+.stat-label {
+	font-size: 0.9rem;
+	opacity: 0.9;
+}
+
+.time-range-selector {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+.time-range-selector button {
+	padding: 0.5rem 1rem;
+	background: rgba(255, 255, 255, 0.2);
+	border: none;
+	border-radius: 1rem;
+	color: white;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.time-range-selector button:hover,
+.time-range-selector button.active {
+	background: rgba(255, 255, 255, 0.3);
+}
+
+.stats-loading,
+.stats-error {
+	text-align: center;
+	padding: 2rem;
+	font-size: 1.1rem;
+}
+
+.stats-error {
+	color: #ff9e9e;
+}
+
 .dark {
 	.intro-card {
 		background: linear-gradient(to right, #2C3E50, #4CA1AF);
@@ -386,10 +510,45 @@ const age = new Date().getFullYear() - birthYear
 
 	.contact-card {
 		background: linear-gradient(to right, #4E2F0F, #6A3F14);
+	}
 
-		a {
-			color: white;
-		}
+	.stats-card {
+		background: linear-gradient(to right, #2A0A4C, #4B0F82);
+	}
+
+	.stats-card .label {
+		color: rgba(255, 255, 255, 0.7);
+	}
+
+	.stats-card .stat-value {
+		color: #f0f0f0;
+	}
+
+	.stats-card .stat-label {
+		color: rgba(255, 255, 255, 0.7);
+	}
+
+	.time-range-selector button {
+		background: rgba(255, 255, 255, 0.15);
+		color: #f0f0f0;
+	}
+
+	.time-range-selector button:hover,
+	.time-range-selector button.active {
+		background: rgba(255, 255, 255, 0.25);
+	}
+
+	.stats-loading,
+	.stats-error {
+		color: #f0f0f0;
+	}
+
+	.stats-error {
+		color: #ff9e9e;
+	}
+
+	a {
+		color: white;
 	}
 }
 </style>
