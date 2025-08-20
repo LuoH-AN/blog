@@ -91,6 +91,7 @@ const redirectRouteRules = Object.entries(redirectList)
 export const routeRules = <NitroConfig['routeRules']>{
 	...redirectRouteRules,
 	'/api/stats': { prerender: true, headers: { 'Content-Type': 'application/json' } },
+	'/api/umami-stats': { prerender: true, headers: { 'Content-Type': 'application/json' } },
 	'/atom.xml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },
 	'/favicon.ico': { redirect: { to: blogConfig.favicon } },
 	'/luoh.opml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },
