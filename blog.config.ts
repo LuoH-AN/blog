@@ -52,7 +52,7 @@ const blogConfig = {
 		// 自己网站的 Cloudflare Insights 统计服务
 		{ 'src': 'https://static.cloudflareinsights.com/beacon.min.js', 'data-cf-beacon': '{"token": "6345aad7054b4beb97d8ff650caf169f"}', 'defer': true },
 		// Twikoo 评论系统
-		{ src: 'https://gcore.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js', defer: true },
+		{ src: 'https://lib.baomitu.com/twikoo/1.6.44/twikoo.min.js', defer: true },
 		// 今日诗词 SDK
 		{ src: 'https://sdk.jinrishici.com/v2/browser/jinrishici.js', defer: true },
 	],
