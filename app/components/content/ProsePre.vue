@@ -47,6 +47,16 @@ const rawHtml = ref(escapeHtml(props.code))
 onMounted(async () => {
 	const shiki = await shikiStore.load()
 	await shikiStore.loadLang(props.language)
+	// 处理 Markdown 高亮内代码块中的语言
+	// 加载 TeX 语言有概率导致 LaTeX 语言高亮炸掉
+	if (props.language === 'markdown' || props.language.startsWith('md')) {
+		const mdLangRegex = /^\s*`{3,}(\S+)/gm
+		const langs = Array
+			.from(props.code.matchAll(mdLangRegex))
+			.map(match => match[1])
+			.filter(lang => lang !== undefined)
+		await shikiStore.loadLang(...langs)
+	}
 	rawHtml.value = shiki.codeToHtml(
 		props.code.trimEnd(),
 		shikiStore.getOptions(props.language),
@@ -62,11 +72,7 @@ onMounted(async () => {
 >
 	<figcaption>
 		<span v-if="filename" class="filename">
-			<ClientOnly>
-				<!-- 颜色偏好存储于客户端，可能水合不匹配 -->
-				<Icon :class="{ 'icon-revert': icon.startsWith('catppuccin:') && $colorMode.value === 'light' }" :name="icon" />
-			</ClientOnly>
-			{{ filename }}
+			<Icon :name="icon" /> {{ filename }}
 		</span>
 		<span v-else />
 		<!-- 语言不采用绝对定位，因为和文件名占据互斥空间 -->
@@ -248,9 +254,5 @@ pre {
 	:hover > & {
 		opacity: 1;
 	}
-}
-
-.icon-revert {
-	filter: invert(0.7) hue-rotate(180deg) saturate(4);
 }
 </style>

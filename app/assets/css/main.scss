@@ -20,6 +20,11 @@
 	@media (max-resolution: 1.4dppx) {
 		--font-family: system-ui, sans-serif;
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+		scroll-behavior: auto;
+	}
 }
 
 // 有本地字体时不加载网络字体
@@ -81,6 +86,10 @@ button, input, textarea {
 	flex-shrink: 0;
 	font-size: 1.2em;
 	vertical-align: sub;
+}
+
+.light [class^="iconify i-catppuccin:"] {
+	filter: invert(0.7) hue-rotate(180deg) saturate(4);
 }
 
 /* stylelint-disable-next-line selector-class-pattern */

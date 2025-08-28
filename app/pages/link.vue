@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { myFeed } from '~~/blog.config'
-import friends from '~/friends'
-import subscriptions from '~/subscriptions'
+import feeds from '~/feeds'
 
 const appConfig = useAppConfig()
 const layoutStore = useLayoutStore()
@@ -24,24 +23,7 @@ const copyFields = {
 </script>
 
 <template>
-<header class="link-reminder">
-	<div class="content">
-		<p><Icon name="ph:newspaper-clipping-bold" /> 我会通过订阅源阅读友链文章。</p>
-		<p>
-			我本站的
-			<!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
-			<ProseA href="/luoh.opml">友链源 OPML 聚合</ProseA>，可导入阅读器
-		</p>
-	</div>
-	<div class="operations">
-		<ProseA href="/atom.xml" icon="ph:rss-simple-bold">
-			订阅源
-		</ProseA>
-	</div>
-</header>
-
-<FeedGroup label="友链" :feeds="friends" />
-<FeedGroup label="订阅" :feeds="subscriptions" />
+<FeedGroup :feeds />
 
 <Tab :tabs="['我的博客信息', '申请友链']" center>
 	<template #tab1>
@@ -66,36 +48,6 @@ const copyFields = {
 </template>
 
 <style lang="scss" scoped>
-.link-reminder {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-	gap: 0.8rem 2rem;
-	margin: 1rem;
-	padding: 0.8rem 1rem;
-	border-radius: 1rem;
-	background-color: var(--c-primary-soft);
-
-	.content {
-		flex-basis: 20em;
-		flex-grow: 3;
-
-		p + p {
-			margin-top: 0.2em;
-		}
-	}
-
-	.operations {
-		display: flex;
-		flex-basis: 10em;
-		flex-grow: 1;
-		flex-wrap: wrap;
-		justify-content: end;
-		gap: 0.2em 1rem;
-	}
-}
-
 .link-tab {
 	margin: 1rem;
 }

@@ -80,16 +80,17 @@ export const myFeed = <FeedEntry>{
 }
 
 // 将旧页面永久重定向到新页面
-const redirectRouteRules = Object.entries(redirectList)
-	.reduce<NitroConfig['routeRules']>((acc, [from, to]) => {
-		acc![from] = { redirect: { to, statusCode: 301 } }
-		return acc
-	}, {})
+// const redirectRouteRules = Object.entries(redirectList)
+// 	.reduce<NitroConfig['routeRules']>((acc, [from, to]) => {
+// 		acc![from] = { redirect: { to, statusCode: 301 } }
+// 		return acc
+// 	}, {})
 
 // https://nitro.build/config#routerules
+// 使用 EdgeOne 部署时，需要同步更新 edgeone.json
 // @keep-sorted
 export const routeRules = <NitroConfig['routeRules']>{
-	...redirectRouteRules,
+	// ...redirectRouteRules,
 	'/api/stats': { prerender: true, headers: { 'Content-Type': 'application/json' } },
 	'/api/umami-stats': { prerender: true, headers: { 'Content-Type': 'application/json' } },
 	'/atom.xml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },

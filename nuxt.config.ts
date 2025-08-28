@@ -1,4 +1,5 @@
 import process from 'node:process'
+import ci from 'ci-info'
 import blogConfig, { routeRules } from './blog.config'
 import packageJson from './package.json'
 
@@ -57,6 +58,10 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			buildTime: new Date().toISOString(),
+			nodeVersion: process.version,
+			platform: process.platform,
+			arch: process.arch,
+			ci: process.env.TENCENTCLOUD_RUNENV === 'SCF' ? 'EdgeOne' : ci.name || '',
 		},
 	},
 
@@ -82,6 +87,7 @@ export default defineNuxtConfig({
 		'@nuxtjs/seo',
 		'@pinia/nuxt',
 		'@vueuse/nuxt',
+		'unplugin-yaml/nuxt',
 	],
 
 	colorMode: {

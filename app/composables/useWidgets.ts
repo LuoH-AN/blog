@@ -1,7 +1,7 @@
 import {
 	LazyWidgetBlogLog,
 	LazyWidgetBlogStats,
-	LazyWidgetConnectivity,
+	LazyWidgetBlogTech,
 	LazyWidgetEmpty,
 	LazyWidgetGithubCard,
 	LazyWidgetPoetry,
@@ -13,7 +13,7 @@ import { pascal } from 'radash'
 const rawWidgets = {
 	LazyWidgetBlogLog,
 	LazyWidgetBlogStats,
-	LazyWidgetConnectivity,
+	LazyWidgetBlogTech,
 	LazyWidgetEmpty,
 	LazyWidgetGithubCard,
 	LazyWidgetPoetry,
