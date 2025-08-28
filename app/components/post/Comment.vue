@@ -195,6 +195,7 @@ onMounted(() => {
     }
 
     .tk-preview,
+	.tk-cancel,
     .tk-send {
         border-radius: 8px !important;
     }
