@@ -63,21 +63,21 @@ onMounted(() => {
 .poetry-content {
 	.sentence {
         font-size: 1em;
-        line-height: 0;
-        margin-bottom: 0.1em;
+        line-height: 1.2;
+        margin-bottom: 0.5em;
         text-align: center;
-	    padding: 0.8rem;
+        word-break: break-word;
 	}
 
 	.info {
 		text-align: right;
 		font-size: 0.9em;
 		color: var(--c-text-2);
+        padding-right: 0.8rem;
 		.clickable {
 			cursor: pointer;
 			&:hover {
-				text-decoration: underline;
-				color: var(--c-brand);
+				color: #2797ff ;
 			}
 		}
 	}

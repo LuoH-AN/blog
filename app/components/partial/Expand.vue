@@ -9,7 +9,9 @@ const expand = defineModel<boolean>()
 
 <template>
 <div class="z-expand">
-	<slot v-if="expand" />
+    <Transition name="expand-collapse">
+        <slot v-if="expand" />
+    </Transition>
 
 	<button class="toggle-btn" :class="{ 'in-place': inPlace }" @click="expand = !expand">
 		<Icon class="toggle-icon" :class="{ expand }" name="ph:caret-double-down-bold" />
@@ -43,5 +45,21 @@ const expand = defineModel<boolean>()
 	&.in-place {
 		order: -1;
 	}
+}
+
+.expand-collapse-enter-active,
+.expand-collapse-leave-active {
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.expand-collapse-enter-from,
+.expand-collapse-leave-to {
+    max-height: 0;
+}
+
+.expand-collapse-enter-to,
+.expand-collapse-leave-from {
+    max-height: 500px;
 }
 </style>

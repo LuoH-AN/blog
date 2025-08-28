@@ -63,24 +63,21 @@ onMounted(() => {
 			border-radius: 0.5em;
 		}
 
-        // 新增的a标签样式，只作用于.tk-content内部的a标签
         a {
-            color: #409eff; // 字体颜色设定为天蓝色
-            text-decoration: none; // 移除默认的下划线
-            display: inline; // 确保链接文本可以正常换行，这是关键
-            vertical-align: baseline; // 确保行内元素对齐，避免影响行高
+            color: #409eff;
+            text-decoration: none;
+            display: inline;
+            vertical-align: baseline;
 
-            // 使用 background-image 模拟底部线条，并实现从左到右的动画
             background-image: linear-gradient(to right, rgba(128, 128, 128, 0.3), rgba(128, 128, 128, 0.3));
-            background-size: 0% 2px; // 默认不显示，宽度为0，高度2px
+            background-size: 0% 2px;
             background-repeat: no-repeat;
-            background-position: left bottom; // 将背景定位在左下角
-            transition: background-size 0.3s ease-out, color 0.3s ease-out; // 过渡动画
+            background-position: left bottom;
+            transition: background-size 0.3s ease-out, color 0.3s ease-out;
 
-            // 鼠标悬停时
             &:hover {
-                color: #007bff; // 悬停时改变颜色，增加互动性
-                background-size: 100% 2px; // 悬停时背景宽度变为100%，实现从左到右展开
+                color: #007bff;
+                background-size: 100% 2px;
             }
         }
 	}
