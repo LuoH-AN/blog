@@ -1,7 +1,7 @@
 {
   "name": "luoh-blog",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.4.1",
   "private": true,
   "packageManager": "pnpm@10.15.0",
   "homepage": "https://github.com/luoh-an/blog",
@@ -17,8 +17,8 @@
     "init-moment": "node scripts/init-moment.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.876.0",
-    "@aws-sdk/s3-request-presigner": "^3.876.0",
+    "@aws-sdk/client-s3": "catalog:util",
+    "@aws-sdk/s3-request-presigner": "catalog:util",
     "better-sqlite3": "catalog:content",
     "ci-info": "catalog:framework",
     "date-fns": "catalog:util",
@@ -27,6 +27,7 @@
     "embla-carousel-vue": "catalog:ui",
     "embla-carousel-wheel-gestures": "catalog:ui",
     "fast-xml-parser": "catalog:util",
+    "jsonwebtoken": "catalog:util",
     "minisearch": "catalog:util",
     "parse-domain": "catalog:util",
     "plain-shiki": "catalog:content",
@@ -56,6 +57,7 @@
     "@pinia/nuxt": "catalog:util",
     "@shikijs/colorized-brackets": "catalog:content",
     "@shikijs/transformers": "catalog:content",
+    "@types/jsonwebtoken": "catalog:util",
     "@vueuse/core": "catalog:util",
     "@vueuse/nuxt": "catalog:util",
     "@vueuse/router": "catalog:util",

@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { useUmamiStats } from '~/composables/useUmamiStats';
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue'
+import { useUmamiStats } from '~/composables/useUmamiStats'
 
-const appConfig = useAppConfig();
+const appConfig = useAppConfig()
 useSeoMeta({
 	title: '关于',
 	description: `关于 ${appConfig.author.name} 以及这个博客的一切。`,
-});
+})
 
-const { stats, loading, error, fetchTotalStats } = useUmamiStats();
+const { stats, loading, error, fetchTotalStats } = useUmamiStats()
 
 onMounted(() => {
-  fetchTotalStats();
-});
+	fetchTotalStats()
+})
 
-const layoutStore = useLayoutStore();
-layoutStore.setAside([]);
+const layoutStore = useLayoutStore()
+layoutStore.setAside([])
 
-const birthYear = appConfig.stats.birthYear;
-const age = new Date().getFullYear() - birthYear;
+const birthYear = appConfig.stats.birthYear
+const age = new Date().getFullYear() - birthYear
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { getFavicon } from '../utils/img'
 
 const appConfig = useAppConfig()
 useSeoMeta({
@@ -8,7 +8,7 @@ useSeoMeta({
 })
 
 const layoutStore = useLayoutStore()
-layoutStore.setAside(['blog-stats', 'connectivity', 'blog-log', 'poetry'])
+layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'poetry'])
 
 interface MomentListItem {
   content: string;
@@ -16,6 +16,11 @@ interface MomentListItem {
   image?: string[];
   address?: string;
   tags?: string[];
+  link?: {
+    url: string;
+    text: string;
+    icon?: string;
+  };
 }
 
 interface Moment {
@@ -26,48 +31,7 @@ interface Moment {
 }
 
 
-const momentData = ref<Moment[]>([
-  {
-    "name": "落憾",
-    "avatar": "https://cdn2.enltlh.me/pichub/1/2025/2231d2da22a739df.jpg",
-    "avatarLink": "/about/",
-    "moment_list": [
-      {
-        "content": "终于把瞬间搞好了😋",
-        "date": "2025-08-18",
-        "tags": ["技术"]
-      }
-    ]
-  }, {
-    "name": "落憾",
-    "avatar": "https://cdn2.enltlh.me/pichub/1/2025/2231d2da22a739df.jpg",
-    "avatarLink": "/about/",
-    "moment_list": [
-      {
-        "content": "快把以前的文章转移完了😋",
-        "date": "2025-08-18 19:23",
-        "tags": ["生活"]
-      }
-    ]
-  }, {
-    "name": "落憾",
-    "avatar": "https://cdn2.enltlh.me/pichub/1/2025/2231d2da22a739df.jpg",
-    "avatarLink": "/about/",
-    "moment_list": [
-      {
-        "content": "讨厌理发 讨厌开学😡",
-        "date": "2025-08-24 4:48",
-        "address": "南阳",
-        "tags": ["生活"]
-      }
-    ]
-  }
-])
-
-function formatISODate(dateString?: string) {
-	if (!dateString) return ''
-	return new Date(dateString).toISOString()
-}
+const { data: momentData } = await useFetch<Moment[]>('/api/moment')
 
 function scrollToComment(content: string) {
   const commentSection = document.getElementById('comment-section')
@@ -81,6 +45,16 @@ function scrollToComment(content: string) {
 
       textarea.dispatchEvent(new Event('input', { bubbles: true }))
     }
+  }
+}
+
+function getFaviconUrl(url: string): string {
+  try {
+    const domain = new URL(url).hostname;
+    return getFavicon(domain, { provider: 'google', size: 32 });
+  } catch (e) {
+    console.error("Invalid URL for favicon:", url, e);
+    return '';
   }
 }
 </script>
@@ -115,21 +89,28 @@ function scrollToComment(content: string) {
               <img :src="img" class="grid-img" />
             </a>
           </div>
+
+          <a v-if="item.link" :href="item.link.url" target="_blank" rel="noopener noreferrer" class="link-card">
+            <img :src="getFaviconUrl(item.link.url)" alt="Favicon" class="link-favicon" @error="e => (e.target as HTMLImageElement).style.display='none'" />
+            <span class="link-text">{{ item.link.text }}</span>
+            <Icon v-if="item.link.icon" :name="item.link.icon" class="link-arrow" />
+          </a>
+
         </div>
         <div class="talk-bottom">
           <div class="talk-meta-info">
-            <div v-if="item.tags && item.tags.length > 0" class="talk-tags">
-              <span v-for="tag in item.tags" :key="tag" class="tag">
+            <div v-if="item.tags && item.tags.length > 0" class="talk-tags-wrapper">
+              <span v-for="tag in item.tags" :key="tag" class="tag-card">
                 <Icon name="i-ph:tag-bold" /> {{ tag }}
               </span>
             </div>
-            <div v-if="item.address" class="talk-address">
+            <div v-if="item.address" class="talk-address-wrapper">
               <a
                 v-tip="{ content: `搜索: ${item.address}` }"
                 :href="`https://www.bing.com/maps?q=${encodeURIComponent(item.address)}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="address"
+                class="address-card"
               >
                 <Icon name="i-ph:map-pin-bold" /> {{ item.address }}
               </a>
@@ -156,7 +137,7 @@ function scrollToComment(content: string) {
     animation: float-in .3s backwards;
     animation-delay: var(--delay);
     border-radius: 15px;
-    box-shadow: 0 0 0 1px var(--c-bg-soft);
+    border: 1px solid #e0e0e0;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -184,7 +165,7 @@ function scrollToComment(content: string) {
 
   .talk-nick {
     font-weight: 600;
-    color: var(--text-color-strong);
+    color: #333;
     display: flex;
     align-items: center;
   }
@@ -198,35 +179,46 @@ function scrollToComment(content: string) {
 
   .talk-date {
     font-size: 0.85rem;
-    color: var(--text-color-light);
+    color: #888;
   }
 }
 
 .talk-content {
   .content-text {
     margin: 0 0 0.5rem 0;
-    color: var(--text-color-main);
+    color: #333;
     line-height: 1.6;
     white-space: pre-wrap;
   }
 }
 
 .image-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-
-  .grid-item {
-    overflow: hidden;
-    border-radius: 8px;
-  }
-
-  .grid-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  justify-content: flex-start;
+  align-items: flex-start;
 }
+
+.grid-item {
+  overflow: hidden;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+}
+
+.grid-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
 
 .talk-bottom {
   display: flex;
@@ -234,54 +226,121 @@ function scrollToComment(content: string) {
   align-items: center;
   margin-top: 0.5rem;
   font-size: 0.9rem;
-  color: var(--c-text-3, #888);
+  color: #888;
 }
 
-.talk-bottom {
-  .meta-info {
-    display: flex;
-    gap: 0.3rem;
-    flex-wrap: wrap;
-  }
-
-  .tag, .address {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.2rem;
-    background-color: var(--c-bg-lighter, #eeeeee);
-    padding: 0.15rem 0.4rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-  }
-
-  .tag {
-    color: #888;
-  }
-
-  .address {
-    color: #3b82f6;
-  }
-
-  .dark & .tag {
-    background-color: #3a3a3c;
-    color: #aaa;
-  }
-
-  .dark & .address {
-    background-color: #3a3a3c;
-  }
+.talk-meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
+
+.talk-tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.tag-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background-color: #eeeeee;
+  padding: 0.15rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.talk-address-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.address-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background-color: #eeeeee;
+  padding: 0.15rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #3b82f6;
+  white-space: nowrap;
+}
+
+.dark .tag-card {
+  background-color: #3a3a3c;
+  color: #aaa;
+}
+
+.dark .address-card {
+  background-color: #3a3a3c;
+}
+
 
 .comment-btn {
   background: none;
   border: none;
   cursor: pointer;
   font-size: 1.1rem;
-  color: var(--text-color-light);
+  color: #888;
   transition: color 0.2s ease;
 
   &:hover {
-    color: var(--primary-color);
+    color: #3b82f6;
   }
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #e0e0e0;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.2s ease;
+  border: 1px solid #d0d0d0;
+
+  &:hover {
+    background-color: #d0d0d0;
+    border-color: #c0c0c0;
+  }
+
+  .dark & {
+    background-color: #4a4a4c;
+    color: #eee;
+    border: 1px solid #5a5a5c;
+    &:hover {
+      background-color: #5a5a5c;
+      border-color: #6a6a6c;
+    }
+  }
+}
+
+.link-favicon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+.link-text {
+  flex-grow: 1;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.link-arrow {
+  font-size: 1.1rem;
+  color: #888;
+  flex-shrink: 0;
 }
 </style>
