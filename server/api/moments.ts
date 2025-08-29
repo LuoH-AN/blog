@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
 import { Buffer } from 'node:buffer'
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { setCookie, readBody, getQuery, defineEventHandler, getCookie } from 'h3'
+import { setCookie, readBody, getQuery, defineEventHandler, getCookie, createError, defineLazyEventHandler } from 'h3'
 import jwt from 'jsonwebtoken'
 
 const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME
@@ -49,13 +49,20 @@ function authenticate(event: H3Event) {
     const token = getCookie(event, 'auth_token');
 
     if (!token) {
-        throw new Error('Unauthorized: No token provided');
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Unauthorized: No token provided',
+        })
     }
 
     try {
-        jwt.verify(token, JWT_SECRET!);
-    } catch (error: any) {
-        throw new Error(`Unauthorized: Invalid token. ${error.message}`);
+        jwt.verify(token, JWT_SECRET!)
+    }
+    catch (error: any) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: `Unauthorized: Invalid token. ${error.message}`,
+        })
     }
 }
 
@@ -64,7 +71,10 @@ async function authenticateLogin(event: H3Event) {
     const { authKey: providedKey } = body
 
     if (!providedKey || providedKey !== MOMENT_API_AUTH_KEY!) {
-        throw new Error('Invalid authentication key')
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Invalid authentication key',
+        })
     }
 
     const payload = {
@@ -87,52 +97,58 @@ async function authenticateLogin(event: H3Event) {
     return { success: true };
 }
 
-export default defineEventHandler(async (event) => {
-    if (getQuery(event).login !== undefined) {
-        return await authenticateLogin(event)
-    }
-
+export default defineLazyEventHandler(async () => {
     const r2Client = initR2Client()
     const fileName = 'config/moment.json'
 
-    if (event.method === 'GET') {
-
-        try {
-            const command = new GetObjectCommand({
-                Bucket: R2_BUCKET_NAME!,
-                Key: fileName,
-            })
-
-            const response = await r2Client.send(command)
-            const data = await streamToString(response.Body)
-            return JSON.parse(data)
+    return defineEventHandler(async (event) => {
+        if (getQuery(event).login !== undefined) {
+            return await authenticateLogin(event)
         }
-        catch (error: any) {
-            if (error.name === 'NoSuchKey') {
-                return []
+        
+        switch (event.method) {
+            case 'GET': {
+                try {
+                    const command = new GetObjectCommand({
+                        Bucket: R2_BUCKET_NAME!,
+                        Key: fileName,
+                    })
+
+                    const response = await r2Client.send(command)
+                    const data = await streamToString(response.Body)
+                    return JSON.parse(data)
+                }
+                catch (error: any) {
+                    if (error.name === 'NoSuchKey') {
+                        return []
+                    }
+                    throw error
+                }
             }
-            throw error
+            case 'POST': {
+                authenticate(event)
+
+                const body = await readBody(event)
+                const jsonData = JSON.stringify(body, null, 2)
+
+                const command = new PutObjectCommand({
+                    Bucket: R2_BUCKET_NAME!,
+                    Key: fileName,
+                    Body: jsonData,
+                    ContentType: 'application/json',
+                })
+
+                await r2Client.send(command)
+                return { success: true, message: 'Data saved successfully' }
+            }
+            default: {
+                throw createError({
+                    statusCode: 405,
+                    statusMessage: `Method ${event.method} not allowed`,
+                })
+            }
         }
-    }
-    else if (event.method === 'POST') {
-        authenticate(event)
-
-        const body = await readBody(event)
-        const jsonData = JSON.stringify(body, null, 2)
-
-        const command = new PutObjectCommand({
-            Bucket: R2_BUCKET_NAME!,
-            Key: fileName,
-            Body: jsonData,
-            ContentType: 'application/json',
-        })
-
-        await r2Client.send(command)
-        return { success: true, message: 'Data saved successfully' }
-    }
-    else {
-        throw new Error(`Method ${event.method} not allowed`)
-    }
+    })
 })
 
 async function streamToString(stream: any): Promise<string> {
