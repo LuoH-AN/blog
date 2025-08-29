@@ -31,7 +31,7 @@ interface Moment {
 }
 
 
-const { data: momentData } = await useFetch<Moment[]>('/api/moments.get')
+const { data: momentData } = await useFetch<Moment[]>('/api/moments')
 
 function scrollToComment(content: string) {
   const commentSection = document.getElementById('comment-section')
