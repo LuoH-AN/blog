@@ -1,7 +1,7 @@
 {
   "name": "luoh-blog",
   "type": "module",
-  "version": "1.4.1",
+  "version": "1.4.11",
   "private": true,
   "packageManager": "pnpm@10.15.0",
   "homepage": "https://github.com/luoh-an/blog",
