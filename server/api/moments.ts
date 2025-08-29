@@ -5,9 +5,9 @@ import { setCookie, readBody, getQuery, defineEventHandler, getCookie } from 'h3
 import jwt from 'jsonwebtoken'
 
 const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME
-const R2_ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID
-const R2_ACCESS_KEY_ID = process.env.CLOUDFLARE_R2_ACCESS_KEY_ID
-const R2_SECRET_ACCESS_KEY = process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY
+const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID
+const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID
+const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY
 const MOMENT_API_AUTH_KEY = process.env.MOMENT_API_AUTH_KEY
 const JWT_SECRET = process.env.JWT_SECRET
 
