@@ -96,7 +96,6 @@ export default defineEventHandler(async (event) => {
     const fileName = 'config/moment.json'
 
     if (event.method === 'GET') {
-        authenticate(event);
 
         try {
             const command = new GetObjectCommand({
