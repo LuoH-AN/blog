@@ -31,7 +31,7 @@ const handleLogin = async () => {
   error.value = ''
 
   try {
-    const response = await $fetch<LoginApiResponse>('/api/moments?login', {
+    const response = await $fetch<LoginApiResponse>('/api/moments.post?login', {
       method: 'POST',
       body: { authKey: authKey.value }
     })

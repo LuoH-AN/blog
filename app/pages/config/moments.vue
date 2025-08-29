@@ -40,7 +40,7 @@ interface ApiResponse {
   token?: string;
 }
 
-const { data: momentData, pending, error, refresh } = await useFetch<MomentData>('/api/moments');
+const { data: momentData, pending, error, refresh } = await useFetch<MomentData>('/api/moments.get');
 
 watch(error, (newError) => {
   if (newError && (newError as any).statusCode === 401) {
@@ -313,7 +313,7 @@ const saveMomentData = async (formIndex: number) => {
         userEntry.moment_list.push(momentItem)
       })
 
-      const response = await $fetch<ApiResponse>('/api/moments', {
+      const response = await $fetch<ApiResponse>('/api/moments.post', {
         method: 'POST',
         body: newData,
       })
@@ -381,7 +381,7 @@ const deleteMomentData = async (formIndex: number) => {
         }
       })
 
-      const response = await $fetch<ApiResponse>('/api/moments', {
+      const response = await $fetch<ApiResponse>('/api/moments.post', {
         method: 'POST',
         body: newData,
       })
