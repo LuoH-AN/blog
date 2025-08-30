@@ -17,6 +17,12 @@
 	scroll-padding: 2rem;
 	scrollbar-color: var(--c-text-3) transparent;
 	-webkit-tap-highlight-color: var(--c-primary-soft);
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
 	@media (max-resolution: 1.4dppx) {
 		--font-basic: system-ui, sans-serif;

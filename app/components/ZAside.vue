@@ -24,6 +24,12 @@ const { widgets } = useWidgets(() => layoutStore.asideWidgets)
 #z-aside {
 	overflow: auto;
 	padding: 0.5rem;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
 	@media (max-width: $breakpoint-widescreen) {
 		position: fixed;

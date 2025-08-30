@@ -1,6 +1,36 @@
 <script setup lang="ts">
 import type { MomentData, MomentItem } from '../../types/moments'
 
+const useDoubleClick = (callback: () => void, delay: number = 1500) => {
+  const count = ref(0)
+  const timeout = ref<NodeJS.Timeout | null>(null)
+
+  const execute = () => {
+    count.value++
+    if (count.value === 1) {
+      timeout.value = setTimeout(() => {
+        count.value = 0
+      }, delay)
+      return
+    }
+
+    if (timeout.value) {
+      clearTimeout(timeout.value)
+      timeout.value = null
+    }
+    callback()
+    count.value = 0
+  }
+
+  onUnmounted(() => {
+    if (timeout.value) {
+      clearTimeout(timeout.value)
+    }
+  })
+
+  return { execute }
+}
+
 
 const appConfig = useAppConfig()
 useSeoMeta({
@@ -11,15 +41,10 @@ useSeoMeta({
 const layoutStore = useLayoutStore()
 layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'poetry'])
 
-const logoutClickCount = ref(0)
-
-const logout = () => {
-  logoutClickCount.value++
-  if (logoutClickCount.value === 1) return
-
+const { execute: logout } = useDoubleClick(() => {
   document.cookie = 'auth_token=; path=/; max-age=0; secure; samesite=strict'
   navigateTo('/config/login')
-}
+})
 
 onMounted(() => {
 })
@@ -97,9 +122,12 @@ interface EditState {
   isEditing: boolean
   hasChanges: boolean
   originalData?: any
-  clickCount: number
   isDeleting?: boolean
   isSaving?: boolean
+  executeEdit?: () => void
+  executeExit?: () => void
+  executeSave?: () => void
+  executeDelete?: () => void
 }
 
 const editStates = ref<Record<string, EditState>>({})
@@ -141,10 +169,143 @@ watch(
               showTagInput.value[formIndex] = false
               newTagText.value[formIndex] = ''
 
+              const { execute: executeEdit } = useDoubleClick(() => {
+                const editState = editStates.value[id]
+                if (editState) {
+                  editState.isEditing = true
+                  editState.hasChanges = true
+                  const form = momentForms.value.find((f) => f.id === id)
+                  if (form) {
+                    editState.originalData = JSON.parse(JSON.stringify(form))
+                  }
+                }
+              })
+
+              const { execute: executeExit } = useDoubleClick(() => {
+                const editState = editStates.value[id]
+                if (editState) {
+                  editState.isEditing = false
+                  editState.hasChanges = false
+                }
+              })
+
+              const { execute: executeSave } = useDoubleClick(async () => {
+                const editState = editStates.value[id]
+                if (!editState) return
+
+                try {
+                  editState.isSaving = true
+
+                  const newData: MomentData = []
+
+                  momentForms.value.forEach((formItem) => {
+                    if (!formItem) return
+
+                    let userEntry = newData.find((u) => u.name === formItem.user.name)
+                    if (!userEntry) {
+                      userEntry = {
+                        name: formItem.user.name,
+                        avatar: formItem.user.avatar,
+                        avatarLink: formItem.user.avatarLink || undefined,
+                        moment_list: []
+                      }
+                      newData.push(userEntry)
+                    }
+
+                    const momentItem: MomentItem = {
+                      content: formItem.moment.content,
+                      date: formItem.moment.date,
+                      tags: [...formItem.moment.tags],
+                      image: [...formItem.moment.image],
+                      address: formItem.moment.address
+                    }
+                    userEntry.moment_list.push(momentItem)
+                  })
+
+                  const response = await $fetch<ApiResponse>('/api/moments', {
+                    method: 'POST',
+                    body: newData,
+                  })
+
+                  if (response.success) {
+                    if (editStates.value[id]) {
+                      editStates.value[id].hasChanges = false
+                      const form = momentForms.value.find((f) => f.id === id)
+                      if (form) {
+                        editStates.value[id].originalData = JSON.parse(JSON.stringify(form))
+                      }
+                    }
+                    await refresh()
+                  }
+                } catch (err) {
+                  console.error('保存数据时出错:', err)
+                  if ((err as any).statusCode === 401) {
+                    navigateTo('/config/login');
+                  }
+                } finally {
+                  if (editStates.value[id]) {
+                    editStates.value[id].isSaving = false
+                  }
+                }
+              })
+
+              const { execute: executeDelete } = useDoubleClick(async () => {
+                const editState = editStates.value[id]
+                if (!editState) return
+
+                try {
+                  editState.isDeleting = true
+
+                  const newData: MomentData = []
+
+                  momentForms.value.forEach((formItem, i) => {
+                    const currentForm = momentForms.value[i]
+                    if (currentForm && currentForm.id !== id) {
+                      let userEntry = newData.find((u) => u.name === currentForm.user.name)
+                      if (!userEntry) {
+                        userEntry = {
+                          name: currentForm.user.name,
+                          avatar: currentForm.user.avatar,
+                          avatarLink: currentForm.user.avatarLink || undefined,
+                          moment_list: []
+                        }
+                        newData.push(userEntry)
+                      }
+
+                      const momentItem: MomentItem = {
+                        content: currentForm.moment.content,
+                        date: currentForm.moment.date,
+                        tags: [...currentForm.moment.tags],
+                        image: [...currentForm.moment.image],
+                        address: currentForm.moment.address
+                      }
+                      userEntry.moment_list.push(momentItem)
+                    }
+                  })
+
+                  const response = await $fetch<ApiResponse>('/api/moments', {
+                    method: 'POST',
+                    body: newData,
+                  })
+
+                  if (response.success) {
+                    await refresh()
+                  }
+                } catch (err) {
+                  console.error('删除数据时出错:', err)
+                  if ((err as any).statusCode === 401) {
+                    navigateTo('/config/login');
+                  }
+                } finally {
+                  if (editStates.value[id]) {
+                    editStates.value[id].isDeleting = false
+                  }
+                }
+              })
+
               editStates.value[id] = {
                 isEditing: false,
                 hasChanges: false,
-                clickCount: 0,
                 originalData: JSON.parse(
                   JSON.stringify({
                     user: {
@@ -160,7 +321,11 @@ watch(
                       address: moment.address || ''
                     }
                   })
-                )
+                ),
+                executeEdit,
+                executeExit,
+                executeSave,
+                executeDelete
               }
             }
           }
@@ -272,9 +437,7 @@ const saveMomentData = async (formIndex: number) => {
   const formId = formToSave.id
   if (editStates.value[formId]) {
     const editState = editStates.value[formId]
-    editState.clickCount++
-
-    if (editState.clickCount === 1) return
+    if (!editState) return
 
     try {
       editState.isSaving = true
@@ -326,7 +489,6 @@ const saveMomentData = async (formIndex: number) => {
       if (editStates.value[formId]) {
         editStates.value[formId].isSaving = false
       }
-      editState.clickCount = 0
     }
   }
 }
@@ -338,9 +500,7 @@ const deleteMomentData = async (formIndex: number) => {
   const formId = formToDelete.id
   if (editStates.value[formId]) {
     const editState = editStates.value[formId]
-    editState.clickCount++
-
-    if (editState.clickCount === 1) return
+    if (!editState) return
 
     try {
       editState.isDeleting = true
@@ -390,12 +550,11 @@ const deleteMomentData = async (formIndex: number) => {
       if (editStates.value[formId]) {
         editStates.value[formId].isDeleting = false
       }
-      editState.clickCount = 0
     }
   }
 }
 
-const addNewMomentForm = () => {
+const { execute: addNewMomentForm } = useDoubleClick(() => {
   const newId = `new-${Date.now()}`
   const formIndex = momentForms.value.length
   momentForms.value.push({
@@ -417,10 +576,143 @@ const addNewMomentForm = () => {
   showTagInput.value[formIndex] = false
   newTagText.value[formIndex] = ''
 
+  const { execute: executeEdit } = useDoubleClick(() => {
+    const editState = editStates.value[newId]
+    if (editState) {
+      editState.isEditing = true
+      editState.hasChanges = true
+      const form = momentForms.value.find((f) => f.id === newId)
+      if (form) {
+        editState.originalData = JSON.parse(JSON.stringify(form))
+      }
+    }
+  })
+
+  const { execute: executeExit } = useDoubleClick(() => {
+    const editState = editStates.value[newId]
+    if (editState) {
+      editState.isEditing = false
+      editState.hasChanges = false
+    }
+  })
+
+  const { execute: executeSave } = useDoubleClick(async () => {
+    const editState = editStates.value[newId]
+    if (!editState) return
+
+    try {
+      editState.isSaving = true
+
+      const newData: MomentData = []
+
+      momentForms.value.forEach((formItem) => {
+        if (!formItem) return
+
+        let userEntry = newData.find((u) => u.name === formItem.user.name)
+        if (!userEntry) {
+          userEntry = {
+            name: formItem.user.name,
+            avatar: formItem.user.avatar,
+            avatarLink: formItem.user.avatarLink || undefined,
+            moment_list: []
+          }
+          newData.push(userEntry)
+        }
+
+        const momentItem: MomentItem = {
+          content: formItem.moment.content,
+          date: formItem.moment.date,
+          tags: [...formItem.moment.tags],
+          image: [...formItem.moment.image],
+          address: formItem.moment.address
+        }
+        userEntry.moment_list.push(momentItem)
+      })
+
+      const response = await $fetch<ApiResponse>('/api/moments', {
+        method: 'POST',
+        body: newData,
+      })
+
+      if (response.success) {
+        if (editStates.value[newId]) {
+          editStates.value[newId].hasChanges = false
+          const form = momentForms.value.find((f) => f.id === newId)
+          if (form) {
+            editStates.value[newId].originalData = JSON.parse(JSON.stringify(form))
+          }
+        }
+        await refresh()
+      }
+    } catch (err) {
+      console.error('保存数据时出错:', err)
+      if ((err as any).statusCode === 401) {
+        navigateTo('/config/login');
+      }
+    } finally {
+      if (editStates.value[newId]) {
+        editStates.value[newId].isSaving = false
+      }
+    }
+  })
+
+  const { execute: executeDelete } = useDoubleClick(async () => {
+    const editState = editStates.value[newId]
+    if (!editState) return
+
+    try {
+      editState.isDeleting = true
+
+      const newData: MomentData = []
+
+      momentForms.value.forEach((formItem, i) => {
+        const currentForm = momentForms.value[i]
+        if (currentForm && currentForm.id !== newId) {
+          let userEntry = newData.find((u) => u.name === currentForm.user.name)
+          if (!userEntry) {
+            userEntry = {
+              name: currentForm.user.name,
+              avatar: currentForm.user.avatar,
+              avatarLink: currentForm.user.avatarLink || undefined,
+              moment_list: []
+            }
+            newData.push(userEntry)
+          }
+
+          const momentItem: MomentItem = {
+            content: currentForm.moment.content,
+            date: currentForm.moment.date,
+            tags: [...currentForm.moment.tags],
+            image: [...currentForm.moment.image],
+            address: currentForm.moment.address
+          }
+          userEntry.moment_list.push(momentItem)
+        }
+      })
+
+      const response = await $fetch<ApiResponse>('/api/moments', {
+        method: 'POST',
+        body: newData,
+      })
+
+      if (response.success) {
+        await refresh()
+      }
+    } catch (err) {
+      console.error('删除数据时出错:', err)
+      if ((err as any).statusCode === 401) {
+        navigateTo('/config/login');
+      }
+    } finally {
+      if (editStates.value[newId]) {
+        editStates.value[newId].isDeleting = false
+      }
+    }
+  })
+
   editStates.value[newId] = {
     isEditing: true,
     hasChanges: true,
-    clickCount: 0,
     originalData: JSON.parse(
       JSON.stringify({
         user: {
@@ -436,7 +728,11 @@ const addNewMomentForm = () => {
           address: ''
         }
       })
-    )
+    ),
+    executeEdit,
+    executeExit,
+    executeSave,
+    executeDelete
   }
 
   nextTick(() => {
@@ -445,7 +741,7 @@ const addNewMomentForm = () => {
       element.scrollIntoView({ behavior: 'smooth' })
     }
   })
-}
+})
 
 const setCurrentDateTime = (formIndex: number) => {
   const form = momentForms.value[formIndex]
@@ -465,30 +761,24 @@ const setCurrentDateTime = (formIndex: number) => {
 const enterEditMode = (formId: string) => {
   if (editStates.value[formId]) {
     const editState = editStates.value[formId]
-    editState.clickCount++
-
-    if (editState.clickCount === 1) return
-
-    editState.isEditing = true
-    editState.hasChanges = true
-    const form = momentForms.value.find((f) => f.id === formId)
-    if (form) {
-      editState.originalData = JSON.parse(JSON.stringify(form))
+    if (editState) {
+      editState.isEditing = true
+      editState.hasChanges = true
+      const form = momentForms.value.find((f) => f.id === formId)
+      if (form) {
+        editState.originalData = JSON.parse(JSON.stringify(form))
+      }
     }
-    editState.clickCount = 0
   }
 }
 
 const exitEditMode = (formId: string) => {
   if (editStates.value[formId]) {
     const editState = editStates.value[formId]
-    editState.clickCount++
-
-    if (editState.clickCount === 1) return
-
-    editState.isEditing = false
-    editState.hasChanges = false
-    editState.clickCount = 0
+    if (editState) {
+      editState.isEditing = false
+      editState.hasChanges = false
+    }
   }
 }
 
@@ -502,7 +792,6 @@ const exitEditMode = (formId: string) => {
         <button
           @click="logout"
           class="logout-btn"
-          :class="{ 'logout-btn-move': logoutClickCount === 1 }"
           title="退出登录"
         >
           <Icon name="ph:sign-out-bold" />
@@ -526,41 +815,36 @@ const exitEditMode = (formId: string) => {
           <div class="action-buttons">
             <button
               v-if="!editStates[form.id]?.isEditing"
-              @click="enterEditMode(form.id)"
+              @click="editStates[form.id]?.executeEdit"
               class="edit-btn"
-              :class="{ 'edit-btn-move': editStates[form.id]?.clickCount === 1 }"
               title="编辑"
             >
               <Icon name="ph:note-pencil-bold" />
             </button>
             <button
               v-else
-              @click="exitEditMode(form.id)"
+              @click="editStates[form.id]?.executeExit"
               class="exit-btn"
-              :class="{ 'exit-btn-move': editStates[form.id]?.clickCount === 1 }"
               title="退出编辑"
             >
               <Icon name="ph:sign-out-bold" />
             </button>
 
-            <transition name="save-btn-appear">
-              <button
+            <button
                 v-if="editStates[form.id]?.isEditing && editStates[form.id]?.hasChanges"
-                @click="saveMomentData(index)"
+                @click="editStates[form.id]?.executeSave"
                 class="save-btn"
-                :class="{ 'save-btn-appear-active': editStates[form.id]?.isEditing }"
                 title="保存"
                 :disabled="editStates[form.id]?.isSaving"
               >
                 <Icon v-if="!editStates[form.id]?.isSaving" name="ph:floppy-disk-bold" />
                 <div v-else class="loading-spinner"></div>
               </button>
-            </transition>
 
             <button
-              @click="deleteMomentData(index)"
+              @click="editStates[form.id]?.executeDelete"
               class="delete-btn"
-              :class="{ 'delete-btn-move': editStates[form.id]?.clickCount === 1 }"
+              
               title="删除"
               :disabled="editStates[form.id]?.isDeleting"
             >
@@ -657,7 +941,7 @@ const exitEditMode = (formId: string) => {
               <Icon name="ph:plus-circle-bold" />
             </button>
           </div>
-          <div class="tags-card">
+          <div class="tags-card" :class="{ editable: editStates[form.id]?.isEditing }">
             <div class="tags-container">
               <div v-if="showTagInput[index]" class="tag-input-container" :data-input-index="index">
                 <input
@@ -701,6 +985,10 @@ const exitEditMode = (formId: string) => {
                   </div>
                 </div>
               </div>
+
+              <div v-if="form.moment.tags.length === 0 && !showTagInput[index]" class="empty-tags">
+                暂无标签
+              </div>
             </div>
           </div>
         </div>
@@ -736,6 +1024,10 @@ const exitEditMode = (formId: string) => {
                   <Icon name="ph:minus-circle-bold" />
                 </button>
               </div>
+
+              <div v-if="form.moment.image.length === 0" class="empty-images">
+                暂无图片
+              </div>
             </div>
           </div>
         </div>
@@ -753,125 +1045,21 @@ const exitEditMode = (formId: string) => {
   padding: 16px;
 }
 
-.edit-btn-move {
-  animation: editBtnMove 0.3s ease-in-out;
+@keyframes iphone-shake {
+  0% { transform: translateX(0) rotate(0deg); }
+  10% { transform: translateX(-4px) rotate(-2deg); }
+  20% { transform: translateX(4px) rotate(2deg); }
+  30% { transform: translateX(-4px) rotate(-2deg); }
+  40% { transform: translateX(4px) rotate(2deg); }
+  50% { transform: translateX(-4px) rotate(-2deg); }
+  60% { transform: translateX(4px) rotate(2deg); }
+  70% { transform: translateX(-2px) rotate(-1deg); }
+  80% { transform: translateX(2px) rotate(1deg); }
+  90% { transform: translateX(-1px) rotate(-0.5deg); }
+  100% { transform: translateX(0) rotate(0deg); }
 }
 
-.exit-btn-move {
-  animation: exitBtnMove 0.3s ease-in-out;
-}
 
-.delete-btn-move {
-  animation: deleteBtnMove 0.3s ease-in-out;
-}
-
-.logout-btn-move {
-  animation: logoutBtnMove 0.3s ease-in-out;
-}
-
-@keyframes editBtnMove {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes exitBtnMove {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes deleteBtnMove {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(3px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes logoutBtnMove {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.save-btn-appear-enter-active {
-  animation: saveBtnAppear 0.4s ease-out;
-}
-
-.save-btn-appear-leave-active {
-  animation: saveBtnDisappear 0.3s ease-in;
-}
-
-.save-btn-appear-enter-from {
-  opacity: 0;
-  transform: scale(0.8) translateX(-10px);
-}
-
-.save-btn-appear-leave-to {
-  opacity: 0;
-  transform: scale(0.8) translateX(-10px);
-}
-
-@keyframes saveBtnAppear {
-  0% {
-    opacity: 0;
-    transform: scale(0.8) translateX(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateX(0);
-  }
-}
-
-@keyframes saveBtnDisappear {
-  0% {
-    opacity: 1;
-    transform: scale(1) translateX(0);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.8) translateX(-10px);
-  }
-}
-
-.save-btn-appear-active {
-  animation: saveBtnPulse 0.5s ease-in-out;
-}
-
-@keyframes saveBtnPulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
 
 .moment-header-card {
   display: flex;
@@ -955,7 +1143,45 @@ const exitEditMode = (formId: string) => {
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  transition: all 0.2s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.edit-btn,
+.exit-btn,
+.save-btn,
+.delete-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.logout-btn:active,
+.add-moment-btn:active,
+.edit-btn:active,
+.exit-btn:active,
+.save-btn:active,
+.delete-btn:active {
+  animation-duration: 0.4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+}
+
+.logout-btn:active,
+.add-moment-btn:active,
+.edit-btn:active,
+.exit-btn:active,
+.save-btn:active,
+.delete-btn:active {
+  animation-name: iphone-shake;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-in-out;
 }
 
 .edit-btn {
@@ -1070,7 +1296,7 @@ const exitEditMode = (formId: string) => {
 .images-input {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   flex: 1;
 }
 
@@ -1113,11 +1339,30 @@ const exitEditMode = (formId: string) => {
 
 .tags-card,
 .images-card {
-  padding: 12px;
+  padding: 8px;
   border: 1px solid #e0e0e0;
-  border-radius: 16px;
+  border-radius: 12px;
   background-color: #f9f9f9;
   margin-top: 0;
+  cursor: default;
+}
+
+.tags-card:not(.editable):has(.tag-card) {
+  cursor: not-allowed;
+}
+
+.empty-tags,
+.empty-images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  font-style: italic;
+  width: 100%;
+  padding: 16px 0;
+  font-style: italic;
 }
 
 .add-tag-btn,
@@ -1139,8 +1384,9 @@ const exitEditMode = (formId: string) => {
 .tags-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
+  min-height: 36px;
 }
 
 .tag-input-container {
@@ -1153,12 +1399,12 @@ const exitEditMode = (formId: string) => {
 
 .tag-card {
   position: relative;
-  padding: 6px 12px;
+  padding: 4px 10px;
   background-color: #f0f0f0;
-  border-radius: 12px;
+  border-radius: 10px;
   transition: all 0.2s ease;
   display: inline-block;
-  font-size: 14px;
+  font-size: 13px;
   color: #333;
   user-select: none;
 }
@@ -1172,8 +1418,8 @@ const exitEditMode = (formId: string) => {
 }
 
 .tag-card:not(.editable) {
-  cursor: default;
-  opacity: 0.8;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .tag-overlay {
@@ -1477,6 +1723,11 @@ const exitEditMode = (formId: string) => {
 .dark .images-card {
   background-color: #3a3a3a;
   border-color: #4a4a4a;
+}
+
+.dark .empty-tags,
+.dark .empty-images {
+  color: #888;
 }
 
 .dark .add-tag-btn,
