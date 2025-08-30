@@ -91,7 +91,7 @@ export const myFeed = <FeedEntry>{
 // @keep-sorted
 export const routeRules = <NitroConfig['routeRules']>{
 	// ...redirectRouteRules,
-	'/api/stats': { prerender: true, headers: { 'Content-Type': 'application/json' } },
+	'/api/stats': { headers: { 'Content-Type': 'application/json' } },
 	'/api/umami': { headers: { 'Content-Type': 'application/json' } },
 	'/api/moments': { headers: { 'Content-Type': 'application/json' } },
 	'/atom.xml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },

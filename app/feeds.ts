@@ -3,7 +3,7 @@ import { getFavicon, getGhAvatar, getGhIcon, getQqAvatar, QqAvatarSize } from '.
 
 export default [
 	{
-		name: '相谈甚多',
+		name: '友情链接',
 		desc: '',
 		// @keep-sorted { "keys": ["date"] }
 		entries: [
@@ -87,9 +87,21 @@ export default [
 				link: 'https://thw.lol',
 				feed: '',
 				icon: getFavicon('thw.lol'),
-				avatar: 'https://thw.lol/wp-content/uploads/2025/07/1753346514-DM_20250723205301_001.jpg',
+				avatar: 'https://img.dooki.cloud/i/2025/08/29/68b09e116c4b6.webp',
 				archs: [],
 				date: '2025-08-24',
+				comment: '',
+			}, {
+				author: '落尘up',
+				sitenick: '',
+				title: '落尘up',
+				desc: '不止于代码与技术，更关注生活与思考。在喧嚣中落下的尘埃，亦能闪烁微光。',
+				link: ' https://www.luochen.chat/',
+				feed: ' https://www.luochen.chat/atom.xml',
+				icon: getFavicon('www.luochen.chat'),
+				avatar: ' https://www.luochenup.xyz/b_a5a3aa888355bdc617dca021efb19ab8.png',
+				archs: [],
+				date: '2025-08-30',
 				comment: '',
 			},
 		],

@@ -43,7 +43,7 @@ export default defineAppConfig({
 			{ icon: 'ph:github-logo-bold', text: 'GitHub: LuoH-AN', url: 'https://github.com/LuoH-AN' },
 			{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
 			{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
-			{ icon: 'ph:subway-bold', text: '开往-友链接力', url:'https://www.travellings.cn/go.html'},
+			{ icon: 'ph:subway-bold', text: '开往', url:'https://www.travellings.cn/go.html'},
 		] satisfies NavItem[],
 		/** 页脚站点地图 */
 		nav: [
@@ -53,7 +53,7 @@ export default defineAppConfig({
 					{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
 					{ icon: 'ph:flying-saucer-bold', text: '异次元旅行', url: 'https://travel.moe/go.html?travel=on' },
 					{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
-					{ icon: 'ph:subway-bold', text: '开往-友链接力', url:'https://www.travellings.cn/go.html'},
+					{ icon: 'ph:subway-bold', text: '开往', url:'https://www.travellings.cn/go.html'},
 				],
 			},
 			{
