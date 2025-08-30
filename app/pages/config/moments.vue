@@ -166,6 +166,8 @@ watch(
           }
         }
       }
+
+      momentForms.value.sort((a, b) => new Date(b.moment.date).getTime() - new Date(a.moment.date).getTime())
     }
   },
   { immediate: true }

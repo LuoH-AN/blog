@@ -33,6 +33,16 @@ interface Moment {
 
 const { data: momentData } = await useFetch<Moment[]>('/api/moments')
 
+const sortedMomentData = computed(() => {
+  if (!momentData.value) {
+    return []
+  }
+  return momentData.value.map(user => ({
+    ...user,
+    moment_list: [...user.moment_list].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  }))
+})
+
 function scrollToComment(content: string) {
   const commentSection = document.getElementById('comment-section')
   if (commentSection) {
@@ -61,7 +71,7 @@ function getFaviconUrl(url: string): string {
 
 <template>
   <div class="talk-container">
-    <div v-for="moment in momentData" :key="moment.name" class="talk-group">
+    <div v-for="moment in sortedMomentData" :key="moment.name" class="talk-group">
       <div v-for="(item, index) in moment.moment_list" :key="index" class="talk-item" :style="{ '--delay': `${index * 0.1}s` }">
         <div class="talk-meta">
           <a :href="moment.avatarLink" class="avatar-link">
