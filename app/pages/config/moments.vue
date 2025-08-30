@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import type { MomentData, MomentItem } from '../../types/moments'
 
-definePageMeta({
-  middleware: [
-    function (to, from) {
-      const cookie = useCookie('auth_token')
-      if (!cookie.value) {
-        return navigateTo('/config/login')
-      }
-    },
-  ],
-})
 
 const appConfig = useAppConfig()
 useSeoMeta({
