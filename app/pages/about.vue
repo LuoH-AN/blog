@@ -17,7 +17,7 @@ onMounted(() => {
 const layoutStore = useLayoutStore()
 layoutStore.setAside([])
 
-const birthYear = appConfig.stats.birthYear
+const birthYear = appConfig.component.stats.birthYear
 const age = new Date().getFullYear() - birthYear
 </script>
 

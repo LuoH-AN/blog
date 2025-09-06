@@ -12,7 +12,7 @@ export default defineAppConfig({
 	component: {
 		alert: {
 			/** 默认使用卡片风格还是扁平风格 */
-			defaultStyle: 'card' as 'card' | 'flat',
+			defaultStyle: 'flat' as 'flat' | 'card',
 		},
 		codeblock: {
 			/** 代码块触发折叠的行数 */
@@ -40,7 +40,7 @@ export default defineAppConfig({
 		copyright: `© ${new Date().getFullYear()} ${blogConfig.author.name}`,
 		/** 侧边栏底部图标导航 */
 		iconNav: [
-			{ icon: 'ph:house-bold', text: '个人主页', url: blogConfig.author.homepage },
+			{ icon: 'ph:house-bold', text: '主页', url: blogConfig.author.homepage },
 			{ icon: 'ph:github-logo-bold', text: 'GitHub: LuoH-AN', url: 'https://github.com/LuoH-AN' },
 			{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
 			{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
@@ -52,7 +52,6 @@ export default defineAppConfig({
 				title: '探索',
 				items: [
 					{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
-					{ icon: 'ph:flying-saucer-bold', text: '异次元旅行', url: 'https://travel.moe/go.html?travel=on' },
 					{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
 					{ icon: 'ph:subway-bold', text: '开往', url:'https://www.travellings.cn/go.html'},
 				],
@@ -67,7 +66,7 @@ export default defineAppConfig({
 			{
 				title: '信息',
 				items: [
-					{ icon: 'simple-icons:nuxtdotjs', text: '主题: Clarity', url: 'https://github.com/L33Z22L11/blog-v3' },
+					{ icon: 'simple-icons:nuxtdotjs', text: '主题', url: 'https://github.com/L33Z22L11/blog-v3' },
 					{ icon: 'ph:certificate-bold', text: '萌ICP备20250355号', url: 'https://icp.gov.moe/?keyword=20250355' },
 					{ icon: 'ph:certificate-bold', text: '雾ICP备20110419号', url: 'https://icp.wudu.ltd/id.php?keyword=20110419' },
 				],
