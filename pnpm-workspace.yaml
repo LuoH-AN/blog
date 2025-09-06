@@ -45,6 +45,7 @@ catalogs:
   util:
     '@aws-sdk/client-s3': ^3.878.0
     '@aws-sdk/s3-request-presigner': ^3.878.0
+    '@clack/prompts': ^0.11.0
     '@pinia/nuxt': ^0.11.2
     '@types/jsonwebtoken': ^9.0.10
     '@vueuse/core': ^13.8.0

@@ -9,27 +9,24 @@ export default defineAppConfig({
 	// 将 blog.config 中的配置项复制到 appConfig，方便调用
 	...blogConfig,
 
-	article: {
-		categories: <{ [category: string]: { icon: string, color?: string } }>{
-			诗词: { icon: 'ph:notepad-bold', color: '#3af' },
-			[blogConfig.content.defaultCategory]: { icon: 'ph:folder-dotted-bold' },
+	component: {
+		codeblock: {
+			/** 代码块触发折叠的行数 */
+			triggerRows: 32,
+			/** 代码块折叠后的行数 */
+			collapsedRows: 16,
 		},
-		defaultCategoryIcon: 'ph:folder-bold',
-		/** 分类排序方式，键为排序字段，值为显示名称 */
-		order: {
-			date: '创建日期',
-			updated: '更新日期',
-			// title: '标题',
-		},
-	},
 
-	content: {
-		/** 代码块自动折叠触发行数 */
-		codeblockCollapsibleRows: 16,
-		/** 文章开头摘要 */
 		excerpt: {
 			animation: true,
 			caret: '_',
+		},
+
+		stats: {
+			/** 归档页面每年标题对应的年龄 */
+			birthYear: 2003,
+			/** blog-stats widget 的预置文本 */
+			wordCount: '约10万',
 		},
 	},
 
@@ -66,7 +63,7 @@ export default defineAppConfig({
 			{
 				title: '信息',
 				items: [
-					{ icon: 'simple-icons:nuxtdotjs', text: '开源主题', url: 'https://github.com/L33Z22L11/blog-v3' },
+					{ icon: 'simple-icons:nuxtdotjs', text: '主题: Clarity', url: 'https://github.com/L33Z22L11/blog-v3' },
 					{ icon: 'ph:certificate-bold', text: '萌ICP备20250355号', url: 'https://icp.gov.moe/?keyword=20250355' },
 					{ icon: 'ph:certificate-bold', text: '雾ICP备20110419号', url: 'https://icp.wudu.ltd/id.php?keyword=20110419' },
 				],
@@ -106,12 +103,6 @@ export default defineAppConfig({
 		allowAscending: false,
 	},
 
-	stats: {
-		/** 归档页面每年标题对应的年龄 */
-		birthYear: 2011,
-		/** blog-stats widget 的预置文本 */
-		wordCount: '约10万',
-	},
 
 	themes: {
 		light: {

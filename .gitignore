@@ -26,3 +26,6 @@ logs
 # Custom
 .vercel
 content/posts/test.md
+
+commit.py
+changes.txt
