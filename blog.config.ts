@@ -1,6 +1,4 @@
-import type { NitroConfig } from 'nitropack'
 import type { FeedEntry } from './app/types/feed'
-import redirectList from './redirects.json'
 
 export { zhCN as dateLocale } from 'date-fns/locale/zh-CN'
 
@@ -28,24 +26,25 @@ const blogConfig = {
 	timezone: 'Asia/Shanghai',
 	url: 'https://blog.enltlh.me/',
 
-	defaultCategory: ['未分类'],
-
-	feed: {
-		limit: 50,
+	content: {
+		defaultCategory: '未分类',
+		/** 使用 pnpm new 新建文章时自动生成自定义链接（permalink/abbrlink） */
+		randomPathAtNew: false,
+		/** 隐藏基于文件路由（不是自定义链接）的 URL /post 路径前缀 */
+		hidePostPrefix: true,
+		/** 禁止搜索引擎收录的路径 */
+		robotsNotIndex: ['/preview', '/previews/*'],
 	},
 
-	// 在 URL 中隐藏的路径前缀
-	hideContentPrefixes: ['/posts'],
+	/** 博客 Atom 订阅源 */
+	feed: {
+		/** 订阅源最大文章数量 */
+		limit: 50,
+		/** 订阅源是否启用XSLT样式 */
+		enableStyle: true,
+	},
 
-	imageDomains: [
-		// 自动启用本域名的 Nuxt Image
-		// 'www.zhilu.site',
-		// '7.isyangs.cn',
-	],
-
-	// 禁止搜索引擎收录的路径
-	robotsNotIndex: ['/preview', '/previews/*'],
-
+	/** 向 <head> 中添加脚本 */
 	scripts: [
 		// 自己部署的 Umami 统计服务
 		{ 'src': 'https://umami.enltlh.me/script.js', 'data-website-id': 'd755863f-e0ed-4f4b-b30c-f76cc31a4f98', 'defer': true },
@@ -57,15 +56,15 @@ const blogConfig = {
 		{ src: 'https://sdk.jinrishici.com/v2/browser/jinrishici.js', defer: true },
 	],
 
-	// 自己部署的 Twikoo 服务
+	/** 自己部署的 Twikoo 服务 */
 	twikoo: {
 		envId: 'https://twikoo.enltlh.me/',
 		preload: 'https://twikoo.enltlh.me/',
 	},
 }
 
-// 用于生成 OPML 和友链页面配置
-export const myFeed = <FeedEntry>{
+/** 用于生成 OPML 和友链页面配置 */
+export const myFeed: FeedEntry = {
 	author: blogConfig.author.name,
 	sitenick: '友链',
 	title: blogConfig.title,
@@ -79,24 +78,5 @@ export const myFeed = <FeedEntry>{
 	comment: '这是我自己',
 }
 
-// 将旧页面永久重定向到新页面
-// const redirectRouteRules = Object.entries(redirectList)
-// 	.reduce<NitroConfig['routeRules']>((acc, [from, to]) => {
-// 		acc![from] = { redirect: { to, statusCode: 301 } }
-// 		return acc
-// 	}, {})
-
-// https://nitro.build/config#routerules
-// 使用 EdgeOne 部署时，需要同步更新 edgeone.json
-// @keep-sorted
-export const routeRules = <NitroConfig['routeRules']>{
-	// ...redirectRouteRules,
-	'/api/stats': { headers: { 'Content-Type': 'application/json' } },
-	'/api/umami': { headers: { 'Content-Type': 'application/json' } },
-	'/api/moments': { headers: { 'Content-Type': 'application/json' } },
-	'/atom.xml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },
-	'/favicon.ico': { redirect: { to: blogConfig.favicon } },
-	'/luoh.opml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },
-}
 
 export default blogConfig

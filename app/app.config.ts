@@ -12,7 +12,7 @@ export default defineAppConfig({
 	article: {
 		categories: <{ [category: string]: { icon: string, color?: string } }>{
 			诗词: { icon: 'ph:notepad-bold', color: '#3af' },
-			未分类: { icon: 'ph:folder-dotted-bold' },
+			[blogConfig.content.defaultCategory]: { icon: 'ph:folder-dotted-bold' },
 		},
 		defaultCategoryIcon: 'ph:folder-bold',
 		/** 分类排序方式，键为排序字段，值为显示名称 */

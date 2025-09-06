@@ -10,16 +10,16 @@ defineProps<{
 
 <template>
 <section class="widget" :class="{ dim }">
-	<header class="widget-title text-creative">
+	<hgroup class="widget-title text-creative">
 		<slot name="title">
 			{{ title }}
 		</slot>
-	</header>
+	</hgroup>
 
-	<main class="widget-body" :class="{ 'widget-card': card, 'with-bg': bgImg }">
+	<div class="widget-body" :class="{ 'widget-card': card, 'with-bg': bgImg }">
 		<NuxtImg v-if="bgImg" class="bg-img" :class="{ 'bg-right': bgRight }" :src="bgImg" alt="" />
 		<slot />
-	</main>
+	</div>
 </section>
 </template>
 
@@ -31,7 +31,7 @@ defineProps<{
 		margin-top: 1rem;
 	}
 
-	> .widget-title {
+	.widget-title {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -48,7 +48,7 @@ defineProps<{
 		}
 	}
 
-		&.dim {
+	&.dim {
 		opacity: 0.3;
 		transition: opacity 0.2s;
 
@@ -57,11 +57,17 @@ defineProps<{
 		}
 	}
 
-	> .widget-body {
+	.widget-body {
 		position: relative;
 		overflow: hidden;
 		overflow: clip;
 		z-index: 0;
+
+		&.with-bg {
+			position: relative;
+			overflow: hidden;
+			overflow: clip;
+		}
 
 		> .bg-img {
 			position: absolute;
@@ -79,15 +85,15 @@ defineProps<{
 				mask-image: linear-gradient(to right, transparent, #FFF 50%);
 			}
 		}
-	}
 
-	> .widget-card {
-		padding: 0.5rem 0.8rem;
-		border-radius: 0.8rem;
-		background-color: var(--c-bg-2);
+		&.widget-card {
+			padding: 0.5rem 0.8rem;
+			border-radius: 0.8rem;
+			background-color: var(--c-bg-2);
 
-		:deep(p) {
-			padding: 0.2em 0;
+			:deep(p) {
+				padding: 0.2em 0;
+			}
 		}
 	}
 }
