@@ -71,8 +71,8 @@ const age = new Date().getFullYear() - birthYear
 		<div class="card info-card personality-card">
 			<span class="label">性格</span>
 			<div class="content-center">
-				<span class="value text-gray">调停者</span>
-				<span class="value-small text-gray">INFP-T</span>
+				<span class="value">调停者</span>
+				<span class="value-small">INFP-T</span>
 			</div>
 			<a href="https://www.16personalities.com/" target="_blank" rel="noopener noreferrer" class="card-link">在 16personalities 了解更多</a>
 			<Icon name="ph:user-focus-bold" class="card-bg-icon" />
@@ -186,6 +186,7 @@ const age = new Date().getFullYear() - birthYear
 	background-color: white;
 	border: 1px solid #ccc;
 	box-shadow: none;
+
 	&::before {
 		content: '';
 		position: absolute;
@@ -285,8 +286,6 @@ const age = new Date().getFullYear() - birthYear
 		font-weight: bold;
 		text-align: center;
 	}
-
-	.text-gray { color: #6C757D; }
 
 	.card-link {
 		position: absolute;
@@ -498,7 +497,6 @@ const age = new Date().getFullYear() - birthYear
 	}
 
 	.info-card {
-		.text-gray { color: #ADADAD; }
 		.card-link {
 			color: var(--c-text-dark-2);
 			&:hover {
