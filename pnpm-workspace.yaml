@@ -55,6 +55,7 @@ catalogs:
     fast-xml-parser: ^5.2.5
     jsonwebtoken: ^9.0.2
     minisearch: ^7.1.2
+    nanoid: ^5.1.5
     parse-domain: ^8.2.2
     radash: ^12.1.1
     terser: ^5.43.1
