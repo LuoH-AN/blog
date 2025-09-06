@@ -14,8 +14,8 @@
     "lint": "stylelint '**/*.{vue,scss}'",
     "lint:fix": "eslint --fix && stylelint '**/*.{vue,scss}' --fix",
     "new": "node scripts/new-blog.ts",
-    "gff": "pnpx tsx scripts/get-feed-framework.ts",
-    "caff": "pnpx tsx scripts/check-all-feeds-framework.ts",
+    "check:feed": "pnpx tsx scripts/framework/get-feed.ts",
+    "check:feed/all": "pnpx tsx scripts/framework/check-all-feeds.ts",
     "init-moment": "node scripts/init-moment.js"
   },
   "dependencies": {
@@ -78,7 +78,6 @@
     "sass-embedded": "catalog:framework",
     "strip-ansi": "catalog:util",
     "stylelint": "catalog:quality",
-    "terser": "catalog:util",
     "typescript": "catalog:framework",
     "unplugin-yaml": "catalog:framework"
   }

@@ -2,8 +2,7 @@
 const appConfig = useAppConfig()
 
 onMounted(() => {
-	// @ts-expect-error windows上有twikoo实例
-	window.twikoo?.init?.({
+	window.twikoo?.init({
 		envId: appConfig.twikoo?.envId,
 		el: '#twikoo',
 	})
