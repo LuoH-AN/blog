@@ -1,4 +1,4 @@
-import type { FeedGroup } from '~/types/feed'
+import type { FeedEntry, FeedGroup } from '~/types/feed'
 import { getFavicon, getGhAvatar, getGhIcon, getQqAvatar, QqAvatarSize } from './utils/img'
 
 export default [
@@ -107,3 +107,7 @@ export default [
 		],
 	},
 ] satisfies FeedGroup[]
+
+export function flattenFeedGroups(groups: FeedGroup[]): FeedEntry[] {
+	return groups.flatMap(g => g.entries)
+}

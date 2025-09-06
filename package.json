@@ -1,9 +1,9 @@
 {
   "name": "luoh-blog",
   "type": "module",
-  "version": "1.4.3",
+  "version": "3.4.4",
   "private": true,
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.15.1",
   "homepage": "https://github.com/luoh-an/blog",
   "scripts": {
     "prepare": "pnpx rimraf .data node_modules/.cache",
@@ -14,6 +14,8 @@
     "lint": "stylelint '**/*.{vue,scss}'",
     "lint:fix": "eslint --fix && stylelint '**/*.{vue,scss}' --fix",
     "new": "node scripts/new-blog.ts",
+    "gff": "pnpx tsx scripts/get-feed-framework.ts",
+    "caff": "pnpx tsx scripts/check-all-feeds-framework.ts",
     "init-moment": "node scripts/init-moment.js"
   },
   "dependencies": {
@@ -68,11 +70,13 @@
     "eslint": "catalog:quality",
     "fast-xml-parser": "catalog:util",
     "nanoid": "catalog:util",
+    "p-limit": "catalog:util",
     "nuxt": "catalog:framework",
     "rehype-katex": "catalog:content",
     "remark-reading-time": "catalog:content",
     "remark-math": "catalog:content",
     "sass-embedded": "catalog:framework",
+    "strip-ansi": "catalog:util",
     "stylelint": "catalog:quality",
     "terser": "catalog:util",
     "typescript": "catalog:framework",
