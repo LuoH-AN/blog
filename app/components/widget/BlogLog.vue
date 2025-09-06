@@ -39,8 +39,6 @@ const blogLog = [
 			margin-bottom: 0.3rem;
 			padding-left: 1.25rem;
 			display: block;
-			grid-template-columns: none;
-			gap: 0;
 
 			&:last-child {
 				margin-bottom: 0;
@@ -77,11 +75,6 @@ const blogLog = [
 
 			&:last-child::after {
 				bottom: 0.2em;
-			}
-
-			&:hover::before {
-				box-shadow: 0 0 8px var(--c-text-2);
-				transform: translateY(-50%) translateX(-50%) scale(1.5);
 			}
 		}
 

@@ -183,11 +183,35 @@ const age = new Date().getFullYear() - birthYear
 	border-radius: 1.5rem;
 	text-align: center;
 	transition: none;
-	background-color: var(--c-bg-soft);
-	border: 1px solid var(--c-border);
+	background-color: white;
+	border: 1px solid #ccc;
+	box-shadow: none;
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(135, 206, 235, 0.2);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		pointer-events: none;
+		border-radius: 1.5rem;
+		z-index: 1;
+	}
+
+	> * {
+		position: relative;
+		z-index: 2;
+	}
 
 	&:hover {
 		transform: none;
+		box-shadow: none;
+		&::before {
+			opacity: 1;
+		}
 	}
 
 	.label {
@@ -208,6 +232,7 @@ const age = new Date().getFullYear() - birthYear
 		font-size: 5rem;
 		pointer-events: none;
 		color: var(--c-text-1);
+		z-index: 2;
 	}
 }
 
@@ -451,7 +476,8 @@ const age = new Date().getFullYear() - birthYear
 
 	.card {
 		background-color: var(--c-bg-dark-soft);
-		border-color: var(--c-border-dark);
+		border-color: #666;
+		box-shadow: none;
 	}
 
 	.card,
