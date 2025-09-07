@@ -1,23 +1,89 @@
 <script setup lang="ts">
+import Lightbox from '~/components/popover/Lightbox.vue'
+
 const appConfig = useAppConfig()
+
+const lightboxEl = ref<HTMLImageElement>()
+const isLightboxOpening = ref(false)
+
+function openLightbox(e: Event) {
+	const target = e.target as HTMLElement
+	if (target.tagName === 'IMG' && target.closest('.tk-content')) {
+		lightboxEl.value = target as HTMLImageElement
+		isLightboxOpening.value = true
+	}
+}
+
+function closeLightbox() {
+	isLightboxOpening.value = false
+}
+
+function setAnonymousComment() {
+	const inputGroups = document.querySelectorAll('.tk-meta-input .el-input-group')
+	let nickInput: HTMLInputElement | null = null
+	let mailInput: HTMLInputElement | null = null
+
+	for (const group of inputGroups) {
+		const prependDiv = group.querySelector('.el-input-group__prepend')
+		if (prependDiv) {
+			if (prependDiv.textContent?.trim() === '昵称')
+				nickInput = group.querySelector('input')
+			else if (prependDiv.textContent?.trim() === '邮箱')
+				mailInput = group.querySelector('input')
+		}
+	}
+
+	if (!nickInput || !mailInput)
+		return
+
+	const disasters = ['台风', '洪水', '地震', '龙卷风', '火山爆发', '海啸', '沙尘暴', '暴风雪']
+	const randomDisaster = disasters[Math.floor(Math.random() * disasters.length)]
+	nickInput.value = `路过的${randomDisaster}`
+	mailInput.value = 'guest@enltlh.me'
+
+	nickInput.dispatchEvent(new Event('input'))
+	mailInput.dispatchEvent(new Event('input'))
+}
 
 onMounted(() => {
 	window.twikoo?.init({
 		envId: appConfig.twikoo?.envId,
 		el: '#twikoo',
 	})
+	const twikooEl = document.getElementById('twikoo')
+	if (twikooEl)
+		twikooEl.addEventListener('click', openLightbox)
+})
+
+onUnmounted(() => {
+	const twikooEl = document.getElementById('twikoo')
+	if (twikooEl)
+		twikooEl.removeEventListener('click', openLightbox)
 })
 </script>
 
 <template>
-<section id="comment-section" class="z-comment">
-	<h3 class="text-creative">
-		评论区
-	</h3>
-	<div id="twikoo">
-		<p>评论加载中...</p>
-	</div>
-</section>
+	<section id="comment-section" class="z-comment">
+		<div class="comment-header">
+			<h3 class="text-creative">
+				评论区
+			</h3>
+			<button class="anonymous-btn" @click="setAnonymousComment">
+				匿名评论
+			</button>
+		</div>
+		<div id="twikoo">
+			<p>评论加载中...</p>
+		</div>
+	</section>
+	<ClientOnly>
+		<Lightbox
+			v-if="lightboxEl"
+			:el="lightboxEl"
+			:is-opening="isLightboxOpening"
+			@close="closeLightbox"
+		/>
+	</ClientOnly>
 </template>
 
 <style lang="scss">
@@ -60,6 +126,7 @@ onMounted(() => {
 
 		img {
 			border-radius: 0.5em;
+			cursor: zoom-in;
 		}
 
         a {
@@ -218,5 +285,25 @@ onMounted(() => {
         background-color: #1e1e1e;
         color: #e0e0e0;
     }
+}
+
+.comment-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.5rem;
+}
+
+.anonymous-btn {
+ background: none;
+ border: none;
+ color: var(--c-text-3);
+ cursor: pointer;
+ font-size: 0.9rem;
+ transition: color 0.2s;
+
+ &:hover {
+  color: var(--c-primary);
+ }
 }
 </style>

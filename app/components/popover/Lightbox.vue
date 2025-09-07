@@ -188,6 +188,7 @@ useEventListener('keydown', (e) => {
 .z-lightbox {
 	position: fixed;
 	touch-action: none;
+	z-index: 100;
 }
 
 #z-lightbox-bgmask {

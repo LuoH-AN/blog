@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getFavicon } from '../utils/img'
+import Lightbox from '~/components/popover/Lightbox.vue'
 
 const appConfig = useAppConfig()
 useSeoMeta({
@@ -67,6 +68,20 @@ function getFaviconUrl(url: string): string {
     return '';
   }
 }
+
+const lightboxEl = ref<HTMLImageElement>()
+const isLightboxOpening = ref(false)
+
+function openLightbox(e: MouseEvent) {
+  if (e.target instanceof HTMLImageElement) {
+    lightboxEl.value = e.target
+    isLightboxOpening.value = true
+  }
+}
+
+function closeLightbox() {
+  isLightboxOpening.value = false
+}
 </script>
 
 <template>
@@ -87,17 +102,13 @@ function getFaviconUrl(url: string): string {
         </div>
         <div class="talk-content">
           <p class="content-text">{{ item.content }}</p>
-          <div v-if="item.image && item.image.length > 0" class="image-grid">
-            <a
+          <div v-if="item.image && item.image.length > 0" class="image-grid" @click="openLightbox">
+            <img
               v-for="(img, imgIndex) in item.image"
               :key="imgIndex"
-              :href="img"
-              target="_blank"
-              class="grid-item"
-              data-fancybox="gallery"
-            >
-              <img :src="img" class="grid-img" />
-            </a>
+              :src="img"
+              class="grid-img"
+            />
           </div>
 
           <a v-if="item.link" :href="item.link.url" target="_blank" rel="noopener noreferrer" class="link-card">
@@ -134,6 +145,14 @@ function getFaviconUrl(url: string): string {
     </div>
     <PostComment />
   </div>
+  <ClientOnly>
+    <Lightbox
+      v-if="lightboxEl"
+      :el="lightboxEl"
+      :is-opening="isLightboxOpening"
+      @close="closeLightbox"
+    />
+  </ClientOnly>
 </template>
 
 <style lang="scss" scoped>
@@ -211,15 +230,6 @@ function getFaviconUrl(url: string): string {
   align-items: flex-start;
 }
 
-.grid-item {
-  overflow: hidden;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f0f0;
-}
-
 .grid-img {
   display: block;
   width: auto;
@@ -228,6 +238,7 @@ function getFaviconUrl(url: string): string {
   max-height: 200px;
   object-fit: contain;
   border-radius: 8px;
+  cursor: zoom-in;
 }
 
 
