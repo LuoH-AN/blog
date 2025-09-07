@@ -163,7 +163,7 @@ function getFaviconUrl(url: string): string {
   .avatar {
     width: 48px;
     height: 48px;
-    border-radius: 50%;
+    border-radius: 35%;
     margin-right: 1rem;
     object-fit: cover;
   }
@@ -188,7 +188,8 @@ function getFaviconUrl(url: string): string {
   }
 
   .talk-date {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    font-family: var(--font-monospace);
     color: #888;
   }
 }
