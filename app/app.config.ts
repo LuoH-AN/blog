@@ -12,7 +12,7 @@ export default defineAppConfig({
 	component: {
 		alert: {
 			/** 默认使用卡片风格还是扁平风格 */
-			defaultStyle: 'flat' as 'flat' | 'card',
+			defaultStyle: 'card' as 'card' | 'flat',
 		},
 		codeblock: {
 			/** 代码块触发折叠的行数 */
