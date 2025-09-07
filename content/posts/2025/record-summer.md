@@ -1,10 +1,11 @@
 ---
 title: 记夏
 description: 细雨轻柔，大雨滂沱。
-image:
+image: https://cdn2.enltlh.me/1/2025/e70ddbc46e5caab6.jpg
 date: 2025-09-07 12:55:03
 categories: [诗词]
 tags: [写作, 杂记]
+recommend: true
 ---
 
 ::poetry

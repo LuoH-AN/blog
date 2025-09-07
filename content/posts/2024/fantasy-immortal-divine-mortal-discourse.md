@@ -4,7 +4,7 @@ description: 仙人，凡人，注定天人永隔吗？
 image: https://cdn2.enltlh.me/pichub/1/2025/7c40829b9160543b.jpg
 date: 2024-11-24
 categories: [诗词]
-tags: [写作, 杂记]
+tags: [写作, 幻仙]
 ---
 
 ::poetry
