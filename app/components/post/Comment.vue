@@ -43,6 +43,14 @@ function setAnonymousComment() {
 
 	nickInput.dispatchEvent(new Event('input'))
 	mailInput.dispatchEvent(new Event('input'))
+
+	setTimeout(() => {
+		const sendButton = document.querySelector('.tk-send') as HTMLButtonElement
+		if (sendButton) {
+			sendButton.disabled = false
+			sendButton.style.cursor = 'pointer'
+		}
+	}, 100)
 }
 
 onMounted(() => {
@@ -295,15 +303,15 @@ onUnmounted(() => {
 }
 
 .anonymous-btn {
- background: none;
- border: none;
- color: var(--c-text-3);
- cursor: pointer;
- font-size: 0.9rem;
- transition: color 0.2s;
+    background: none;
+    border: none;
+    color: var(--c-text-3);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color 0.2s;
 
- &:hover {
-  color: var(--c-primary);
- }
+    &:hover {
+        color: var(--c-primary);
+    }
 }
 </style>
