@@ -57,8 +57,7 @@ const age = new Date().getFullYear() - birthYear
 
 		<div class="card motto-card">
 			<span class="label">座右铭</span>
-			<p>人生须尽欢</p>
-			<p>莫使空对月</p>
+			<p>人生得意须尽欢</p>
 			<Icon name="ph:heart-bold" class="card-bg-icon" />
 		</div>
 
