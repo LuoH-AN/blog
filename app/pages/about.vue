@@ -24,8 +24,15 @@ const age = new Date().getFullYear() - birthYear
 <template>
 <div class="about-page">
 	<header class="about-header">
-		<h1>关于我</h1>
-		<p>落人间，破三弦，忆李仙。</p>
+		<div class="left-content">
+			<h1>关于我</h1>
+			<p>落人间，破三弦，忆李仙。</p>
+		</div>
+		<div class="right-content">
+			<div class="avatar-frame">
+				<img :src="appConfig.author.avatar" alt="作者头像" class="avatar-image" />
+			</div>
+		</div>
 	</header>
 
 	<div class="cards-grid">
@@ -43,7 +50,7 @@ const age = new Date().getFullYear() - birthYear
 			</div>
 			<div class="info-item special-info-item">
 				<span class="label">当前</span>
-				<span class="value">{{ age }} 岁 👨‍🎓</span>
+				<span class="value">{{ age }} 岁</span>
 			</div>
 			<Icon name="ph:calendar-blank-bold" class="card-bg-icon" />
 		</div>
@@ -57,8 +64,7 @@ const age = new Date().getFullYear() - birthYear
 
 		<div class="card tech-card">
 			<span class="label">关注偏好</span>
-			<h3>数码科技</h3>
-			<p>手机、电脑软硬件</p>
+			<h3>科技，诗词</h3>
 			<Icon name="ph:desktop-tower-bold" class="card-bg-icon" />
 		</div>
 
@@ -74,7 +80,8 @@ const age = new Date().getFullYear() - birthYear
 				<span class="value">调停者</span>
 				<span class="value-small">INFP-T</span>
 			</div>
-			<a href="https://www.16personalities.com/" target="_blank" rel="noopener noreferrer" class="card-link">在 16personalities 了解更多</a>
+			<a href="https://www.16personalities.com/" target="_blank" rel="noopener noreferrer" class="card-link">在
+				16personalities 了解更多</a>
 			<Icon name="ph:user-focus-bold" class="card-bg-icon" />
 		</div>
 
@@ -95,10 +102,12 @@ const age = new Date().getFullYear() - birthYear
 				<a href="https://github.com/LuoH-AN" target="_blank" rel="noopener noreferrer" title="GitHub:LuoH-AN">
 					<Icon name="ph:github-logo-fill" />
 				</a>
-				<a href="mailto:enltlh@gmail.com" target="_blank" rel="noopener noreferrer" title="Email:enltlh@gmail.com">
+				<a href="mailto:enltlh@gmail.com" target="_blank" rel="noopener noreferrer"
+					title="Email:enltlh@gmail.com">
 					<Icon name="ph:envelope-simple-fill" />
 				</a>
-				<a href="https://qm.qq.com/q/9sljinl6rC" target="_blank" rel="noopener noreferrer" title="QQ:1412219758">
+				<a href="https://qm.qq.com/q/9sljinl6rC" target="_blank" rel="noopener noreferrer"
+					title="QQ:1412219758">
 					<Icon name="ri:qq-fill" />
 				</a>
 			</div>
@@ -115,7 +124,6 @@ const age = new Date().getFullYear() - birthYear
 			</div>
 			<div v-else-if="stats" class="stats-content">
 				<div class="stats-range-section">
-					<h3>总览统计</h3>
 					<div class="stats-grid">
 						<div class="stat-item">
 							<span class="stat-value">{{ stats.pageviews.value }}</span>
@@ -151,17 +159,46 @@ const age = new Date().getFullYear() - birthYear
 }
 
 .about-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	margin-bottom: 3rem;
-	text-align: center;
-
-	h1 {
-		font-size: 2.5rem;
-		font-weight: 800;
+	padding: 1rem 0;
+	text-align: left;
+	.left-content {
+		h1 {
+			font-size: 2.5rem;
+			font-weight: 800;
+			margin-bottom: 0.5rem;
+		}
+		p {
+			font-size: 1.2rem;
+			color: var(--c-text-2);
+			margin: 0;
+		}
 	}
-
-	p {
-		font-size: 1.2rem;
-		color: var(--c-text-2);
+	.right-content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.avatar-frame {
+		width: 120px;
+		height: 120px;
+		border-radius: 20px;
+		overflow: hidden;
+		background-color: var(--c-bg-soft);
+		border: 3px solid var(--c-border);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+	.avatar-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
 	}
 }
 
@@ -202,7 +239,7 @@ const age = new Date().getFullYear() - birthYear
 		z-index: 1;
 	}
 
-	> * {
+	>* {
 		position: relative;
 		z-index: 2;
 	}
@@ -210,6 +247,7 @@ const age = new Date().getFullYear() - birthYear
 	&:hover {
 		transform: none;
 		box-shadow: none;
+
 		&::before {
 			opacity: 1;
 		}
@@ -240,6 +278,7 @@ const age = new Date().getFullYear() - birthYear
 .intro-card {
 	grid-column: 1 / -1;
 	color: var(--c-text-1);
+
 	h2 {
 		margin: 0.5rem 0;
 		font-size: 3rem;
@@ -409,6 +448,7 @@ const age = new Date().getFullYear() - birthYear
 
 .stats-range-section {
 	margin-bottom: 0;
+
 	h3 {
 		font-size: 1.5rem;
 		margin-bottom: 1rem;
@@ -457,21 +497,21 @@ const age = new Date().getFullYear() - birthYear
 }
 
 :root {
-  --c-bg-soft: #f5f5f5;
-  --c-border: #e0e0e0;
-  --c-text-1: #333;
-  --c-text-2: #666;
-  --c-primary: #007bff;
-  --c-danger: #dc3545;
+	--c-bg-soft: #f5f5f5;
+	--c-border: #e0e0e0;
+	--c-text-1: #333;
+	--c-text-2: #666;
+	--c-primary: #007bff;
+	--c-danger: #dc3545;
 }
 
 .dark {
-  --c-bg-dark-soft: #282828;
-  --c-border-dark: #444;
-  --c-text-dark-1: #e0e0e0;
-  --c-text-dark-2: #b0b0b0;
-  --c-primary-dark: #66aaff;
-  --c-danger-dark: #ff8c8c;
+	--c-bg-dark-soft: #282828;
+	--c-border-dark: #444;
+	--c-text-dark-1: #e0e0e0;
+	--c-text-dark-2: #b0b0b0;
+	--c-primary-dark: #66aaff;
+	--c-danger-dark: #ff8c8c;
 
 	.card {
 		background-color: var(--c-bg-dark-soft);
@@ -492,20 +532,23 @@ const age = new Date().getFullYear() - birthYear
 		color: var(--c-text-dark-1);
 	}
 
-	.label, .card-bg-icon {
+	.label,
+	.card-bg-icon {
 		color: var(--c-text-dark-2);
 	}
 
 	.info-card {
 		.card-link {
 			color: var(--c-text-dark-2);
+
 			&:hover {
 				color: var(--c-primary-dark);
 			}
 		}
 	}
 
-	.tech-card p, .stat-label {
+	.tech-card p,
+	.stat-label {
 		color: var(--c-text-dark-2);
 	}
 
@@ -515,9 +558,10 @@ const age = new Date().getFullYear() - birthYear
 
 	.contact-card a {
 		color: var(--c-text-dark-1);
+
 		&:hover {
-				color: var(--c-primary-dark);
-			}
+			color: var(--c-primary-dark);
+		}
 	}
 
 	.stats-loading,
