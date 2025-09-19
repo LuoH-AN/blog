@@ -9,7 +9,8 @@ const expand = defineModel<boolean>()
 
 <template>
 <div class="z-expand">
-    <Transition name="expand-collapse">
+    <!-- 折叠动画基于 @LuoH-AN 的实现改进 -->
+    <Transition name="collapse">
         <slot v-if="expand" />
     </Transition>
 
@@ -47,19 +48,5 @@ const expand = defineModel<boolean>()
 	}
 }
 
-.expand-collapse-enter-active,
-.expand-collapse-leave-active {
-    transition: max-height 0.3s ease-in-out;
-    overflow: hidden;
-}
-
-.expand-collapse-enter-from,
-.expand-collapse-leave-to {
-    max-height: 0;
-}
-
-.expand-collapse-enter-to,
-.expand-collapse-leave-from {
-    max-height: 500px;
-}
+/* Collapse animation styles are now in animation.scss */
 </style>

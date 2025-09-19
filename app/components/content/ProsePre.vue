@@ -117,6 +117,7 @@ onMounted(async () => {
 
 	position: relative;
 	overflow: clip;
+	margin: 0.5em 0;
 	border-radius: 0.5em;
 	background-color: var(--c-bg-2);
 	font-size: 0.8125rem;
@@ -166,9 +167,9 @@ figcaption {
 		position: absolute;
 		opacity: 0;
 		top: 0;
-		right: 0;
+		inset-inline-end: 0;
 		padding: 0 0.6em;
-		border-bottom-left-radius: 0.5em;
+		border-end-start-radius: 0.5em;
 		background-color: var(--c-bg-2);
 		transition: opacity 0.2s;
 
@@ -190,11 +191,11 @@ figcaption {
 
 pre {
 	// 如果填写 0 会在 calc() 时出错
-	--left-offset: 4em;
+	--start-offset: 4em;
 
 	overflow: auto;
 	padding: 1rem;
-	padding-left: var(--left-offset);
+	padding-inline-start: var(--start-offset);
 
 	&.wrap {
 		white-space: pre-wrap;
@@ -205,11 +206,11 @@ pre {
 	&::before {
 		content: attr(data-line);
 		position: absolute;
-		left: 0;
-		width: var(--left-offset);
-		padding-right: 1em;
+		inset-inline-start: 0;
+		width: var(--start-offset);
+		padding-inline-end: 1em;
 		background-color: var(--c-bg-2);
-		text-align: right;
+		text-align: end;
 		color: var(--c-text-3);
 		z-index: 1;
 	}

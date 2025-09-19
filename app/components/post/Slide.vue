@@ -32,7 +32,7 @@ useEventListener(emblaRef, 'wheel', (e) => {
 			按住 Shift 横向滚动
 		</div>
 	</div>
-	<div ref="emblaRef" class="embla">
+	<div ref="emblaRef" class="embla" dir="ltr">
 		<div class="slide-list">
 			<ZRawLink
 				v-for="(article, index) in list"
@@ -105,7 +105,7 @@ useEventListener(emblaRef, 'wheel', (e) => {
 	align-items: center;
 	position: relative;
 	overflow: hidden;
-	mask-image: linear-gradient(to right, transparent, #FFF var(--fadeout-width), #FFF calc(100% - var(--fadeout-width)), transparent);
+	mask-image: linear-gradient(to var(--end), transparent, #FFF var(--fadeout-width), #FFF calc(100% - var(--fadeout-width)), transparent);
 	cursor: grab;
 	user-select: none;
 }
@@ -116,8 +116,8 @@ useEventListener(emblaRef, 'wheel', (e) => {
 	font-size: 1.5em;
 	transition: all 0.2s;
 
-	&.prev { left: 1rem; }
-	&.next { right: 1rem; }
+	&.prev { inset-inline-start: 1rem; }
+	&.next { inset-inline-end: 1rem; }
 }
 
 .slide-list {

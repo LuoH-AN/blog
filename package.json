@@ -1,9 +1,9 @@
 {
   "name": "luoh-blog",
   "type": "module",
-  "version": "3.4.5",
+  "version": "3.4.7",
   "private": true,
-  "packageManager": "pnpm@10.15.1",
+  "packageManager": "pnpm@10.17.0",
   "homepage": "https://github.com/luoh-an/blog",
   "scripts": {
     "prepare": "pnpx rimraf .data node_modules/.cache",
@@ -67,6 +67,7 @@
     "@zinkawaii/stylelint-config": "catalog:quality",
     "better-sqlite3": "catalog:content",
     "cross-env": "catalog:framework",
+    "cspell": "catalog:quality",
     "eslint": "catalog:quality",
     "fast-xml-parser": "catalog:util",
     "nanoid": "catalog:util",

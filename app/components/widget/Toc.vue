@@ -1,17 +1,8 @@
 <script setup lang="ts">
 import type { TocLink } from '@nuxt/content'
 
-const route = useRoute()
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
-
-// 如果此处出问题，还会影响到文章获取
-// 若 watch route.path，SSG 下文章间路由时新文章数据会写入老文章键中
-const { data: post } = await useAsyncData(
-	() => `toc-${route.path}`,
-	() => queryCollection('content').path(route.path).first(),
-)
-
-const toc = computed(() => post.value?.body?.toc)
+const contentStore = useContentStore()
+const { toc } = storeToRefs(contentStore)
 const { activeTocItem } = useTocAutoHighlight(() => toc.value?.links ?? [])
 
 function hasActiveChild(entry: TocLink, activeId: string | null): boolean {
@@ -52,10 +43,12 @@ function hasActiveChild(entry: TocLink, activeId: string | null): boolean {
 		</ol>
 	</DefineTemplate>
 
-	<ReuseTemplate v-if="toc?.links.length" :toc-item="toc.links" />
-	<p v-else class="no-toc">
-		暂无目录信息
-	</p>
+	<ClientOnly>
+		<ReuseTemplate v-if="toc?.links.length" :toc-item="toc.links" />
+		<p v-else class="no-toc">
+			暂无目录信息
+		</p>
+	</ClientOnly>
 </ZWidget>
 </template>
 
@@ -74,7 +67,7 @@ function hasActiveChild(entry: TocLink, activeId: string | null): boolean {
 
 	li {
 		opacity: 0.6;
-		margin-left: 0.8rem;
+		margin-inline-start: 0.8rem;
 		font-size: 0.94em;
 		color: var(--c-text);
 		transition: opacity 0.2s;
@@ -91,7 +84,7 @@ function hasActiveChild(entry: TocLink, activeId: string | null): boolean {
 		&.active::before {
 			content: "";
 			position: absolute;
-			left: 0.3rem;
+			inset-inline-start: 0.3rem;
 			margin: 0.2rem 0;
 			padding: 0.6rem 1.5px;
 			border-radius: 1rem;

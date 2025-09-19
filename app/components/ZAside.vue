@@ -34,12 +34,12 @@ const { widgets } = useWidgets(() => layoutStore.asideWidgets)
 	@media (max-width: $breakpoint-widescreen) {
 		position: fixed;
 		top: 0;
-		right: 0;
+		inset-inline-end: 0;
 		width: 320px;
 		height: auto;
 		max-width: 100%;
 		max-height: 100%;
-		transform: translateX(100%);
+		transform: var(--transform-end-far);
 		transition: transform 0.2s;
 		z-index: 100;
 

@@ -8,7 +8,7 @@ const appConfig = useAppConfig()
 		<span
 			v-for="(emoji, emojiIndex) in appConfig.header.emojiTail"
 			:key="emojiIndex"
-			class="splitted-char"
+			class="split-char"
 			:style="{ '--delay': `${emojiIndex * .6 - 3}s` }"
 			v-text="emoji"
 		/>
@@ -24,7 +24,7 @@ const appConfig = useAppConfig()
 			<span
 				v-for="(char, charIndex) in appConfig.title"
 				:key="charIndex"
-				class="splitted-char"
+				class="split-char"
 				:style="{ '--delay': `${(charIndex + 1) * .1}s` }"
 				v-text="char"
 			/>
