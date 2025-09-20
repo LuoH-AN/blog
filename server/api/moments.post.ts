@@ -1,57 +1,25 @@
 import type { H3Event } from "h3";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import {
-  setCookie,
   readBody,
-  getQuery,
   defineEventHandler,
   getCookie,
   createError,
   defineLazyEventHandler,
 } from "h3";
 import jwt from "jsonwebtoken";
+import { initR2Client, R2_FILE_NAME } from '../utils/r2';
 
-const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
-const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID;
-const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID;
-const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY;
-const MOMENT_API_AUTH_KEY = process.env.MOMENT_API_AUTH_KEY;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const missingEnvVars: string[] = [];
 if (!JWT_SECRET) {
   missingEnvVars.push("JWT_SECRET");
 }
-if (!R2_BUCKET_NAME) {
-  missingEnvVars.push("R2_BUCKET_NAME");
-}
-if (!R2_ACCOUNT_ID) {
-  missingEnvVars.push("CLOUDFLARE_ACCOUNT_ID");
-}
-if (!R2_ACCESS_KEY_ID) {
-  missingEnvVars.push("CLOUDFLARE_R2_ACCESS_KEY_ID");
-}
-if (!R2_SECRET_ACCESS_KEY) {
-  missingEnvVars.push("CLOUDFLARE_R2_SECRET_ACCESS_KEY");
-}
-if (!MOMENT_API_AUTH_KEY) {
-  missingEnvVars.push("MOMENT_API_AUTH_KEY");
-}
 if (missingEnvVars.length > 0) {
   throw new Error(
     `Missing required environment variables: ${missingEnvVars.join(", ")}. Please set them.`
   );
-}
-
-function initR2Client() {
-  return new S3Client({
-    region: "auto",
-    endpoint: `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-    credentials: {
-      accessKeyId: R2_ACCESS_KEY_ID!,
-      secretAccessKey: R2_SECRET_ACCESS_KEY!,
-    },
-  });
 }
 
 function authenticate(event: H3Event) {
@@ -74,40 +42,8 @@ function authenticate(event: H3Event) {
   }
 }
 
-async function authenticateLogin(event: H3Event) {
-  const body = await readBody(event);
-  const { authKey: providedKey } = body;
-
-  if (!providedKey || providedKey !== MOMENT_API_AUTH_KEY!) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: "Invalid authentication key",
-    });
-  }
-
-  const payload = {
-    userId: "admin",
-    role: "editor",
-  };
-
-  const token = jwt.sign(payload, JWT_SECRET!, {
-    expiresIn: "7d",
-  });
-
-  setCookie(event, "auth_token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
-
-  return { success: true };
-}
-
 export default defineLazyEventHandler(async () => {
   const r2Client = initR2Client();
-  const fileName = "config/moment.json";
 
   return defineEventHandler(async (event) => {
     if (event.method !== "POST") {
@@ -117,18 +53,14 @@ export default defineLazyEventHandler(async () => {
       });
     }
 
-    if (getQuery(event).login !== undefined) {
-      return await authenticateLogin(event);
-    }
-
     authenticate(event);
 
     const body = await readBody(event);
     const jsonData = JSON.stringify(body, null, 2);
 
     const command = new PutObjectCommand({
-      Bucket: R2_BUCKET_NAME!,
-      Key: fileName,
+      Bucket: process.env.R2_BUCKET_NAME!,
+      Key: R2_FILE_NAME,
       Body: jsonData,
       ContentType: "application/json",
     });

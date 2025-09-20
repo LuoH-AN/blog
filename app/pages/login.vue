@@ -31,13 +31,13 @@ const handleLogin = async () => {
   error.value = ''
 
   try {
-    const response = await $fetch<LoginApiResponse>('/api/moments?login', {
+    const response = await $fetch<LoginApiResponse>('/api/login', {
       method: 'POST',
       body: { authKey: authKey.value }
     })
 
     if (response.success) {
-      await router.push('/config/moments')
+      await router.push('/moments')
     } else {
       error.value = response.message || '登录失败'
     }

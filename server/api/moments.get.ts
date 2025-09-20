@@ -1,43 +1,27 @@
 import { Buffer } from 'node:buffer'
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { defineEventHandler, defineLazyEventHandler, createError } from 'h3'
+import { GetObjectCommand } from '@aws-sdk/client-s3'
+import { defineEventHandler, defineLazyEventHandler, createError, getCookie } from 'h3'
+import jwt from 'jsonwebtoken'
+import { initR2Client, R2_FILE_NAME } from '../utils/r2'
 
-const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME
-const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID
-const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID
-const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY
+const JWT_SECRET = process.env.JWT_SECRET
 
-const missingEnvVars: string[] = []
-if (!R2_BUCKET_NAME) {
-  missingEnvVars.push('R2_BUCKET_NAME')
-}
-if (!R2_ACCOUNT_ID) {
-  missingEnvVars.push('CLOUDFLARE_ACCOUNT_ID')
-}
-if (!R2_ACCESS_KEY_ID) {
-  missingEnvVars.push('CLOUDFLARE_R2_ACCESS_KEY_ID')
-}
-if (!R2_SECRET_ACCESS_KEY) {
-  missingEnvVars.push('CLOUDFLARE_R2_SECRET_ACCESS_KEY')
-}
-if (missingEnvVars.length > 0) {
-  throw new Error(`Missing required environment variables: ${missingEnvVars.join(', ')}. Please set them.`)
-}
-
-function initR2Client() {
-  return new S3Client({
-    region: 'auto',
-    endpoint: `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-    credentials: {
-      accessKeyId: R2_ACCESS_KEY_ID!,
-      secretAccessKey: R2_SECRET_ACCESS_KEY!,
-    },
-  })
+function isAuthenticated(event: any): boolean {
+  const token = getCookie(event, 'auth_token')
+  if (!token) {
+    return false
+  }
+  try {
+    jwt.verify(token, JWT_SECRET!)
+    return true
+  }
+  catch (error) {
+    return false
+  }
 }
 
 export default defineLazyEventHandler(async () => {
   const r2Client = initR2Client()
-  const fileName = 'config/moment.json'
 
   return defineEventHandler(async (event) => {
     if (event.method !== 'GET') {
@@ -47,19 +31,33 @@ export default defineLazyEventHandler(async () => {
       })
     }
 
+    // We don't throw error for GET, just return empty array if not authenticated
+    // Let client side handle the display logic
+    // if (!isAuthenticated(event)) {
+    //   return []
+    // }
+
     try {
       const command = new GetObjectCommand({
-        Bucket: R2_BUCKET_NAME!,
-        Key: fileName,
+        Bucket: process.env.R2_BUCKET_NAME!,
+        Key: R2_FILE_NAME,
       })
 
       const response = await r2Client.send(command)
       const data = await streamToString(response.Body)
-      return JSON.parse(data)
+      const moments = JSON.parse(data)
+      
+      return {
+        isAuthenticated: isAuthenticated(event),
+        moments,
+      }
     }
     catch (error: any) {
       if (error.name === 'NoSuchKey') {
-        return []
+        return {
+          isAuthenticated: isAuthenticated(event),
+          moments: [],
+        }
       }
       throw error
     }

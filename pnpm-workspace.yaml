@@ -1,71 +1,75 @@
 catalogs:
   content:
-    '@nuxt/content': ^3.6.3
-    '@nuxtjs/seo': ^3.1.0
-    '@shikijs/colorized-brackets': ^3.12.2
-    '@shikijs/transformers': ^3.12.2
-    better-sqlite3: ^12.2.0
-    plain-shiki: ^0.3.0
-    rehype-katex: ^7.0.1
-    remark-math: ^6.0.0
-    remark-reading-time: ^2.0.2
-    shiki: ^3.12.2
+    "@nuxt/content": 3.7.1
+    "@nuxtjs/seo": 3.2.2
+    "@shikijs/colorized-brackets": 3.13.0
+    "@shikijs/transformers": 3.13.0
+    better-sqlite3: 12.2.0
+    plain-shiki: 0.3.1
+    rehype-katex: 7.0.1
+    remark-math: 6.0.0
+    remark-reading-time: 2.0.2
+    shiki: 3.13.0
+
   framework:
-    ci-info: ^4.3.0
-    cross-env: ^10.0.0
-    nuxt: ^4.1.1
-    sass-embedded: ^1.92.1
-    typescript: ^5.9.2
-    unplugin-yaml: ^3.0.5
-    vue: ^3.5.21
-    vue-router: ^4.5.1
+    ci-info: 4.3.0
+    cross-env: 10.0.0
+    nuxt: 4.1.2
+    sass-embedded: 1.93.0
+    typescript: 5.9.2
+    unplugin-yaml: 3.0.6
+    vue: 3.5.21
+    vue-router: 4.5.1
+
   quality:
-    '@antfu/eslint-config': ^5.2.2
-    '@zinkawaii/stylelint-config': ^0.3.3
-    cspell: ^9.2.1
-    eslint: ^9.35.0
-    stylelint: ^16.23.1
+    "@antfu/eslint-config": 5.4.1
+    "@zinkawaii/stylelint-config": 0.3.3
+    cspell: 9.2.1
+    eslint: 9.36.0
+    stylelint: 16.24.0
+
   ui:
-    '@iconify-json/catppuccin': ^1.2.16
-    '@iconify-json/icon-park-solid': ^1.2.4
-    '@iconify-json/material-symbols': ^1.2.33
-    '@iconify-json/mynaui': ^1.2.16
-    '@iconify-json/ph': ^1.2.2
-    '@iconify-json/ri': ^1.2.5
-    '@iconify-json/simple-icons': ^1.2.49
-    '@iconify-json/tabler': ^1.2.22
-    '@iconify-json/uim': ^1.2.3
-    '@nuxt/icon': ^2.0.0
-    '@nuxt/image': ^1.11.0
-    '@nuxtjs/color-mode': ^3.5.2
-    embla-carousel-autoplay: ^8.6.0
-    embla-carousel-vue: ^8.6.0
-    embla-carousel-wheel-gestures: ^8.1.0
-    vue-tippy: ^6.7.1
-    vue-virtual-scroller: 2.0.0-beta.8
+    "@iconify-json/catppuccin": 1.2.17
+    "@iconify-json/icon-park-solid": 1.2.4
+    "@iconify-json/material-symbols": 1.2.37
+    "@iconify-json/mynaui": 1.2.16
+    "@iconify-json/ph": 1.2.2
+    "@iconify-json/ri": 1.2.5
+    "@iconify-json/simple-icons": 1.2.52
+    "@iconify-json/tabler": 1.2.23
+    "@iconify-json/uim": 1.2.3
+    "@nuxt/icon": 2.0.0
+    "@nuxt/image": 1.11.0
+    "@nuxtjs/color-mode": 3.5.2
+    embla-carousel-autoplay: 8.6.0
+    embla-carousel-vue: 8.6.0
+    embla-carousel-wheel-gestures: 8.1.0
+    vue-tippy: 6.7.1
+    vue-virtual-scroller: 1.1.2
+
   util:
-    '@aws-sdk/client-s3': ^3.878.0
-    '@aws-sdk/s3-request-presigner': ^3.878.0
-    '@clack/prompts': ^0.11.0
-    '@pinia/nuxt': ^0.11.2
-    '@types/jsonwebtoken': ^9.0.10
-    '@vueuse/core': ^13.9.0
-    '@vueuse/nuxt': ^13.9.0
-    '@vueuse/router': 14.0.0-alpha.0
-    date-fns: ^4.1.0
-    date-fns-tz: ^3.2.0
-    fast-xml-parser: ^5.2.5
-    jsonwebtoken: ^9.0.2
-    minisearch: ^7.1.2
-    nanoid: ^5.1.5
-    oxc-minify: ^0.86.0
-    p-limit: ^7.1.1
-    parse-domain: ^8.2.2
-    radash: ^12.1.1
-    strip-ansi: ^7.1.0
+    "@aws-sdk/client-s3": 3.893.0
+    "@aws-sdk/s3-request-presigner": 3.893.0
+    "@clack/prompts": 0.11.0
+    "@pinia/nuxt": 0.11.2
+    "@types/jsonwebtoken": 9.0.10
+    "@vueuse/core": 13.9.0
+    "@vueuse/nuxt": 13.9.0
+    "@vueuse/router": 13.9.0
+    date-fns: 4.1.0
+    date-fns-tz: 3.2.0
+    fast-xml-parser: 5.2.5
+    jsonwebtoken: 9.0.2
+    minisearch: 7.2.0
+    nanoid: 5.1.5
+    oxc-minify: 0.90.0
+    p-limit: 7.1.1
+    parse-domain: 8.2.2
+    radash: 12.1.1
+    strip-ansi: 7.1.2
 
 onlyBuiltDependencies:
-  - '@parcel/watcher'
+  - "@parcel/watcher"
   - better-sqlite3
   - esbuild
   - oxc-resolver
@@ -74,8 +78,8 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 patchedDependencies:
-  '@nuxtjs/mdc': patches/@nuxtjs__mdc.patch
-  '@vue/shared': patches/@vue__shared.patch
+  "@nuxtjs/mdc": patches/@nuxtjs__mdc.patch
+  "@vue/shared": patches/@vue__shared.patch
   vue-tippy: patches/vue-tippy.patch
 
 shamefullyHoist: true
