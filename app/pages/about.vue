@@ -163,45 +163,50 @@ const age = new Date().getFullYear() - birthYear
 
 .about-header {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
+	justify-content: space-between;
 	margin-bottom: 3rem;
 	padding: 1rem 0;
 	text-align: left;
+
 	.left-content {
 		h1 {
+			margin-bottom: 0.5rem;
 			font-size: 2.5rem;
 			font-weight: 800;
-			margin-bottom: 0.5rem;
 		}
+
 		p {
+			margin: 0;
 			font-size: 1.2rem;
 			color: var(--c-text-2);
-			margin: 0;
 		}
 	}
+
 	.right-content {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
+
 	.avatar-frame {
-		width: 120px;
-		height: 120px;
-		border-radius: 20px;
-		overflow: hidden;
-		background-color: var(--c-bg-soft);
-		border: 3px solid var(--c-border);
 		display: flex;
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		flex-shrink: 0;
+		overflow: hidden;
+		width: 120px;
+		height: 120px;
+		border: 3px solid var(--c-border);
+		border-radius: 20px;
+		background-color: var(--c-bg-soft);
 	}
+
 	.avatar-image {
+		display: block;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		display: block;
 	}
 }
 
@@ -220,25 +225,25 @@ const age = new Date().getFullYear() - birthYear
 	overflow: hidden;
 	min-height: 220px;
 	padding: 2rem 1.5rem;
+	border: 1px solid #CCC;
 	border-radius: 1.5rem;
+	box-shadow: none;
+	background-color: white;
 	text-align: center;
 	transition: none;
-	background-color: white;
-	border: 1px solid #ccc;
-	box-shadow: none;
 
 	&::before {
-		content: '';
+		content: "";
 		position: absolute;
+		opacity: 0;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: rgba(135, 206, 235, 0.2);
-		opacity: 0;
+		border-radius: 1.5rem;
+		background-color: rgb(135 206 235 / 20%);
 		transition: opacity 0.3s ease;
 		pointer-events: none;
-		border-radius: 1.5rem;
 		z-index: 1;
 	}
 
@@ -248,8 +253,8 @@ const age = new Date().getFullYear() - birthYear
 	}
 
 	&:hover {
-		transform: none;
 		box-shadow: none;
+		transform: none;
 
 		&::before {
 			opacity: 1;
@@ -272,8 +277,8 @@ const age = new Date().getFullYear() - birthYear
 		right: 1rem;
 		bottom: 1rem;
 		font-size: 5rem;
-		pointer-events: none;
 		color: var(--c-text-1);
+		pointer-events: none;
 		z-index: 2;
 	}
 }
@@ -380,8 +385,8 @@ const age = new Date().getFullYear() - birthYear
 	align-items: center;
 	justify-content: center;
 	min-height: 250px;
-	color: var(--c-text-1);
 	text-shadow: none;
+	color: var(--c-text-1);
 
 	h3 {
 		font-size: 2.5rem;
@@ -429,8 +434,8 @@ const age = new Date().getFullYear() - birthYear
 			transition: transform 0.2s;
 
 			&:hover {
-				transform: scale(1.1);
 				color: var(--c-primary);
+				transform: scale(1.1);
 			}
 		}
 	}
@@ -453,8 +458,8 @@ const age = new Date().getFullYear() - birthYear
 	margin-bottom: 0;
 
 	h3 {
-		font-size: 1.5rem;
 		margin-bottom: 1rem;
+		font-size: 1.5rem;
 		color: var(--c-text-1);
 	}
 }
@@ -475,23 +480,23 @@ const age = new Date().getFullYear() - birthYear
 }
 
 .stat-value {
+	margin-bottom: 0.25rem;
 	font-size: 2rem;
 	font-weight: bold;
-	margin-bottom: 0.25rem;
 	color: var(--c-text-1);
 }
 
 .stat-label {
-	font-size: 0.9rem;
 	opacity: 0.9;
+	font-size: 0.9rem;
 	color: var(--c-text-2);
 }
 
 .stats-loading,
 .stats-error {
-	text-align: center;
 	padding: 2rem;
 	font-size: 1.1rem;
+	text-align: center;
 	color: var(--c-text-1);
 }
 
@@ -500,26 +505,26 @@ const age = new Date().getFullYear() - birthYear
 }
 
 :root {
-	--c-bg-soft: #f5f5f5;
-	--c-border: #e0e0e0;
+	--c-bg-soft: #F5F5F5;
+	--c-border: #E0E0E0;
 	--c-text-1: #333;
 	--c-text-2: #666;
-	--c-primary: #007bff;
-	--c-danger: #dc3545;
+	--c-primary: #007BFF;
+	--c-danger: #DC3545;
 }
 
 .dark {
 	--c-bg-dark-soft: #282828;
 	--c-border-dark: #444;
-	--c-text-dark-1: #e0e0e0;
-	--c-text-dark-2: #b0b0b0;
-	--c-primary-dark: #66aaff;
-	--c-danger-dark: #ff8c8c;
+	--c-text-dark-1: #E0E0E0;
+	--c-text-dark-2: #B0B0B0;
+	--c-primary-dark: #6AF;
+	--c-danger-dark: #FF8C8C;
 
 	.card {
-		background-color: var(--c-bg-dark-soft);
 		border-color: #666;
 		box-shadow: none;
+		background-color: var(--c-bg-dark-soft);
 	}
 
 	.card,
