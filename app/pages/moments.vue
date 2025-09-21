@@ -4,6 +4,12 @@ import Lightbox from '~/components/popover/Lightbox.vue'
 import blogConfig from '../../blog.config'
 import { getFavicon } from '../utils/img'
 
+const appConfig = useAppConfig()
+useSeoMeta({
+	title: '瞬间',
+	description: `${appConfig.title}的闲言碎语。`,
+})
+
 // --- Login Status ---
 const apiAuth = ref(false)
 const isLoggedIn = computed(() => apiAuth.value)

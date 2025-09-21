@@ -45,7 +45,7 @@ export default defineAppConfig({
 			{ icon: 'ph:github-logo-bold', text: 'GitHub: LuoH-AN', url: 'https://github.com/LuoH-AN' },
 			{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
 			{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
-			{ icon: 'ph:subway-bold', text: '开往', url:'https://www.travellings.cn/go.html'},
+			{ icon: 'ph:subway-bold', text: '开往', url: 'https://www.travellings.cn/go.html' },
 		] satisfies NavItem[],
 		/** 页脚站点地图 */
 		nav: [
@@ -54,7 +54,7 @@ export default defineAppConfig({
 				items: [
 					{ icon: 'ph:rss-simple-bold', text: '订阅', url: '/atom.xml' },
 					{ icon: 'game-icons:cigale', text: '揪蝉', url: 'https://jiuchan.org/' },
-					{ icon: 'ph:subway-bold', text: '开往', url:'https://www.travellings.cn/go.html'},
+					{ icon: 'ph:subway-bold', text: '开往', url: 'https://www.travellings.cn/go.html' },
 				],
 			},
 			{
@@ -106,7 +106,6 @@ export default defineAppConfig({
 		/** 允许（普通/预览/归档）文章列表正序，开启后排序方式左侧图标可切换顺序 */
 		allowAscending: false,
 	},
-
 
 	themes: {
 		light: {

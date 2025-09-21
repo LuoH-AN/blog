@@ -45,13 +45,6 @@ const blogConfig = {
 			// title: '标题',
 		},
 	},
-	/** 使用 pnpm new 新建文章时自动生成自定义链接（permalink/abbrlink） */
-	useRandomPremalink: false,
-	/** 隐藏基于文件路由（不是自定义链接）的 URL /post 路径前缀 */
-	hidePostPrefix: true,
-	/** 禁止搜索引擎收录的路径 */
-	robotsNotIndex: ['/preview', '/previews/*'],
-
 	/** 博客 Atom 订阅源 */
 	feed: {
 		/** 订阅源最大文章数量 */
@@ -59,7 +52,10 @@ const blogConfig = {
 		/** 订阅源是否启用XSLT样式 */
 		enableStyle: true,
 	},
-
+	/** 隐藏基于文件路由（不是自定义链接）的 URL /post 路径前缀 */
+	hidePostPrefix: true,
+	/** 禁止搜索引擎收录的路径 */
+	robotsNotIndex: ['/preview', '/previews/*'],
 	/** 向 <head> 中添加脚本 */
 	scripts: [
 		// 自己部署的 Umami 统计服务
@@ -71,12 +67,13 @@ const blogConfig = {
 		// 今日诗词 SDK
 		{ src: 'https://sdk.jinrishici.com/v2/browser/jinrishici.js', defer: true },
 	],
-
 	/** 自己部署的 Twikoo 服务 */
 	twikoo: {
 		envId: 'https://twikoo.enltlh.me/',
 		preload: 'https://twikoo.enltlh.me/',
 	},
+	/** 使用 pnpm new 新建文章时自动生成自定义链接（permalink/abbrlink） */
+	useRandomPremalink: false,
 }
 
 /** 用于生成 OPML 和友链页面配置 */
@@ -93,6 +90,5 @@ export const myFeed: FeedEntry = {
 	date: blogConfig.timeEstablished,
 	comment: '这是我自己',
 }
-
 
 export default blogConfig

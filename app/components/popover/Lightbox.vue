@@ -56,7 +56,7 @@ function onWheel(e: WheelEvent) {
 	const delta = isTouchpad ? Math.abs(e.deltaY) * 0.05 : 0.5
 	const scale = e.deltaY > 0 ? 1 / (1 + delta) : 1 + delta
 
-	animateBetweenRects(lightbox.value, {
+	animateBetweenRects(lightbox.value.$el, {
 		left: startX - (e.clientX - startX) * (scale - 1),
 		top: startY - (e.clientY - startY) * (scale - 1),
 		width: width * scale,
@@ -122,7 +122,7 @@ useEventListener('pointermove', (e) => {
 	const top = startY - (center.value.y - startY) * (scale - 1)
 	if (!lightbox.value)
 		return
-	animateBetweenRects(lightbox.value, { left, top, width, height }, { duration: 0 })
+	animateBetweenRects(lightbox.value.$el, { left, top, width, height }, { duration: 0 })
 })
 
 useEventListener('pointerup', (e) => {
