@@ -104,15 +104,27 @@ onUnmounted(() => {
 	}
 }
 
-.toolbar {
-	color: #ccc;
+.comment-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.5rem;
 }
 
-.copy-to-clipboard-button {
-	height: 20px;
+.anonymous-btn {
+    background: none;
+    border: none;
+    color: var(--c-text-3);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+
+    &:hover {
+        color: var(--c-primary);
+    }
 }
 
-#twikoo {
+:deep(#twikoo) {
 	margin: 2em 0;
 
 	.tk-admin-container {
@@ -270,7 +282,7 @@ onUnmounted(() => {
     }
 }
 
-.dark #twikoo {
+.dark :deep(#twikoo) {
     .el-textarea__inner,
     .tk-meta-input .el-input-group {
         background-color: #1e1e1e;
@@ -287,26 +299,6 @@ onUnmounted(() => {
     .tk-meta-input .el-input__inner {
         background-color: #1e1e1e;
         color: #e0e0e0;
-    }
-}
-
-.comment-header {
-	display: flex;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: 0.5rem;
-}
-
-.anonymous-btn {
-    background: none;
-    border: none;
-    color: var(--c-text-3);
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: color 0.2s;
-
-    &:hover {
-        color: var(--c-primary);
     }
 }
 </style>
