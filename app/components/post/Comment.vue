@@ -71,31 +71,30 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<section id="comment-section" class="z-comment">
-		<div class="comment-header">
-			<h3 class="text-creative">
-				评论区
-			</h3>
-			<button class="anonymous-btn" @click="setAnonymousComment">
-				匿名评论
-			</button>
-		</div>
-		<div id="twikoo">
-			<p>评论加载中...</p>
-		</div>
-	</section>
-	<ClientOnly>
-		<Lightbox
-			v-if="lightboxEl"
-			:el="lightboxEl"
-			:is-opening="isLightboxOpening"
-			@close="closeLightbox"
-		/>
-	</ClientOnly>
+<section id="comment-section" class="z-comment">
+	<div class="comment-header">
+		<h3 class="text-creative">
+			评论区
+		</h3>
+		<button class="anonymous-btn" @click="setAnonymousComment">
+			匿名评论
+		</button>
+	</div>
+	<div id="twikoo">
+		<p>评论加载中...</p>
+	</div>
+</section>
+<ClientOnly>
+	<Lightbox
+		v-if="lightboxEl"
+		:el="lightboxEl"
+		:is-opening="isLightboxOpening"
+		@close="closeLightbox"
+	/>
+</ClientOnly>
 </template>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
 .z-comment {
 	margin: 3rem 1rem;
 

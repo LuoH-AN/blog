@@ -1,11 +1,11 @@
-<script setup lang="ts">
-import { ref } from 'vue'
+<script setup lang='ts'>
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 const appConfig = useAppConfig()
 useSeoMeta({
-  title: '登录',
-  description: `${appConfig.title}的登录。`
+	title: '登录',
+	description: `${appConfig.title}的登录。`,
 })
 
 const layoutStore = useLayoutStore()
@@ -16,80 +16,86 @@ const authKey = ref('')
 const isLoading = ref(false)
 const error = ref('')
 
+watch(authKey, () => {
+	if (error.value)
+		error.value = ''
+})
+
 interface LoginApiResponse {
-  success: boolean;
-  message?: string;
+	success: boolean
+	message?: string
 }
 
-const handleLogin = async () => {
-  if (!authKey.value) {
-    error.value = '请输入认证密钥'
-    return
-  }
+async function handleLogin() {
+	isLoading.value = true
+	error.value = ''
 
-  isLoading.value = true
-  error.value = ''
+	if (!authKey.value) {
+		error.value = '请输入认证密钥'
+		isLoading.value = false
+		return
+	}
 
-  try {
-    const response = await $fetch<LoginApiResponse>('/api/login', {
-      method: 'POST',
-      body: { authKey: authKey.value }
-    })
+	try {
+		const response = await $fetch<LoginApiResponse>('/api/login', {
+			method: 'POST',
+			body: { authKey: authKey.value },
+		})
 
-    if (response.success) {
-      await router.push('/moments')
-    } else {
-      error.value = response.message || '登录失败'
-    }
-  } catch (err: any) {
-    console.error('登录错误:', err)
-    if (err.statusCode === 401 || err.statusCode === 400) {
-      error.value = err.data?.message || '认证失败，请检查密钥'
-    } else {
-      error.value = '登录失败，请检查网络连接或服务器状态'
-    }
-  } finally {
-    isLoading.value = false
-  }
+		if (response.success)
+			await router.push('/moments')
+		else
+			error.value = response.message || '登录失败'
+	}
+	catch (err: any) {
+		console.error('登录错误:', err)
+		if (err.statusCode === 401 || err.statusCode === 400)
+			error.value = err.data?.message || '认证失败，请检查密钥'
+		else
+			error.value = '登录失败，请检查网络或服务器状态'
+	}
+	finally {
+		isLoading.value = false
+	}
 }
 </script>
 
 <template>
-  <div class="login-page">
-    <div class="login-card">
-      <h1>登录</h1>
-      <div class="login-form">
-        <div class="form-group">
-          <label for="authKey">认证密钥</label>
-          <input
-            id="authKey"
-            v-model="authKey"
-            type="password"
-            class="form-input"
-            placeholder="请输入认证密钥"
-            @keyup.enter="handleLogin"
-          />
-        </div>
+<div class="login-page">
+	<div class="login-card">
+		<h1>登录</h1>
+		<div class="login-form">
+			<div class="form-group">
+				<label for="authKey">认证密钥</label>
+				<input
+					id="authKey"
+					v-model="authKey"
+					type="password"
+					class="form-input"
+					placeholder="请输入认证密钥"
+					@keyup.enter="handleLogin"
+				>
+			</div>
 
-        <div v-if="error" class="error-message">
-          {{ error }}
-        </div>
+			<div v-if="error" class="error-message" role="alert">
+				{{ error }}
+			</div>
 
-        <button @click="handleLogin" class="login-btn" :disabled="isLoading">
-          <span v-if="!isLoading">登录</span>
-          <div v-else class="loading-spinner"></div>
-        </button>
-      </div>
-    </div>
-  </div>
+			<button class="login-btn" :disabled="isLoading" @click="handleLogin">
+				<span v-if="!isLoading">登录</span>
+				<div v-else class="loading-spinner" />
+			</button>
+		</div>
+	</div>
+</div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .login-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .login-card {

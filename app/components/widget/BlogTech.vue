@@ -7,9 +7,9 @@ const appConfig = useAppConfig()
 const { public: { arch, ci, nodeVersion, platform } } = useRuntimeConfig()
 
 const ciPlatform = computed(() => {
-    const iconName = ciIcons[ci]
-    if (!iconName)
-    	return ''
+	const iconName = ciIcons[ci]
+	if (!iconName)
+		return ''
 
 	const iconNode = iconName.startsWith('http')
 		? h('img', { src: iconName, alt: '' })

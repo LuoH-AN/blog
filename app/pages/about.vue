@@ -30,7 +30,7 @@ const age = new Date().getFullYear() - birthYear
 		</div>
 		<div class="right-content">
 			<div class="avatar-frame">
-				<img :src="appConfig.author.avatar" alt="作者头像" class="avatar-image" />
+				<img :src="appConfig.author.avatar" alt="作者头像" class="avatar-image">
 			</div>
 		</div>
 	</header>
@@ -101,12 +101,16 @@ const age = new Date().getFullYear() - birthYear
 				<a href="https://github.com/LuoH-AN" target="_blank" rel="noopener noreferrer" title="GitHub:LuoH-AN">
 					<Icon name="ph:github-logo-fill" />
 				</a>
-				<a href="mailto:enltlh@gmail.com" target="_blank" rel="noopener noreferrer"
-					title="Email:enltlh@gmail.com">
+				<a
+					href="mailto:enltlh@gmail.com" target="_blank" rel="noopener noreferrer"
+					title="Email:enltlh@gmail.com"
+				>
 					<Icon name="ph:envelope-simple-fill" />
 				</a>
-				<a href="https://qm.qq.com/q/9sljinl6rC" target="_blank" rel="noopener noreferrer"
-					title="QQ:1412219758">
+				<a
+					href="https://qm.qq.com/q/9sljinl6rC" target="_blank" rel="noopener noreferrer"
+					title="QQ:1412219758"
+				>
 					<Icon name="ri:qq-fill" />
 				</a>
 			</div>

@@ -30,7 +30,7 @@ const blogLog = [
 			--c-text-2: var(--custom-dark-c-text-2, #D1D5DB);
 			--c-text-3: var(--custom-dark-c-text-3, #9CA3AF);
 		}
-		
+
 		position: relative;
 		list-style: none;
 
@@ -47,7 +47,7 @@ const blogLog = [
 			&::before {
 				content: "";
 				position: absolute;
-				top: 0.5em; 
+				top: 0.5em;
 				left: 0.25rem;
 				width: 0.5rem;
 				height: 0.5rem;
@@ -80,7 +80,7 @@ const blogLog = [
 
 		> dl > dt {
 			display: block;
-			margin-bottom: 0.1rem; 
+			margin-bottom: 0.1rem;
 			font-family: var(--font-monospace);
 			font-size: 0.8em;
 			line-height: 1;

@@ -8,7 +8,7 @@ const poetryData = ref<{
 
 const error = ref<string | null>(null)
 
-const searchOnBing = (query: string) => {
+function searchOnBing(query: string) {
 	const url = `https://www.bing.com/search?q=${encodeURIComponent(query)}`
 	window.open(url, '_blank')
 }

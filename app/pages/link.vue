@@ -27,7 +27,7 @@ const copyFields = {
 
 <template>
 <div class="mobile-only">
-<ZhiluHeader to="/" suffix="友链" />
+	<ZhiluHeader to="/" suffix="友链" />
 </div>
 
 <FeedGroup :feeds />

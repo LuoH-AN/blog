@@ -2,18 +2,17 @@
 const props = defineProps<{
 	el: HTMLImageElement
 	caption?: string
-	show?: boolean
+	isOpening?: boolean
 }>()
 
 const emit = defineEmits<{
 	close: []
 }>()
 
-const originRect = props.el.getBoundingClientRect()
+let originRect: DOMRect | undefined
 const rate = 0.8
 
-const lightbox = ref()
-const lightboxEl = useCurrentElement<HTMLImageElement>(lightbox)
+const lightbox = ref<HTMLImageElement>()
 
 const { width: winW, height: winH } = useWindowSize()
 
@@ -35,6 +34,8 @@ const center = computed(() => getCenter('current'))
 const distance = computed(() => getDistance('current'))
 
 function restrictScale(width: number, height: number, scale: number) {
+	if (!originRect)
+		return true
 	if (scale < 1) {
 		return width < Math.min(winW.value, originRect.width, props.el.naturalWidth)
 			&& height < Math.min(winH.value, originRect.height, props.el.naturalHeight)
@@ -46,14 +47,16 @@ function restrictScale(width: number, height: number, scale: number) {
 }
 
 function onWheel(e: WheelEvent) {
-	const { left: startX, top: startY, width, height } = lightboxEl.value.getBoundingClientRect()
+	if (!lightbox.value)
+		return
+	const { left: startX, top: startY, width, height } = lightbox.value.getBoundingClientRect()
 	if (restrictScale(width, height, 1 - e.deltaY))
 		return
 	const isTouchpad = Math.abs(e.deltaY) < 8
 	const delta = isTouchpad ? Math.abs(e.deltaY) * 0.05 : 0.5
 	const scale = e.deltaY > 0 ? 1 / (1 + delta) : 1 + delta
 
-	animateBetweenRects(lightboxEl, {
+	animateBetweenRects(lightbox.value, {
 		left: startX - (e.clientX - startX) * (scale - 1),
 		top: startY - (e.clientY - startY) * (scale - 1),
 		width: width * scale,
@@ -66,7 +69,9 @@ function initPointer() {
 		p.startX = p.currentX
 		p.startY = p.currentY
 	}
-	startRect = lightboxEl.value.getBoundingClientRect()
+	if (!lightbox.value)
+		return
+	startRect = lightbox.value.getBoundingClientRect()
 	startCenter = getCenter('start')
 	startDistance = getDistance('start')
 }
@@ -115,7 +120,9 @@ useEventListener('pointermove', (e) => {
 	const startY = startRect.top + center.value.y - startCenter.y
 	const left = startX - (center.value.x - startX) * (scale - 1)
 	const top = startY - (center.value.y - startY) * (scale - 1)
-	animateBetweenRects(lightboxEl, { left, top, width, height }, { duration: 0 })
+	if (!lightbox.value)
+		return
+	animateBetweenRects(lightbox.value, { left, top, width, height }, { duration: 0 })
 })
 
 useEventListener('pointerup', (e) => {
@@ -125,6 +132,8 @@ useEventListener('pointerup', (e) => {
 })
 
 function onEnter(el: Element, done: () => void) {
+	if (!originRect)
+		return
 	const fixedWidth = window.innerWidth * rate
 	const fixedHeight = window.innerHeight * rate
 	const ratio = props.el.naturalWidth / props.el.naturalHeight
@@ -138,12 +147,32 @@ function onEnter(el: Element, done: () => void) {
 }
 
 function onLeave(el: Element, done: () => void) {
-	animateBetweenRects(el, props.el).onfinish = done
+	if (!originRect)
+		return
+	animateBetweenRects(el, originRect).onfinish = done
 }
 
 useEventListener('keydown', (e) => {
 	if (e.key === 'Escape')
 		emit('close')
+})
+
+onMounted(async () => {
+	await nextTick()
+	if (props.el) {
+		originRect = props.el.getBoundingClientRect()
+	}
+})
+
+onUnmounted(() => {
+	originRect = undefined
+})
+
+watch(() => props.el, async (newEl) => {
+	await nextTick()
+	if (newEl) {
+		originRect = newEl.getBoundingClientRect()
+	}
 })
 </script>
 
@@ -151,14 +180,14 @@ useEventListener('keydown', (e) => {
 <div class="z-lightbox">
 	<Transition>
 		<div
-			v-if="show"
+			v-if="props.isOpening"
 			id="z-lightbox-bgmask"
 			@click="emit('close')"
 		/>
 	</Transition>
 	<Transition @enter="onEnter" @leave="onLeave">
 		<NuxtImg
-			v-if="show"
+			v-if="props.isOpening"
 			ref="lightbox"
 			class="image"
 			:alt="el.alt"
@@ -170,7 +199,7 @@ useEventListener('keydown', (e) => {
 		/>
 	</Transition>
 	<Transition>
-		<div v-if="show" class="tooltip">
+		<div v-if="props.isOpening" class="tooltip">
 			<span v-if="caption" class="caption">{{ caption }}</span>
 			<button
 				class="close"

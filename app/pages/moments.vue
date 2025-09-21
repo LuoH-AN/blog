@@ -1,725 +1,749 @@
 <script setup lang="ts">
-import type { MomentData, MomentItem } from "../types/moments";
-import { getFavicon } from "../utils/img";
-import Lightbox from "~/components/popover/Lightbox.vue";
-import blogConfig from "../../blog.config";
+import type { MomentData, MomentItem } from '../types/moments'
+import Lightbox from '~/components/popover/Lightbox.vue'
+import blogConfig from '../../blog.config'
+import { getFavicon } from '../utils/img'
 
 // --- Login Status ---
-const apiAuth = ref(false);
-const isLoggedIn = computed(() => apiAuth.value);
+const apiAuth = ref(false)
+const isLoggedIn = computed(() => apiAuth.value)
 
-const layoutStore = useLayoutStore();
-layoutStore.setAside(["blog-stats", "blog-tech", "blog-log", "poetry"]);
+const layoutStore = useLayoutStore()
+layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'poetry'])
 
 // --- API Data ---
 interface MomentApiResponse {
-  isAuthenticated: boolean;
-  moments: MomentData;
+	isAuthenticated: boolean
+	moments: MomentData
 }
 const {
-  data: apiResponse,
-  pending,
-  error,
-  refresh,
-} = await useFetch<MomentApiResponse>("/api/moments");
-const momentData = computed(() => apiResponse.value?.moments || []);
-apiAuth.value = apiResponse.value?.isAuthenticated || false;
+	data: apiResponse,
+	pending,
+	error,
+	refresh,
+} = await useFetch<MomentApiResponse>('/api/moments')
+const momentData = computed(() => apiResponse.value?.moments || [])
+apiAuth.value = apiResponse.value?.isAuthenticated || false
 watch(apiResponse, (newResponse) => {
-  apiAuth.value = newResponse?.isAuthenticated || false;
-});
+	apiAuth.value = newResponse?.isAuthenticated || false
+})
 
 // --- Local State ---
 interface MomentFormItem {
-  id: string;
-  user: {
-    name: string;
-    avatar: string;
-    avatarLink: string;
-  };
-  moment: MomentItem;
+	id: string
+	user: {
+		name: string
+		avatar: string
+		avatarLink: string
+	}
+	moment: MomentItem
 }
-const momentForms = ref<MomentFormItem[]>([]);
-const editingMoment = ref<MomentFormItem | null>(null);
+const momentForms = ref<MomentFormItem[]>([])
+const editingMoment = ref<MomentFormItem | null>(null)
 
 // Watch for data changes to populate local form state
 watch(
-  momentData,
-  (newData) => {
-    if (newData) {
-      momentForms.value = [];
-      newData.forEach((user, userIndex) => {
-        user.moment_list.forEach((moment, momentIndex) => {
-          momentForms.value.push({
-            id: `${userIndex}-${momentIndex}`,
-            user: {
-              name: user.name,
-              avatar: user.avatar,
-              avatarLink: user.avatarLink || "",
-            },
-            moment,
-          });
-        });
-      });
-      momentForms.value.sort(
-        (a, b) =>
-          new Date(b.moment.date).getTime() - new Date(a.moment.date).getTime()
-      );
-    }
-  },
-  { immediate: true }
-);
+	momentData,
+	(newData) => {
+		if (newData) {
+			momentForms.value = []
+			newData.forEach((user, userIndex) => {
+				user.moment_list.forEach((moment, momentIndex) => {
+					momentForms.value.push({
+						id: `${userIndex}-${momentIndex}`,
+						user: {
+							name: user.name,
+							avatar: user.avatar,
+							avatarLink: user.avatarLink || '',
+						},
+						moment,
+					})
+				})
+			})
+			momentForms.value.sort(
+				(a, b) =>
+					new Date(b.moment.date).getTime() - new Date(a.moment.date).getTime(),
+			)
+		}
+	},
+	{ immediate: true },
+)
 
 // --- Actions ---
-const confirmStates = ref<Record<string, boolean>>({});
-const loadingStates = ref<Record<string, boolean>>({});
+const confirmStates = ref<Record<string, boolean>>({})
+const loadingStates = ref<Record<string, boolean>>({})
 
 async function handleProtectedAction(
-  id: string,
-  action: () => Promise<void> | void
+	id: string,
+	action: () => Promise<void> | void,
 ) {
-  if (confirmStates.value[id]) {
-    delete confirmStates.value[id];
-    loadingStates.value[id] = true;
-    try {
-      await action();
-    } finally {
-      loadingStates.value[id] = false;
-    }
-  } else {
-    Object.keys(confirmStates.value).forEach(
-      (key) => delete confirmStates.value[key]
-    );
-    confirmStates.value[id] = true;
-    setTimeout(() => {
-      if (confirmStates.value[id]) delete confirmStates.value[id];
-    }, 2000);
-  }
+	if (confirmStates.value[id]) {
+		delete confirmStates.value[id]
+		loadingStates.value[id] = true
+		try {
+			await action()
+		}
+		finally {
+			loadingStates.value[id] = false
+		}
+	}
+	else {
+		Object.keys(confirmStates.value).forEach(
+			key => delete confirmStates.value[key],
+		)
+		confirmStates.value[id] = true
+		setTimeout(() => {
+			if (confirmStates.value[id])
+				delete confirmStates.value[id]
+		}, 2000)
+	}
 }
 
 async function logout() {
-  const authToken = useCookie("auth_token");
-  authToken.value = null;
-  apiAuth.value = false;
-  navigateTo("/login");
+	const authToken = useCookie('auth_token')
+	authToken.value = null
+	apiAuth.value = false
+	navigateTo('/login')
 }
 
 function openEditOverlay(form?: MomentFormItem) {
-  if (form) {
-    editingMoment.value = JSON.parse(JSON.stringify(form));
-  } else {
-    editingMoment.value = {
-      id: `new-${Date.now()}`,
-      user: {
-        name: blogConfig.author.name,
-        avatar: blogConfig.author.avatar,
-        avatarLink: blogConfig.url,
-      },
-      moment: {
-        content: "",
-        date: new Date().toLocaleString("sv-SE").replace("T", " "),
-        tags: [],
-        image: [],
-        address: "",
-      },
-    };
-  }
-  // Ensure tags and image are arrays
-  if (editingMoment.value && !editingMoment.value.moment.tags)
-    editingMoment.value.moment.tags = [];
+	if (form) {
+		editingMoment.value = JSON.parse(JSON.stringify(form))
+	}
+	else {
+		editingMoment.value = {
+			id: `new-${Date.now()}`,
+			user: {
+				name: blogConfig.author.name,
+				avatar: blogConfig.author.avatar,
+				avatarLink: blogConfig.url,
+			},
+			moment: {
+				content: '',
+				date: new Date().toLocaleString('sv-SE').replace('T', ' '),
+				tags: [],
+				image: [],
+				address: '',
+			},
+		}
+	}
+	// Ensure tags and image are arrays
+	if (editingMoment.value && !editingMoment.value.moment.tags)
+		editingMoment.value.moment.tags = []
 
-  if (editingMoment.value && !editingMoment.value.moment.image)
-    editingMoment.value.moment.image = [];
+	if (editingMoment.value && !editingMoment.value.moment.image)
+		editingMoment.value.moment.image = []
 }
 
 function closeEditOverlay() {
-  editingMoment.value = null;
+	editingMoment.value = null
 }
 
 async function saveEditingMoment() {
-  if (!editingMoment.value) return;
-  const isNew = editingMoment.value.id.startsWith("new-");
+	if (!editingMoment.value)
+		return
+	const isNew = editingMoment.value.id.startsWith('new-')
 
-  let forms = [...momentForms.value];
-  if (isNew) {
-    forms.unshift(editingMoment.value);
-  } else {
-    const index = forms.findIndex((f) => f.id === editingMoment.value!.id);
-    if (index !== -1) forms[index] = editingMoment.value;
-  }
+	const forms = [...momentForms.value]
+	if (isNew) {
+		forms.unshift(editingMoment.value)
+	}
+	else {
+		const index = forms.findIndex(f => f.id === editingMoment.value!.id)
+		if (index !== -1)
+			forms[index] = editingMoment.value
+	}
 
-  await updateMomentsApi(forms);
-  closeEditOverlay();
+	await updateMomentsApi(forms)
+	closeEditOverlay()
 }
 
 async function deleteMoment(formId: string) {
-  const updatedForms = momentForms.value.filter((f) => f.id !== formId);
-  await updateMomentsApi(updatedForms);
+	const updatedForms = momentForms.value.filter(f => f.id !== formId)
+	await updateMomentsApi(updatedForms)
 }
 
 async function updateMomentsApi(forms: MomentFormItem[]) {
-  try {
-    const newDataToSave: MomentData = [];
-    forms.forEach((formItem) => {
-      let userEntry = newDataToSave.find((u) => u.name === formItem.user.name);
-      if (!userEntry) {
-        userEntry = { ...formItem.user, moment_list: [] };
-        newDataToSave.push(userEntry);
-      }
-      userEntry.moment_list.push(formItem.moment);
-    });
+	try {
+		const newDataToSave: MomentData = []
+		forms.forEach((formItem) => {
+			let userEntry = newDataToSave.find(u => u.name === formItem.user.name)
+			if (!userEntry) {
+				userEntry = { ...formItem.user, moment_list: [] }
+				newDataToSave.push(userEntry)
+			}
+			userEntry.moment_list.push(formItem.moment)
+		})
 
-    await $fetch("/api/moments", { method: "POST", body: newDataToSave });
-    await refresh();
-  } catch (err) {
-    console.error("更新数据时出错:", err);
-    if ((err as any).response?.status === 401) navigateTo("/login");
-  }
+		await $fetch('/api/moments', { method: 'POST', body: newDataToSave })
+		await refresh()
+	}
+	catch (err) {
+		console.error('更新数据时出错:', err)
+		if ((err as any).response?.status === 401)
+			navigateTo('/login')
+	}
 }
 
 // --- Form Helpers ---
-const showTagInput = ref(false);
-const newTagText = ref("");
-const tagInputRef = ref<HTMLInputElement | null>(null);
-const tagOverlayVisible = ref<Record<string, any>>({});
-const tagClickTimeout = ref<Record<string, number>>({});
-const tagClickCount = ref<Record<string, number>>({});
+const showTagInput = ref(false)
+const newTagText = ref('')
+const tagInputRef = ref<HTMLInputElement | null>(null)
+const tagOverlayVisible = ref<Record<string, any>>({})
+const tagClickTimeout = ref<Record<string, number>>({})
+const tagClickCount = ref<Record<string, number>>({})
 
-const handleClickOutside = (event: MouseEvent) => {
-  if ((event.target as HTMLElement).closest(".add-tag-btn")) return;
+function handleClickOutside(event: MouseEvent) {
+	if ((event.target as HTMLElement).closest('.add-tag-btn'))
+		return
 
-  Object.keys(tagOverlayVisible.value).forEach((key) => {
-    if (tagOverlayVisible.value[key] === true) {
-      const tagCard = document.querySelector(`[data-tag-key="${key}"]`);
-      if (tagCard && !tagCard.contains(event.target as Node)) {
-        tagOverlayVisible.value[key] = false;
-        tagOverlayVisible.value[`${key}-mode`] = undefined;
-      }
-    }
-  });
+	Object.keys(tagOverlayVisible.value).forEach((key) => {
+		if (tagOverlayVisible.value[key] === true) {
+			const tagCard = document.querySelector(`[data-tag-key="${key}"]`)
+			if (tagCard && !tagCard.contains(event.target as Node)) {
+				tagOverlayVisible.value[key] = false
+				tagOverlayVisible.value[`${key}-mode`] = undefined
+			}
+		}
+	})
 
-  if (showTagInput.value) {
-    const tagInputContainer = document.querySelector(".tag-input-container");
-    if (
-      tagInputContainer &&
-      !tagInputContainer.contains(event.target as Node)
-    ) {
-      confirmAddTag();
-    }
-  }
-};
+	if (showTagInput.value) {
+		const tagInputContainer = document.querySelector('.tag-input-container')
+		if (
+			tagInputContainer
+			&& !tagInputContainer.contains(event.target as Node)
+		) {
+			confirmAddTag()
+		}
+	}
+}
 
 onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
+	document.addEventListener('click', handleClickOutside)
+})
 
 onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
+	document.removeEventListener('click', handleClickOutside)
+})
 
-const addTagInput = () => {
-  showTagInput.value = true;
-  nextTick(() => tagInputRef.value?.focus());
-};
-const confirmAddTag = () => {
-  if (editingMoment.value && newTagText.value.trim()) {
-    if (!editingMoment.value.moment.tags) editingMoment.value.moment.tags = [];
-    editingMoment.value.moment.tags.push(newTagText.value.trim());
-  }
-  newTagText.value = "";
-  showTagInput.value = false;
-};
+function addTagInput() {
+	showTagInput.value = true
+	nextTick(() => tagInputRef.value?.focus())
+}
+function confirmAddTag() {
+	if (editingMoment.value && newTagText.value.trim()) {
+		if (!editingMoment.value.moment.tags)
+			editingMoment.value.moment.tags = []
+		editingMoment.value.moment.tags.push(newTagText.value.trim())
+	}
+	newTagText.value = ''
+	showTagInput.value = false
+}
 
-const handleTagClick = (tagIndex: number) => {
-  const key = `${tagIndex}`;
-  tagClickCount.value[key] = (tagClickCount.value[key] || 0) + 1;
+function handleTagClick(tagIndex: number) {
+	const key = `${tagIndex}`
+	tagClickCount.value[key] = (tagClickCount.value[key] || 0) + 1
 
-  if (tagClickCount.value[key] === 1) {
-    tagClickTimeout.value[key] = window.setTimeout(() => {
-      showTagEditOverlay(tagIndex);
-      tagClickCount.value[key] = 0;
-    }, 300);
-  } else if (tagClickCount.value[key] === 2) {
-    clearTimeout(tagClickTimeout.value[key]);
-    showTagDeleteOverlay(tagIndex);
-    tagClickCount.value[key] = 0;
-  }
-};
+	if (tagClickCount.value[key] === 1) {
+		tagClickTimeout.value[key] = window.setTimeout(() => {
+			showTagEditOverlay(tagIndex)
+			tagClickCount.value[key] = 0
+		}, 300)
+	}
+	else if (tagClickCount.value[key] === 2) {
+		clearTimeout(tagClickTimeout.value[key])
+		showTagDeleteOverlay(tagIndex)
+		tagClickCount.value[key] = 0
+	}
+}
 
-const showTagEditOverlay = (tagIndex: number) => {
-  const key = `${tagIndex}`;
-  tagOverlayVisible.value[key] = true;
-  tagOverlayVisible.value[`${key}-mode`] = "edit";
-};
+function showTagEditOverlay(tagIndex: number) {
+	const key = `${tagIndex}`
+	tagOverlayVisible.value[key] = true
+	tagOverlayVisible.value[`${key}-mode`] = 'edit'
+}
 
-const showTagDeleteOverlay = (tagIndex: number) => {
-  const key = `${tagIndex}`;
-  tagOverlayVisible.value[key] = true;
-  tagOverlayVisible.value[`${key}-mode`] = "delete";
-};
+function showTagDeleteOverlay(tagIndex: number) {
+	const key = `${tagIndex}`
+	tagOverlayVisible.value[key] = true
+	tagOverlayVisible.value[`${key}-mode`] = 'delete'
+}
 
-const editTag = (tagIndex: number) => {
-  if (editingMoment.value?.moment.tags) {
-    const currentTag = editingMoment.value.moment.tags[tagIndex];
-    showTagInput.value = true;
-    newTagText.value = currentTag || "";
-    editingMoment.value.moment.tags.splice(tagIndex, 1);
-    nextTick(() => {
-      tagInputRef.value?.focus();
-    });
-  }
-  const key = `${tagIndex}`;
-  tagOverlayVisible.value[key] = false;
-};
+function editTag(tagIndex: number) {
+	if (editingMoment.value?.moment.tags) {
+		const currentTag = editingMoment.value.moment.tags[tagIndex]
+		showTagInput.value = true
+		newTagText.value = currentTag || ''
+		editingMoment.value.moment.tags.splice(tagIndex, 1)
+		nextTick(() => {
+			tagInputRef.value?.focus()
+		})
+	}
+	const key = `${tagIndex}`
+	tagOverlayVisible.value[key] = false
+}
 
-const deleteTag = (tagIndex: number) => {
-  if (editingMoment.value?.moment.tags) {
-    editingMoment.value.moment.tags.splice(tagIndex, 1);
-  }
-  const key = `${tagIndex}`;
-  tagOverlayVisible.value[key] = false;
-};
-const addImageInput = () => {
-  if (editingMoment.value) {
-    if (!editingMoment.value.moment.image)
-      editingMoment.value.moment.image = [];
-    editingMoment.value.moment.image.push("");
-  }
-};
-const removeImageInput = (index: number) => {
-  if (editingMoment.value?.moment.image)
-    editingMoment.value.moment.image.splice(index, 1);
-};
-const setCurrentDateTime = () => {
-  if (editingMoment.value)
-    editingMoment.value.moment.date = new Date()
-      .toLocaleString("sv-SE")
-      .replace("T", " ");
-};
+function deleteTag(tagIndex: number) {
+	if (editingMoment.value?.moment.tags) {
+		editingMoment.value.moment.tags.splice(tagIndex, 1)
+	}
+	const key = `${tagIndex}`
+	tagOverlayVisible.value[key] = false
+}
+function addImageInput() {
+	if (editingMoment.value) {
+		if (!editingMoment.value.moment.image)
+			editingMoment.value.moment.image = []
+		editingMoment.value.moment.image.push('')
+	}
+}
+function removeImageInput(index: number) {
+	if (editingMoment.value?.moment.image)
+		editingMoment.value.moment.image.splice(index, 1)
+}
+function setCurrentDateTime() {
+	if (editingMoment.value) {
+		editingMoment.value.moment.date = new Date()
+			.toLocaleString('sv-SE')
+			.replace('T', ' ')
+	}
+}
 
 // --- Display Helpers ---
 function scrollToComment(content: string) {
-  const commentSection = document.getElementById("comment-section");
-  if (commentSection) {
-    commentSection.scrollIntoView({ behavior: "smooth" });
-    const textarea = commentSection.querySelector(
-      ".tk-submit textarea"
-    ) as HTMLTextAreaElement | null;
-    if (textarea) {
-      textarea.focus();
-      textarea.value = `> ${content}\n\n`;
-      textarea.dispatchEvent(new Event("input", { bubbles: true }));
-    }
-  }
+	const commentSection = document.getElementById('comment-section')
+	if (commentSection) {
+		commentSection.scrollIntoView({ behavior: 'smooth' })
+		const textarea = commentSection.querySelector(
+			'.tk-submit textarea',
+		) as HTMLTextAreaElement | null
+		if (textarea) {
+			textarea.focus()
+			textarea.value = `> ${content}\n\n`
+			textarea.dispatchEvent(new Event('input', { bubbles: true }))
+		}
+	}
 }
 function getFaviconUrl(url: string): string {
-  try {
-    const domain = new URL(url).hostname;
-    return getFavicon(domain, { provider: "google", size: 32 });
-  } catch (e) {
-    console.error("Invalid URL for favicon:", url, e);
-    return "";
-  }
+	try {
+		const domain = new URL(url).hostname
+		return getFavicon(domain, { provider: 'google', size: 32 })
+	}
+	catch (e) {
+		console.error('Invalid URL for favicon:', url, e)
+		return ''
+	}
 }
-const lightboxEl = ref<HTMLImageElement>();
-const isLightboxOpening = ref(false);
+const lightboxEl = ref<HTMLImageElement>()
+const isLightboxOpening = ref(false)
 function openLightbox(e: MouseEvent) {
-  if (e.target instanceof HTMLImageElement) {
-    lightboxEl.value = e.target;
-    isLightboxOpening.value = true;
-  }
+	if (e.target instanceof HTMLImageElement) {
+		lightboxEl.value = e.target
+		isLightboxOpening.value = true
+	}
 }
 function closeLightbox() {
-  isLightboxOpening.value = false;
+	isLightboxOpening.value = false
 }
 </script>
 
 <template>
-  <div class="talk-container">
-    <!-- Header Card -->
-    <div v-if="isLoggedIn" class="moment-header-card">
-      <h1>瞬间管理</h1>
-      <div class="header-actions">
-        <button
-          class="header-action-btn"
-          :class="{ 'is-confirming': confirmStates.logout }"
-          :title="confirmStates.logout ? '确认退出' : '退出登录'"
-          @click="handleProtectedAction('logout', logout)"
-        >
-          <Icon v-if="loadingStates.logout" name="svg-spinners:180-ring" />
-          <Icon
-            v-else
-            :name="confirmStates.logout ? 'ph:check-bold' : 'ph:sign-out-bold'"
-            class="action-icon"
-          />
-        </button>
-        <button
-          class="header-action-btn"
-          :class="{ 'is-confirming': confirmStates.add }"
-          :title="confirmStates.add ? '确认添加' : '添加新瞬间'"
-          @click="handleProtectedAction('add', () => openEditOverlay())"
-        >
-          <Icon
-            :name="confirmStates.add ? 'ph:check-bold' : 'ph:plus-circle-bold'"
-            class="action-icon"
-          />
-        </button>
-      </div>
-    </div>
+<div class="talk-container">
+	<!-- Header Card -->
+	<div v-if="isLoggedIn" class="moment-header-card">
+		<h1>瞬间管理</h1>
+		<div class="header-actions">
+			<button
+				class="header-action-btn"
+				:class="{ 'is-confirming': confirmStates.logout }"
+				:title="confirmStates.logout ? '确认退出' : '退出登录'"
+				@click="handleProtectedAction('logout', logout)"
+			>
+				<Icon v-if="loadingStates.logout" name="svg-spinners:180-ring" />
+				<Icon
+					v-else
+					:name="confirmStates.logout ? 'ph:check-bold' : 'ph:sign-out-bold'"
+					class="action-icon"
+				/>
+			</button>
+			<button
+				class="header-action-btn"
+				:class="{ 'is-confirming': confirmStates.add }"
+				:title="confirmStates.add ? '确认添加' : '添加新瞬间'"
+				@click="handleProtectedAction('add', () => openEditOverlay())"
+			>
+				<Icon
+					:name="confirmStates.add ? 'ph:check-bold' : 'ph:plus-circle-bold'"
+					class="action-icon"
+				/>
+			</button>
+		</div>
+	</div>
 
-    <!-- Floating Edit Card -->
-    <div
-      v-if="editingMoment"
-      class="edit-overlay"
-      @click.self="closeEditOverlay"
-    >
-      <div class="moment-edit-card floating">
-        <div class="card-top-actions">
-          <h2>
-            {{ editingMoment.id.startsWith("new-") ? "新增瞬间" : "编辑瞬间" }}
-          </h2>
-          <div class="action-buttons">
-            <button
-              class="control-btn exit-btn"
-              :class="{ 'is-confirming': confirmStates.exit }"
-              title="取消"
-              @click="handleProtectedAction('exit', closeEditOverlay)"
-            >
-              <Icon
-                :name="
-                  confirmStates.exit ? 'ph:check-bold' : 'ph:x-circle-bold'
-                "
-                class="action-icon"
-              />
-            </button>
-            <button
-              class="control-btn save-btn"
-              :class="{ 'is-confirming': confirmStates.save }"
-              title="保存"
-              @click="handleProtectedAction('save', saveEditingMoment)"
-            >
-              <Icon v-if="loadingStates.save" name="svg-spinners:180-ring" />
-              <Icon
-                v-else
-                :name="
-                  confirmStates.save ? 'ph:check-bold' : 'ph:floppy-disk-bold'
-                "
-                class="action-icon"
-              />
-            </button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>内容:</label>
-          <textarea
-            v-model="editingMoment.moment.content"
-            class="form-textarea"
-            placeholder="瞬间内容"
-          />
-        </div>
-        <div class="form-group">
-          <label>日期:</label>
-          <div class="date-input-group">
-            <input
-              v-model="editingMoment.moment.date"
-              type="text"
-              class="form-input date-input"
-              placeholder="yyyy-mm-ddTHH:mm:ssZ"
-            />
-            <button
-              class="time-btn"
-              title="设置当前时间"
-              @click="setCurrentDateTime"
-            >
-              <Icon name="ph:clock-bold" />
-            </button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>地址:</label>
-          <input
-            v-model="editingMoment.moment.address"
-            type="text"
-            class="form-input"
-            placeholder="地址"
-          />
-        </div>
-        <div class="form-group">
-          <div class="card-header">
-            <label>标签:</label>
-            <button class="add-tag-btn" title="添加标签" @click="addTagInput">
-              <Icon name="ph:plus-circle-bold" />
-            </button>
-          </div>
-          <div class="tags-card editable">
-            <div class="tags-container">
-              <div v-if="showTagInput" class="tag-input-container">
-                <input
-                  ref="tagInputRef"
-                  v-model="newTagText"
-                  type="text"
-                  class="form-input tag-new-input"
-                  placeholder="输入标签"
-                  @keyup.enter="confirmAddTag"
-                />
-              </div>
-              <template v-if="editingMoment.moment.tags">
-                <div
-                  v-for="(tag, tagIndex) in editingMoment.moment.tags"
-                  :key="tagIndex"
-                  class="tag-card editable"
-                  :data-tag-key="tagIndex"
-                  @click="handleTagClick(tagIndex)"
-                >
-                  {{ tag }}
-                  <div
-                    v-if="tagOverlayVisible[tagIndex]"
-                    class="tag-overlay"
-                  >
-                    <div class="tag-overlay-actions">
-                      <button
-                        v-if="tagOverlayVisible[`${tagIndex}-mode`] === 'edit'"
-                        class="tag-edit-btn"
-                        title="编辑"
-                        @click.stop="editTag(tagIndex)"
-                      >
-                        <Icon name="ph:note-pencil-bold" />
-                      </button>
-                      <button
-                        v-if="
-                          tagOverlayVisible[`${tagIndex}-mode`] === 'delete'
-                        "
-                        class="tag-delete-btn"
-                        title="删除"
-                        @click.stop="deleteTag(tagIndex)"
-                      >
-                        <Icon name="ph:trash-bold" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </template>
-              <div
-                v-if="
-                  !editingMoment.moment.tags ||
-                  (editingMoment.moment.tags.length === 0 && !showTagInput)
-                "
-                class="empty-tags"
-              >
-                暂无标签
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="card-header">
-            <label>图片:</label>
-            <button
-              class="add-image-btn"
-              title="添加图片"
-              @click="addImageInput"
-            >
-              <Icon name="ph:plus-circle-bold" />
-            </button>
-          </div>
-          <div class="images-card">
-            <div class="images-input">
-              <template v-if="editingMoment.moment.image">
-                <div
-                  v-for="(img, imgIndex) in editingMoment.moment.image"
-                  :key="imgIndex"
-                  class="image-input-group"
-                >
-                  <input
-                    v-model="editingMoment.moment.image[imgIndex]"
-                    type="text"
-                    class="form-input image-input"
-                    placeholder="图片URL"
-                  />
-                  <button
-                    class="remove-btn"
-                    :class="{
-                      'is-confirming': confirmStates[`image-${imgIndex}`],
-                    }"
-                    title="删除图片"
-                    @click="
-                      handleProtectedAction(`image-${imgIndex}`, () =>
-                        removeImageInput(imgIndex)
-                      )
-                    "
-                  >
-                    <Icon
-                      :name="
-                        confirmStates[`image-${imgIndex}`]
-                          ? 'ph:check-bold'
-                          : 'ph:minus-circle-bold'
-                      "
-                      class="action-icon"
-                    />
-                  </button>
-                </div>
-              </template>
-              <div
-                v-if="
-                  !editingMoment.moment.image ||
-                  editingMoment.moment.image.length === 0
-                "
-                class="empty-images"
-              >
-                暂无图片
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+	<!-- Floating Edit Card -->
+	<div
+		v-if="editingMoment"
+		class="edit-overlay"
+		@click.self="closeEditOverlay"
+	>
+		<div class="moment-edit-card floating">
+			<div class="card-top-actions">
+				<h2>
+					{{ editingMoment.id.startsWith("new-") ? "新增瞬间" : "编辑瞬间" }}
+				</h2>
+				<div class="action-buttons">
+					<button
+						class="control-btn exit-btn"
+						:class="{ 'is-confirming': confirmStates.exit }"
+						title="取消"
+						@click="handleProtectedAction('exit', closeEditOverlay)"
+					>
+						<Icon
+							:name="
+								confirmStates.exit ? 'ph:check-bold' : 'ph:x-circle-bold'
+							"
+							class="action-icon"
+						/>
+					</button>
+					<button
+						class="control-btn save-btn"
+						:class="{ 'is-confirming': confirmStates.save }"
+						title="保存"
+						@click="handleProtectedAction('save', saveEditingMoment)"
+					>
+						<Icon v-if="loadingStates.save" name="svg-spinners:180-ring" />
+						<Icon
+							v-else
+							:name="
+								confirmStates.save ? 'ph:check-bold' : 'ph:floppy-disk-bold'
+							"
+							class="action-icon"
+						/>
+					</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>内容:</label>
+				<textarea
+					v-model="editingMoment.moment.content"
+					class="form-textarea"
+					placeholder="瞬间内容"
+				/>
+			</div>
+			<div class="form-group">
+				<label>日期:</label>
+				<div class="date-input-group">
+					<input
+						v-model="editingMoment.moment.date"
+						type="text"
+						class="form-input date-input"
+						placeholder="yyyy-mm-ddTHH:mm:ssZ"
+					>
+					<button
+						class="time-btn"
+						title="设置当前时间"
+						@click="setCurrentDateTime"
+					>
+						<Icon name="ph:clock-bold" />
+					</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>地址:</label>
+				<input
+					v-model="editingMoment.moment.address"
+					type="text"
+					class="form-input"
+					placeholder="地址"
+				>
+			</div>
+			<div class="form-group">
+				<div class="card-header">
+					<label>标签:</label>
+					<button class="add-tag-btn" title="添加标签" @click="addTagInput">
+						<Icon name="ph:plus-circle-bold" />
+					</button>
+				</div>
+				<div class="tags-card editable">
+					<div class="tags-container">
+						<div v-if="showTagInput" class="tag-input-container">
+							<input
+								ref="tagInputRef"
+								v-model="newTagText"
+								type="text"
+								class="form-input tag-new-input"
+								placeholder="输入标签"
+								@keyup.enter="confirmAddTag"
+							>
+						</div>
+						<template v-if="editingMoment.moment.tags">
+							<div
+								v-for="(tag, tagIndex) in editingMoment.moment.tags"
+								:key="tagIndex"
+								class="tag-card editable"
+								:data-tag-key="tagIndex"
+								@click="handleTagClick(tagIndex)"
+							>
+								{{ tag }}
+								<div
+									v-if="tagOverlayVisible[tagIndex]"
+									class="tag-overlay"
+								>
+									<div class="tag-overlay-actions">
+										<button
+											v-if="tagOverlayVisible[`${tagIndex}-mode`] === 'edit'"
+											class="tag-edit-btn"
+											title="编辑"
+											@click.stop="editTag(tagIndex)"
+										>
+											<Icon name="ph:note-pencil-bold" />
+										</button>
+										<button
+											v-if="
+												tagOverlayVisible[`${tagIndex}-mode`] === 'delete'
+											"
+											class="tag-delete-btn"
+											title="删除"
+											@click.stop="deleteTag(tagIndex)"
+										>
+											<Icon name="ph:trash-bold" />
+										</button>
+									</div>
+								</div>
+							</div>
+						</template>
+						<div
+							v-if="
+								!editingMoment.moment.tags
+									|| (editingMoment.moment.tags.length === 0 && !showTagInput)
+							"
+							class="empty-tags"
+						>
+							暂无标签
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="card-header">
+					<label>图片:</label>
+					<button
+						class="add-image-btn"
+						title="添加图片"
+						@click="addImageInput"
+					>
+						<Icon name="ph:plus-circle-bold" />
+					</button>
+				</div>
+				<div class="images-card">
+					<div class="images-input">
+						<template v-if="editingMoment.moment.image">
+							<div
+								v-for="(img, imgIndex) in editingMoment.moment.image"
+								:key="imgIndex"
+								class="image-input-group"
+							>
+								<input
+									v-model="editingMoment.moment.image[imgIndex]"
+									type="text"
+									class="form-input image-input"
+									placeholder="图片URL"
+								>
+								<button
+									class="remove-btn"
+									:class="{
+										'is-confirming': confirmStates[`image-${imgIndex}`],
+									}"
+									title="删除图片"
+									@click="
+										handleProtectedAction(`image-${imgIndex}`, () =>
+											removeImageInput(imgIndex),
+										)
+									"
+								>
+									<Icon
+										:name="
+											confirmStates[`image-${imgIndex}`]
+												? 'ph:check-bold'
+												: 'ph:minus-circle-bold'
+										"
+										class="action-icon"
+									/>
+								</button>
+							</div>
+						</template>
+						<div
+							v-if="
+								!editingMoment.moment.image
+									|| editingMoment.moment.image.length === 0
+							"
+							class="empty-images"
+						>
+							暂无图片
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- Moments List -->
-    <div v-if="pending" class="loading">加载中...</div>
-    <div v-else-if="error" class="error">加载失败: {{ error.message }}</div>
-    <template v-else-if="momentForms.length > 0">
-      <div
-        v-for="(form, index) in momentForms"
-        :key="form.id"
-        class="talk-item"
-        :style="{ '--delay': `${index * 0.1}s` }"
-      >
-        <div v-if="isLoggedIn" class="talk-item-actions">
-          <button
-            class="icon-action-btn"
-            :class="{ 'is-confirming': confirmStates[`edit-${form.id}`] }"
-            title="编辑"
-            @click="
-              handleProtectedAction(`edit-${form.id}`, () =>
-                openEditOverlay(form)
-              )
-            "
-          >
-            <Icon
-              :name="
-                confirmStates[`edit-${form.id}`]
-                  ? 'ph:check-bold'
-                  : 'ph:note-pencil-bold'
-              "
-              class="action-icon"
-            />
-          </button>
-          <button
-            class="icon-action-btn"
-            :class="{ 'is-confirming': confirmStates[`delete-${form.id}`] }"
-            title="删除"
-            @click="
-              handleProtectedAction(`delete-${form.id}`, () =>
-                deleteMoment(form.id)
-              )
-            "
-          >
-            <Icon
-              v-if="loadingStates[`delete-${form.id}`]"
-              name="svg-spinners:180-ring"
-            />
-            <Icon
-              v-else
-              :name="
-                confirmStates[`delete-${form.id}`]
-                  ? 'ph:check-bold'
-                  : 'ph:trash-bold'
-              "
-              class="action-icon"
-            />
-          </button>
-        </div>
-        <div class="talk-meta">
-          <a :href="form.user.avatarLink" class="avatar-link">
-            <img :src="form.user.avatar" class="avatar" />
-          </a>
-          <div class="info">
-            <div class="talk-nick">
-              {{ form.user.name }}
-              <Icon name="i-material-symbols:verified" class="verified" />
-            </div>
-            <div class="talk-date">{{ form.moment.date }}</div>
-          </div>
-        </div>
-        <div class="talk-content">
-          <p class="content-text">{{ form.moment.content }}</p>
-          <div
-            v-if="form.moment.image && form.moment.image.length > 0"
-            class="image-grid"
-            @click="openLightbox"
-          >
-            <img
-              v-for="(img, imgIndex) in form.moment.image"
-              :key="imgIndex"
-              :src="img"
-              class="grid-img"
-            />
-          </div>
-          <a
-            v-if="form.moment.link"
-            :href="form.moment.link.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-card"
-          >
-            <img
-              :src="getFaviconUrl(form.moment.link.url)"
-              alt="Favicon"
-              class="link-favicon"
-              @error="
-                (e) => ((e.target as HTMLImageElement).style.display = 'none')
-              "
-            />
-            <span class="link-text">{{ form.moment.link.text }}</span>
-            <Icon
-              v-if="form.moment.link.icon"
-              :name="form.moment.link.icon"
-              class="link-arrow"
-            />
-          </a>
-        </div>
-        <div class="talk-bottom">
-          <div class="talk-meta-info">
-            <div
-              v-if="form.moment.tags && form.moment.tags.length > 0"
-              class="talk-tags-wrapper"
-            >
-              <span v-for="tag in form.moment.tags" :key="tag" class="tag-card">
-                <Icon name="i-ph:tag-bold" /> {{ tag }}
-              </span>
-            </div>
-            <div v-if="form.moment.address" class="talk-address-wrapper">
-              <a
-                v-tip="{ content: `搜索: ${form.moment.address}` }"
-                :href="`https://www.bing.com/maps?q=${encodeURIComponent(form.moment.address)}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="address-card"
-              >
-                <Icon name="i-ph:map-pin-bold" /> {{ form.moment.address }}
-              </a>
-            </div>
-          </div>
-          <button
-            class="comment-btn"
-            @click="scrollToComment(form.moment.content)"
-          >
-            <Icon name="i-ph:chats-bold" />
-          </button>
-        </div>
-      </div>
-    </template>
-    <div v-else class="no-data">暂无瞬间数据</div>
+	<!-- Moments List -->
+	<div v-if="pending" class="loading">
+		加载中...
+	</div>
+	<div v-else-if="error" class="error">
+		加载失败: {{ error.message }}
+	</div>
+	<template v-else-if="momentForms.length > 0">
+		<div
+			v-for="(form, index) in momentForms"
+			:key="form.id"
+			class="talk-item"
+			:style="{ '--delay': `${index * 0.1}s` }"
+		>
+			<div v-if="isLoggedIn" class="talk-item-actions">
+				<button
+					class="icon-action-btn"
+					:class="{ 'is-confirming': confirmStates[`edit-${form.id}`] }"
+					title="编辑"
+					@click="
+						handleProtectedAction(`edit-${form.id}`, () =>
+							openEditOverlay(form),
+						)
+					"
+				>
+					<Icon
+						:name="
+							confirmStates[`edit-${form.id}`]
+								? 'ph:check-bold'
+								: 'ph:note-pencil-bold'
+						"
+						class="action-icon"
+					/>
+				</button>
+				<button
+					class="icon-action-btn"
+					:class="{ 'is-confirming': confirmStates[`delete-${form.id}`] }"
+					title="删除"
+					@click="
+						handleProtectedAction(`delete-${form.id}`, () =>
+							deleteMoment(form.id),
+						)
+					"
+				>
+					<Icon
+						v-if="loadingStates[`delete-${form.id}`]"
+						name="svg-spinners:180-ring"
+					/>
+					<Icon
+						v-else
+						:name="
+							confirmStates[`delete-${form.id}`]
+								? 'ph:check-bold'
+								: 'ph:trash-bold'
+						"
+						class="action-icon"
+					/>
+				</button>
+			</div>
+			<div class="talk-meta">
+				<a :href="form.user.avatarLink" class="avatar-link">
+					<img :src="form.user.avatar" class="avatar">
+				</a>
+				<div class="info">
+					<div class="talk-nick">
+						{{ form.user.name }}
+						<Icon name="i-material-symbols:verified" class="verified" />
+					</div>
+					<div class="talk-date">
+						{{ form.moment.date }}
+					</div>
+				</div>
+			</div>
+			<div class="talk-content">
+				<p class="content-text">
+					{{ form.moment.content }}
+				</p>
+				<div
+					v-if="form.moment.image && form.moment.image.length > 0"
+					class="image-grid"
+					@click="openLightbox"
+				>
+					<img
+						v-for="(img, imgIndex) in form.moment.image"
+						:key="imgIndex"
+						:src="img"
+						class="grid-img"
+					>
+				</div>
+				<a
+					v-if="form.moment.link"
+					:href="form.moment.link.url"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link-card"
+				>
+					<img
+						:src="getFaviconUrl(form.moment.link.url)"
+						alt="Favicon"
+						class="link-favicon"
+						@error="
+							(e) => ((e.target as HTMLImageElement).style.display = 'none')
+						"
+					>
+					<span class="link-text">{{ form.moment.link.text }}</span>
+					<Icon
+						v-if="form.moment.link.icon"
+						:name="form.moment.link.icon"
+						class="link-arrow"
+					/>
+				</a>
+			</div>
+			<div class="talk-bottom">
+				<div class="talk-meta-info">
+					<div
+						v-if="form.moment.tags && form.moment.tags.length > 0"
+						class="talk-tags-wrapper"
+					>
+						<span v-for="tag in form.moment.tags" :key="tag" class="tag-card">
+							<Icon name="i-ph:tag-bold" /> {{ tag }}
+						</span>
+					</div>
+					<div v-if="form.moment.address" class="talk-address-wrapper">
+						<a
+							v-tip="{ content: `搜索: ${form.moment.address}` }"
+							:href="`https://www.bing.com/maps?q=${encodeURIComponent(form.moment.address)}`"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="address-card"
+						>
+							<Icon name="i-ph:map-pin-bold" /> {{ form.moment.address }}
+						</a>
+					</div>
+				</div>
+				<button
+					class="comment-btn"
+					@click="scrollToComment(form.moment.content)"
+				>
+					<Icon name="i-ph:chats-bold" />
+				</button>
+			</div>
+		</div>
+	</template>
+	<div v-else class="no-data">
+		暂无瞬间数据
+	</div>
 
-    <PostComment id="comment-section" />
-  </div>
-  <ClientOnly>
-    <Lightbox
-      v-if="lightboxEl"
-      :el="lightboxEl"
-      :is-opening="isLightboxOpening"
-      @close="closeLightbox"
-    />
-  </ClientOnly>
+	<PostComment id="comment-section" />
+</div>
+<ClientOnly>
+	<Lightbox
+		v-if="lightboxEl"
+		:el="lightboxEl"
+		:is-opening="isLightboxOpening"
+		@close="closeLightbox"
+	/>
+</ClientOnly>
 </template>
 
 <style lang="scss" scoped>

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import type ArticleProps from '~/types/article'
 import { sort } from 'radash'
+import { computed } from 'vue'
 
 const appConfig = useAppConfig()
 useSeoMeta({
@@ -10,11 +12,12 @@ useSeoMeta({
 const layoutStore = useLayoutStore()
 layoutStore.setAside(['blog-stats', 'blog-tech', 'blog-log', 'poetry'])
 
-const { data: listRaw } = await useArticleIndex()
+const { data: listRaw } = await useAsyncData<ArticleProps[]>('tags-articles', () =>
+	useArticleIndex().then(data => data.data.value))
 
 const articlesByTag = computed(() => {
-	const result: Record<string, any[]> = {}
-	const articles = sort(listRaw.value, a => new Date(a.date || 0).getTime(), true)
+	const result: Record<string, ArticleProps[]> = {}
+	const articles = sort(listRaw.value || [], a => new Date(a.date || 0).getTime(), true)
 	for (const article of articles) {
 		if (article.tags) {
 			for (const tag of article.tags) {
