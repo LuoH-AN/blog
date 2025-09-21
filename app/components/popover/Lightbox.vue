@@ -12,7 +12,7 @@ const emit = defineEmits<{
 let originRect: DOMRect | undefined
 const rate = 0.8
 
-const lightbox = ref<HTMLImageElement>()
+const lightbox = ref<any>()
 
 const { width: winW, height: winH } = useWindowSize()
 
@@ -49,7 +49,7 @@ function restrictScale(width: number, height: number, scale: number) {
 function onWheel(e: WheelEvent) {
 	if (!lightbox.value)
 		return
-	const { left: startX, top: startY, width, height } = lightbox.value.getBoundingClientRect()
+	const { left: startX, top: startY, width, height } = lightbox.value.$el.getBoundingClientRect()
 	if (restrictScale(width, height, 1 - e.deltaY))
 		return
 	const isTouchpad = Math.abs(e.deltaY) < 8
@@ -71,7 +71,7 @@ function initPointer() {
 	}
 	if (!lightbox.value)
 		return
-	startRect = lightbox.value.getBoundingClientRect()
+	startRect = lightbox.value.$el.getBoundingClientRect()
 	startCenter = getCenter('start')
 	startDistance = getDistance('start')
 }
