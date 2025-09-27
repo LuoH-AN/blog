@@ -29,5 +29,6 @@
   "vue.inlayHints.inlineHandlerLeading": true,
   "vue.inlayHints.missingProps": true,
   "vue.inlayHints.vBindShorthand": true,
-  "yaml.format.singleQuote": true
+  "yaml.format.singleQuote": true,
+  "files.autoSave": "off"
 }

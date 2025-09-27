@@ -2,7 +2,7 @@
   channel = "stable-24.05";
 
   packages = [
-    pkgs.pnpm
+    pkgs.pnpm_latest
     pkgs.nodejs_latest
   ];
 
@@ -21,6 +21,7 @@
       "oderwat.indent-rainbow"
       "RooVeterinaryInc.roo-cline"
       "usernamehw.errorlens"
+      "saoudrizwan.claude-dev"
     ];
 
     previews = {
