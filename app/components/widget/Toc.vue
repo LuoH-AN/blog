@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { TocLink } from '@nuxt/content'
 
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
+
 const contentStore = useContentStore()
 const { toc } = storeToRefs(contentStore)
 const { activeTocItem } = useTocAutoHighlight(() => toc.value?.links ?? [])
@@ -20,6 +22,7 @@ function hasActiveChild(entry: TocLink, activeId: string | null): boolean {
 		<a href="#main-content" aria-label="返回开头">
 			<Icon name="ph:arrow-circle-up-bold" />
 		</a>
+
 		<a href="#twikoo" aria-label="评论区">
 			<Icon name="ph:chat-circle-text-bold" />
 		</a>
