@@ -17,12 +17,12 @@ const { copy, copied } = useCopy(shareText)
 </script>
 
 <template>
-<!-- 💩夸克浏览器，桌面端只有IE不支持 :has() 了 -->
 <div class="post-header" :class="{ 'has-cover': image, 'text-revert': meta?.coverRevert }">
 	<NuxtImg v-if="image" class="post-cover" :src="image" :alt="title" />
 	<div class="post-nav">
 		<div class="operations">
 			<ZButton
+				class="share-button-glass"
 				:icon="copied ? 'ph:check-bold' : 'ph:share-bold' "
 				@click="copy()"
 			>
@@ -100,8 +100,16 @@ const { copy, copied } = useCopy(shareText)
 			font-size: 0.8em;
 		}
 
-		.post-info {
-			filter: drop-shadow(0 1px 2px #000);
+		.post-info > * {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.4em;
+			padding: 0.25em 0.75em;
+			border: 1px solid rgb(255 255 255 / 20%);
+			border-radius: 8px;
+			background: transparent;
+			backdrop-filter: blur(16px);
+			transition: all 0.2s;
 		}
 
 		.post-title {
@@ -126,11 +134,20 @@ const { copy, copied } = useCopy(shareText)
 
 .operations {
 	position: absolute;
-	opacity: 0;
 	inset-inline-end: 1em;
+	opacity: 0;
 	color: var(--c-text-1);
 	transition: opacity 0.2s;
-	z-index: 1;
+	z-index: 2;
+
+	.share-button-glass {
+		border: 1px solid rgb(255 255 255 / 25%);
+		border-radius: 8px;
+		background: rgb(0 0 0 / 10%);
+		backdrop-filter: blur(16px);
+		color: #FFF;
+		transition: all 0.2s;
+	}
 }
 
 .post-cover {
@@ -139,6 +156,7 @@ const { copy, copied } = useCopy(shareText)
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	z-index: 0;
 }
 
 .post-title {
@@ -150,11 +168,9 @@ const { copy, copied } = useCopy(shareText)
 
 .post-nav {
 	position: relative;
-	opacity: 0.9;
 	padding: 0.8em 1rem;
+	z-index: 1;
 
-	// 如果在父级设置字体尺寸，会影响祖先字体尺寸改变的行为
-	// 并且设置相对尺寸会导致过渡
 	>* {
 		font-size: 0.8rem;
 	}
@@ -162,8 +178,7 @@ const { copy, copied } = useCopy(shareText)
 	.post-info {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.5em 1.2em;
-		column-gap: clamp(1em, 3%, 1.5em);
+		gap: 0.6em;
 	}
 }
 </style>

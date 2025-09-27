@@ -2,7 +2,7 @@
   channel = "stable-24.05";
 
   packages = [
-    pkgs.pnpm_latest
+    pkgs.pnpm
     pkgs.nodejs_latest
   ];
 
