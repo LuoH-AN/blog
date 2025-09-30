@@ -4,6 +4,8 @@
   packages = [
     pkgs.pnpm
     pkgs.nodejs_latest
+    pkgs.python312
+    pkgs.python312Packages.pip
   ];
 
   env = {

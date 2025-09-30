@@ -112,16 +112,16 @@ onUnmounted(() => {
 }
 
 .anonymous-btn {
-    background: none;
-    border: none;
-    color: var(--c-text-3);
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: color 0.2s;
+	border: none;
+	background: none;
+	font-size: 0.9rem;
+	color: var(--c-text-3);
+	transition: color 0.2s;
+	cursor: pointer;
 
-    &:hover {
-        color: var(--c-primary);
-    }
+	&:hover {
+		color: var(--c-primary);
+	}
 }
 
 :deep(#twikoo) {
@@ -143,65 +143,26 @@ onUnmounted(() => {
 	.tk-content {
 		margin-top: 0.1rem;
 
-		img {
-			border-radius: 0.5em;
-			cursor: zoom-in;
-		}
+		a {
+			display: inline;
+			background-image: linear-gradient(to right, rgb(128 128 128 / 30%), rgb(128 128 128 / 30%));
+			background-position: left bottom;
+			background-repeat: no-repeat;
+			background-size: 0% 2px;
+			vertical-align: baseline;
+			text-decoration: none;
+			color: #409EFF;
+			transition: background-size 0.3s ease-out, color 0.3s ease-out;
 
-        a {
-            color: #409eff;
-            text-decoration: none;
-            display: inline;
-            vertical-align: baseline;
-
-            background-image: linear-gradient(to right, rgba(128, 128, 128, 0.3), rgba(128, 128, 128, 0.3));
-            background-size: 0% 2px;
-            background-repeat: no-repeat;
-            background-position: left bottom;
-            transition: background-size 0.3s ease-out, color 0.3s ease-out;
-
-            &:hover {
-                color: #007bff;
-                background-size: 100% 2px;
-            }
-        }
-	}
-
-	.tk-comments-title, .tk-nick > strong {
-		font-family: var(--font-creative);
-	}
-
-	pre {
-		border-radius: 0.5rem;
-		font-size: 0.8125rem;
-	}
-
-	p {
-		margin: 0.2em 0;
-	}
-
-	menu, ol, ul {
-		margin: 0.5em 0;
-		padding-inline-start: 1.5em;
-		font-size: 0.9rem;
-		list-style: revert;
-
-		> li {
-			margin: 0.2em 0;
-
-			&::marker {
-				color: var(--c-primary);
+			&:hover {
+				background-size: 100% 2px;
+				color: #007BFF;
 			}
 		}
 	}
 
-	blockquote {
-		margin: 0.5em 0;
-		padding: 0.2em 0.5em;
-		border-inline-start: 4px solid var(--c-border);
-		border-radius: 4px;
-		background-color: var(--c-bg-2);
-		font-size: 0.9rem;
+	.tk-comments-title, .tk-nick > strong {
+		font-family: var(--font-creative);
 	}
 
 	.tk-owo-emotion {
@@ -224,81 +185,111 @@ onUnmounted(() => {
 		transition: background-color 0.1s;
 	}
 
-    .tk-submit {
-        .tk-col {
-            display: flex;
-            flex-direction: column;
-        }
-        .tk-input {
-            order: 1;
-        }
-        .tk-meta-input {
-            order: 2;
-            margin-top: 0.75rem;
-            margin-bottom: 0;
-        }
-    }
+	:deep(:where(.tk-preview-container,.tk-content)) {
+		pre {
+			border-radius: 0.5rem;
+			font-size: 0.8125rem;
+		}
 
-    .el-textarea__inner,
-    .tk-meta-input .el-input-group {
-        border-radius: 12px !important;
-        background-color: #e3e3e382;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        border: 1px solid var(--c-border, #dcdfe6);
-    }
+		p {
+			margin: 0.2em 0;
+		}
 
-    .el-textarea__inner {
-        min-height: 120px;
-        padding: 1rem;
-    }
+		img {
+			border-radius: 0.5em;
+		}
 
-    .tk-meta-input .el-input-group {
-        overflow: hidden;
-        background-color: transparent;
-    }
+		menu, ol, ul {
+			margin: 0.5em 0;
+			padding-inline-start: 1.5em;
+		}
+	}
 
-    .tk-meta-input .el-input-group__prepend {
-        background-color: #FFFFFF;
-        border: none;
-        color: #555;
-        padding: 0 1.25rem;
-    }
+	.tk-submit {
+		.tk-col {
+			display: flex;
+			flex-direction: column;
+		}
 
-    .tk-meta-input .el-input__inner {
-        background-color: #e3e3e382;
-        border: none;
-    }
+		.tk-input {
+			order: 1;
+		}
 
-    .el-textarea__inner:focus,
-    .tk-meta-input .el-input-group:focus-within {
-        border-color: #409EFF !important;
-        box-shadow: 0 0 0 1px #409EFF;
-    }
+		.tk-meta-input {
+			order: 2;
+			margin-top: 0.75rem;
+			margin-bottom: 0;
+		}
+	}
 
-    .tk-preview,
+	/* stylelint-disable-next-line selector-class-pattern */
+	.el-textarea__inner,
+	.tk-meta-input .el-input-group {
+		border: 1px solid var(--c-border, #DCDFE6);
+		border-radius: 12px;
+		background-color: #E3E3E382;
+		transition: border-color 0.2s, box-shadow 0.2s;
+	}
+
+	/* stylelint-disable-next-line selector-class-pattern */
+	.el-textarea__inner {
+		min-height: 120px;
+		padding: 1rem;
+	}
+
+	.tk-meta-input .el-input-group {
+		overflow: hidden;
+		background-color: transparent;
+	}
+
+	/* stylelint-disable-next-line selector-class-pattern */
+	.tk-meta-input .el-input-group__prepend {
+		padding: 0 1.25rem;
+		border: none;
+		background-color: #FFF;
+		color: #555;
+	}
+
+	/* stylelint-disable-next-line selector-class-pattern */
+	.tk-meta-input .el-input__inner {
+		border: none;
+		background-color: #E3E3E382;
+	}
+
+	/* stylelint-disable-next-line selector-class-pattern */
+	.el-textarea__inner:focus,
+	.tk-meta-input .el-input-group:focus-within {
+		border-color: #409EFF;
+		box-shadow: 0 0 0 1px #409EFF;
+	}
+
+	.tk-preview,
 	.tk-cancel,
-    .tk-send {
-        border-radius: 8px !important;
-    }
+	.tk-send {
+		border-radius: 8px;
+	}
 }
 
 .dark :deep(#twikoo) {
-    .el-textarea__inner,
-    .tk-meta-input .el-input-group {
-        background-color: #1e1e1e;
-        border-color: #404040;
-        color: #e0e0e0;
-    }
+	/* stylelint-disable-next-line selector-class-pattern */
+	.el-textarea__inner,
+	.tk-meta-input .el-input-group {
+		border-color: #404040;
+		background-color: #1E1E1E;
+		color: #E0E0E0;
+	}
 
-    .tk-meta-input .el-input-group__prepend {
-        background-color: #2c2c2e;
-        color: #ccc;
-        border-right: 1px solid #404040;
-    }
+	/* stylelint-disable-next-line selector-class-pattern */
+	.tk-meta-input .el-input-group__prepend {
+		border-right: 1px solid #404040;
+		background-color: #2C2C2E;
+		color: #CCC;
+	}
 
-    .tk-meta-input .el-input__inner {
-        background-color: #1e1e1e;
-        color: #e0e0e0;
-    }
+	/* stylelint-disable-next-line selector-class-pattern */
+	.tk-meta-input .el-input__inner {
+		background-color: #1E1E1E;
+		color: #E0E0E0;
+	}
 }
 </style>

@@ -32,7 +32,6 @@ function getInspectStyle(src: string): CSSProperties {
 onMounted(() => {
 	inspect.value = import.meta.env.DEV && location.search.includes('inspect')
 })
-
 </script>
 
 <template>
@@ -56,7 +55,7 @@ onMounted(() => {
 		<span class="title">{{ sitenick }}</span>
 		<span v-if="inspect" style="position: absolute; top: 0;">{{ title }}</span>
 	</ZRawLink>
-	
+
 	<template #content>
 		<div class="site-content">
 			<NuxtImg class="site-icon" :src="icon" :alt="title" />
@@ -82,7 +81,7 @@ onMounted(() => {
 			</div>
 
 			<p>{{ error ?? desc }}</p>
-			
+
 			<p v-if="comment">
 				<Icon name="ph:chat-centered-dots-bold" /> {{ comment }}
 			</p>
@@ -100,6 +99,7 @@ onMounted(() => {
 	margin: 1rem auto;
 	padding: 0.5rem;
 	line-height: 1.4;
+	transition: transform 0.2s;
 	animation: float-in 0.2s var(--delay) backwards;
 
 	&:hover {

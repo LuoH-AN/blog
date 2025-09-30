@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type ArticleProps from '~/types/article'
+import { getPostTypeClassName } from '~/composables/useArticle'
+import { formatNumber } from '~/utils/str'
+import { getIsoDatetime, getLocaleDatetime, getPostDate, isTimeDiffSignificant } from '~/utils/time'
 
 defineOptions({ inheritAttrs: false })
 const props = defineProps<ArticleProps>()
@@ -26,7 +29,7 @@ const { copy, copied } = useCopy(shareText)
 				:icon="copied ? 'ph:check-bold' : 'ph:share-bold' "
 				@click="copy()"
 			>
-				文字分享
+				分享
 			</ZButton>
 		</div>
 
@@ -108,7 +111,7 @@ const { copy, copied } = useCopy(shareText)
 			border: 1px solid rgb(255 255 255 / 20%);
 			border-radius: 8px;
 			background: transparent;
-			backdrop-filter: blur(16px);
+			backdrop-filter: blur(8px);
 			transition: all 0.2s;
 		}
 
@@ -144,7 +147,7 @@ const { copy, copied } = useCopy(shareText)
 		border: 1px solid rgb(255 255 255 / 25%);
 		border-radius: 8px;
 		background: rgb(0 0 0 / 10%);
-		backdrop-filter: blur(16px);
+		backdrop-filter: blur(8px);
 		color: #FFF;
 		transition: all 0.2s;
 	}
