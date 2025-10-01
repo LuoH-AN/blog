@@ -27,6 +27,6 @@ logs
 .vercel
 content/posts/test.md
 
-commit.py
+*.py
 changes.txt
-version.py
+.venv

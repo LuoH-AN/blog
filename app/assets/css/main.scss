@@ -3,20 +3,23 @@
 	--end: right;
 	--transform-start-far: translateX(-100%);
 	--transform-end-far: translateX(100%);
+
 	background-color: var(--c-bg-1);
 	font: 1rem / 1.4 sans-serif;
 	font-family: var(--font-basic);
 	font-synthesis: style;
-	text-autospace: normal;
 	word-wrap: break-word;
+	text-autospace: normal;
 	text-size-adjust: none;
 	color: var(--c-text-1);
 	transition: color 0.1s, background-color 0.2s;
 	scroll-behavior: smooth;
 	scroll-padding: 2rem;
 	scrollbar-color: var(--c-text-3) transparent;
+	scrollbar-width: none;
 	font-variant-alternates: styleset(open-digits, disambiguation, round-quotes-and-commas);
 	-webkit-tap-highlight-color: var(--c-primary-soft);
+	-ms-overflow-style: none;
 
 	&:dir(rtl) {
 		--start: right;
@@ -24,8 +27,6 @@
 		--transform-start-far: translateX(100%);
 		--transform-end-far: translateX(-100%);
 	}
-	-ms-overflow-style: none;
-	scrollbar-width: none;
 
 	&::-webkit-scrollbar {
 		display: none;
@@ -74,8 +75,12 @@ menu, ol, ul {
 button {
 	cursor: pointer;
 
-	.iconify:only-child {
+	> .iconify:only-child {
 		display: block;
+	}
+
+	&:disabled {
+		cursor: auto;
 	}
 }
 

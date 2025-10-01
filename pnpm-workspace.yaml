@@ -74,6 +74,9 @@ catalogs:
     rimraf: ^6.0.1
     strip-ansi: 7.1.2
 
+ignoredBuiltDependencies:
+  - better-sqlite3
+
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
