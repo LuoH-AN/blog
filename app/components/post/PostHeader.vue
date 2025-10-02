@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type ArticleProps from '~/types/article'
 import { getPostTypeClassName } from '~/composables/useArticle'
+import { useImageShare } from '~/composables/useCopy'
 import { formatNumber } from '~/utils/str'
 import { getIsoDatetime, getLocaleDatetime, getPostDate, isTimeDiffSignificant } from '~/utils/time'
 
@@ -17,6 +18,25 @@ const shareText = `【${appConfig.title}】${props.title}\n\n${
 	new URL(props.path!, appConfig.url).href}`
 
 const { copy, copied } = useCopy(shareText)
+
+// 使用图片分享功能
+const { handleImageShare } = useImageShare(props.title || '文章分享')
+
+// 控制分享菜单显示状态
+const showShareMenu = ref(false)
+
+// 文字分享功能
+function handleTextShare() {
+	copy()
+	showShareMenu.value = false
+}
+
+// 图片分享功能
+async function handleImageShareWrapper() {
+	handleImageShare(() => {
+		showShareMenu.value = false
+	})
+}
 </script>
 
 <template>
@@ -24,13 +44,25 @@ const { copy, copied } = useCopy(shareText)
 	<NuxtImg v-if="image" class="post-cover" :src="image" :alt="title" />
 	<div class="post-nav">
 		<div class="operations">
-			<ZButton
-				class="share-button-glass"
-				:icon="copied ? 'ph:check-bold' : 'ph:share-bold' "
-				@click="copy()"
-			>
-				分享
-			</ZButton>
+			<div class="share-container">
+				<ZButton
+					class="share-button-glass"
+					:icon="copied ? 'ph:check-bold' : 'ph:share-bold' "
+					@click="showShareMenu = !showShareMenu"
+				>
+					分享
+				</ZButton>
+				<div v-if="showShareMenu" class="share-menu">
+					<div class="share-option" @click="handleTextShare">
+						<Icon name="ph:text-align-left-bold" />
+						<span>文字分享</span>
+					</div>
+					<div class="share-option" @click="handleImageShareWrapper">
+						<Icon name="ph:image-bold" />
+						<span>图片分享</span>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<div v-if="!meta?.hideInfo" class="post-info">
@@ -137,19 +169,45 @@ const { copy, copied } = useCopy(shareText)
 
 .operations {
 	position: absolute;
-	inset-inline-end: 1em;
 	opacity: 0;
+	inset-inline-end: 1em;
 	color: var(--c-text-1);
 	transition: opacity 0.2s;
-	z-index: 2;
+	z-index: 1;
+}
 
-	.share-button-glass {
-		border: 1px solid rgb(255 255 255 / 25%);
-		border-radius: 8px;
-		background: rgb(0 0 0 / 10%);
-		backdrop-filter: blur(8px);
-		color: #FFF;
-		transition: all 0.2s;
+.share-container {
+	position: relative;
+}
+
+.share-menu {
+	position: absolute;
+	overflow: hidden;
+	top: 100%;
+	right: 0;
+	min-width: 120px;
+	margin-top: 0.5rem;
+	border: 1px solid var(--c-border);
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+	background-color: var(--c-bg-2);
+	z-index: 10;
+}
+
+.share-option {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 1rem;
+	transition: background-color 0.2s;
+	cursor: pointer;
+
+	&:hover {
+		background-color: var(--c-bg-1);
+	}
+
+	span {
+		font-size: 0.9rem;
 	}
 }
 

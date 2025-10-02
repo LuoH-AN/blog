@@ -6,6 +6,8 @@
     pkgs.nodejs_latest
     pkgs.python312
     pkgs.python312Packages.pip
+    pkgs.gcc
+    pkgs.gnumake
   ];
 
   env = {
@@ -40,12 +42,7 @@
     };
 
     workspace = {
-      onCreate = {
-        install = "pnpm add -g pnpm";
-      };
-      onStart = {
-        dev = "pnpm dev";
-      };
+      
     };
   };
 }

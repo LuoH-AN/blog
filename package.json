@@ -41,6 +41,7 @@
     "embla-carousel-autoplay": "catalog:ui",
     "embla-carousel-vue": "catalog:ui",
     "embla-carousel-wheel-gestures": "catalog:ui",
+    "html2canvas": "catalog:util",
     "jsonwebtoken": "catalog:util",
     "minisearch": "catalog:util",
     "nanoid": "catalog:util",
