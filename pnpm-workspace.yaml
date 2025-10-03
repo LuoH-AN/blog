@@ -62,9 +62,9 @@ catalogs:
     '@vueuse/nuxt': 13.9.0
     '@vueuse/router': 13.9.0
     date-fns: 4.1.0
-    html2canvas: 1.4.1
     date-fns-tz: 3.2.0
     fast-xml-parser: 5.2.5
+    html2canvas: 1.4.1
     jsonwebtoken: 9.0.2
     minisearch: 7.2.0
     nanoid: 5.1.6
@@ -74,34 +74,6 @@ catalogs:
     radash: 12.1.1
     rimraf: ^6.0.1
     strip-ansi: 7.1.2
-  conflicts_html2canvas_:
-    html2canvas: ''
-  conflicts_util_:
-    html2canvas: ''
-  conflicts_util_c:
-    html2canvas: c
-  conflicts_util_ca:
-    html2canvas: ca
-  conflicts_util_cat:
-    html2canvas: cat
-  conflicts_util_cata:
-    html2canvas: cata
-  conflicts_util_catal:
-    html2canvas: catal
-  conflicts_util_cataloh:
-    html2canvas: cataloh
-  'conflicts_util_cataloh:':
-    html2canvas: 'cataloh:'
-  conflicts_util_cataloh:u:
-    html2canvas: cataloh:u
-  conflicts_util_cataloh:ut:
-    html2canvas: cataloh:ut
-  conflicts_util_cataloh:uti:
-    html2canvas: cataloh:uti
-  conflicts_util_cataloh:util:
-    html2canvas: cataloh:util
-  conflicts_util_cataloh:utils:
-    html2canvas: cataloh:utils
 
 ignoredBuiltDependencies:
   - better-sqlite3
@@ -122,5 +94,3 @@ patchedDependencies:
   '@vue/shared': patches/@vue__shared.patch
 
 shamefullyHoist: true
-catalog:
-  html2canvas: ^1.4.1
