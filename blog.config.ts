@@ -9,7 +9,7 @@ const basicConfig = {
 	description: '建此博客，以示吾思。话天篆地，自由吾心。',
 	author: {
 		name: '落憾_EnLtLH',
-		avatar: 'https://cdn2.enltlh.me/pichub/1/2025/2231d2da22a739df.jpg',
+		avatar: 'https://cdn2.enltlh.me/picture/2025/57bd486ead4f5b34a28aea7f160a70ae.avif',
 		email: 'enltlh@gmail.com',
 		homepage: 'https:/blog.enltlh.me/',
 	},
@@ -18,7 +18,7 @@ const basicConfig = {
 		name: '署名-非商业性使用-相同方式共享 4.0 国际',
 		url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans',
 	},
-	favicon: 'https://cdn2.enltlh.me/pichub/1/2025/19e0fab452a27b75.png',
+	favicon: 'https://cdn2.enltlh.me/picture/2025/5223b2101b56608abd83b63642984b1f.avif',
 	language: 'zh-CN',
 	timeEstablished: '2024-04-19',
 	timezone: 'Asia/Shanghai',

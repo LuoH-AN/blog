@@ -77,7 +77,7 @@ export default defineAppConfig({
 
 	/** 左侧栏顶部 Logo */
 	header: {
-		logo: 'https://cdn2.enltlh.me/pichub/1/2025/2231d2da22a739df.jpg',
+		logo: 'https://cdn2.enltlh.me/picture/2025/57bd486ead4f5b34a28aea7f160a70ae.avif',
 		/** 展示标题文本，否则展示纯 Logo */
 		showTitle: true,
 		subtitle: blogConfig.subtitle,
