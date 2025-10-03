@@ -1,7 +1,7 @@
 ---
 title: 齐鬼传
 description: 在明堂的教室，撰写着鬼怪。
-image: https://cdn2.enltlh.me/pichub/1/2025/971a941f94fd7ec6.jpg
+image: https://cdn2.enltlh.me/picture/2025/e381a4e238a7b3d9697f3bef45300847.avif
 date: 2024-07-05
 categories: [诗词]
 tags: [写作, 杂记]
