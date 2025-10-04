@@ -37,10 +37,9 @@ const age = new Date().getFullYear() - birthYear
 
 	<div class="cards-grid">
 		<div class="card intro-card">
-			<p>你好, 很高兴认识你👋</p>
+			<p>你好, 很高兴认识你</p>
 			<h2>我叫 {{ appConfig.author.name }}</h2>
-			<p>是一名 学生、开发者、博主</p>
-			<Icon name="ph:rocket-launch-bold" class="card-bg-icon" />
+			<p>是一名 学生</p>
 		</div>
 
 		<div class="card info-card">
@@ -52,25 +51,21 @@ const age = new Date().getFullYear() - birthYear
 				<span class="label">当前</span>
 				<span class="value">{{ age }} 岁</span>
 			</div>
-			<Icon name="ph:calendar-blank-bold" class="card-bg-icon" />
 		</div>
 
 		<div class="card motto-card">
 			<span class="label">座右铭</span>
 			<p>人生得意须尽欢</p>
-			<Icon name="ph:heart-bold" class="card-bg-icon" />
 		</div>
 
 		<div class="card tech-card">
-			<span class="label">关注偏好</span>
+			<span class="label">关注</span>
 			<h3>科技，诗词</h3>
-			<Icon name="ph:desktop-tower-bold" class="card-bg-icon" />
 		</div>
 
 		<div class="card music-card">
-			<span class="label">音乐偏好</span>
+			<span class="label">音乐</span>
 			<h3>周杰伦，周深</h3>
-			<Icon name="ph:music-notes-simple-bold" class="card-bg-icon" />
 		</div>
 
 		<div class="card info-card personality-card">
@@ -81,18 +76,13 @@ const age = new Date().getFullYear() - birthYear
 			</div>
 			<a href="https://www.16personalities.com/" target="_blank" rel="noopener noreferrer" class="card-link">在
 				16personalities 了解更多</a>
-			<Icon name="ph:user-focus-bold" class="card-bg-icon" />
 		</div>
 
 		<div class="card specialty-card">
 			<span class="label">特长</span>
 			<p class="specialty-text">
-				稳稳当当的 <span class="highlight">“高冷”者</span>
-			</p>
-			<p class="specialty-text">
 				英语指数 <span class="highlight">MAX</span>
 			</p>
-			<Icon name="ph:game-controller-bold" class="card-bg-icon" />
 		</div>
 
 		<div class="card contact-card">
@@ -114,7 +104,6 @@ const age = new Date().getFullYear() - birthYear
 					<Icon name="ri:qq-fill" />
 				</a>
 			</div>
-			<Icon name="ph:address-book-bold" class="card-bg-icon" />
 		</div>
 
 		<div class="card stats-card">
@@ -147,7 +136,6 @@ const age = new Date().getFullYear() - birthYear
 					</div>
 				</div>
 			</div>
-			<Icon name="ph:chart-line-bold" class="card-bg-icon" />
 		</div>
 	</div>
 </div>
@@ -158,7 +146,6 @@ const age = new Date().getFullYear() - birthYear
 	max-width: 1000px;
 	margin: 0 auto;
 	padding: 2rem 1rem;
-	animation: float-in 0.3s backwards;
 }
 
 .about-header {
@@ -224,63 +211,29 @@ const age = new Date().getFullYear() - birthYear
 	position: relative;
 	overflow: hidden;
 	min-height: 220px;
-	padding: 2rem 1.5rem;
-	border: 1px solid #CCC;
-	border-radius: 1.5rem;
+	padding: 0.5rem 0.8rem;
+	border-radius: 0.8rem;
 	box-shadow: none;
-	background-color: white;
+	background-color: var(--c-bg-2);
 	text-align: center;
+	transform: none;
 	transition: none;
+}
 
-	&::before {
-		content: "";
-		position: absolute;
-		opacity: 0;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		border-radius: 1.5rem;
-		background-color: rgb(135 206 235 / 20%);
-		transition: opacity 0.3s ease;
-		pointer-events: none;
-		z-index: 1;
-	}
+.card:hover {
+	box-shadow: none;
+	transform: none;
+	transition: none;
+}
 
-	>* {
-		position: relative;
-		z-index: 2;
-	}
-
-	&:hover {
-		box-shadow: none;
-		transform: none;
-
-		&::before {
-			opacity: 1;
-		}
-	}
-
-	.label {
-		position: absolute;
-		opacity: 0.8;
-		top: 1rem;
-		left: 1.5rem;
-		margin: 0;
-		font-size: 0.8rem;
-		color: var(--c-text-2);
-	}
-
-	.card-bg-icon {
-		position: absolute;
-		opacity: 0.1;
-		right: 1rem;
-		bottom: 1rem;
-		font-size: 5rem;
-		color: var(--c-text-1);
-		pointer-events: none;
-		z-index: 2;
-	}
+.label {
+	position: absolute;
+	opacity: 0.8;
+	top: 1rem;
+	left: 1.2rem;
+	margin: 0;
+	font-size: 0.8rem;
+	color: var(--c-text-2);
 }
 
 .intro-card {
@@ -336,8 +289,8 @@ const age = new Date().getFullYear() - birthYear
 
 	.card-link {
 		position: absolute;
-		right: 1.5rem;
-		bottom: 1rem;
+		right: 0.8rem;
+		bottom: 0.5rem;
 		font-size: 0.8rem;
 		text-decoration: none;
 		color: var(--c-text-2);
@@ -431,11 +384,9 @@ const age = new Date().getFullYear() - birthYear
 		a {
 			font-size: 2.5rem;
 			color: var(--c-text-1);
-			transition: transform 0.2s;
 
 			&:hover {
 				color: var(--c-primary);
-				transform: scale(1.1);
 			}
 		}
 	}
@@ -522,9 +473,7 @@ const age = new Date().getFullYear() - birthYear
 	--c-danger-dark: #FF8C8C;
 
 	.card {
-		border-color: #666;
-		box-shadow: none;
-		background-color: var(--c-bg-dark-soft);
+		background-color: var(--c-bg-2);
 	}
 
 	.card,
@@ -540,8 +489,7 @@ const age = new Date().getFullYear() - birthYear
 		color: var(--c-text-dark-1);
 	}
 
-	.label,
-	.card-bg-icon {
+	.label {
 		color: var(--c-text-dark-2);
 	}
 
