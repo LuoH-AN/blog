@@ -162,42 +162,9 @@ export function useImageShare(title: string = '文章分享') {
 
 	/**
 	 * 生成并下载文章图片
-	 */
-	const generateImage = async () => {
-		try {
-			// 显示加载提示
-			const loadingMessage = showLoadingMessage()
-
-			// 创建临时容器，只包含文章头部和正文内容
-			const tempContainer = createTempContainer()
-
-			// 将临时容器添加到页面
-			document.body.appendChild(tempContainer)
-
-			// 去除所有图标，避免在图片中显示问题
-			removeIcons(tempContainer)
-
-			// 生成图片
-			const canvas = await generateCanvas(tempContainer)
-
-			// 移除临时容器和加载提示
-			document.body.removeChild(tempContainer)
-			document.body.removeChild(loadingMessage)
-
-			// 下载图片
-			downloadImage(canvas, title)
-		}
-		catch (error) {
-			console.error('生成图片失败:', error)
-			showErrorMessage()
-		}
-	}
-
-	/**
-	 * 处理图片分享
 	 * @param closeMenu - 关闭菜单的回调函数
 	 */
-	const handleImageShare = async (closeMenu?: () => void) => {
+	const generateImage = async (closeMenu?: () => void) => {
 		try {
 			// 关闭菜单
 			if (closeMenu)
@@ -231,8 +198,5 @@ export function useImageShare(title: string = '文章分享') {
 		}
 	}
 
-	return {
-		generateImage,
-		handleImageShare,
-	}
+	return generateImage
 }

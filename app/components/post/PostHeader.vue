@@ -20,7 +20,7 @@ const shareText = `【${appConfig.title}】${props.title}\n\n${
 const { copy, copied } = useCopy(shareText)
 
 // 使用图片分享功能
-const { handleImageShare } = useImageShare(props.title || '文章分享')
+const generateImage = useImageShare(props.title || '文章分享')
 
 // 控制分享菜单显示状态
 const showShareMenu = ref(false)
@@ -33,7 +33,7 @@ function handleTextShare() {
 
 // 图片分享功能
 async function handleImageShareWrapper() {
-	handleImageShare(() => {
+	generateImage(() => {
 		showShareMenu.value = false
 	})
 }

@@ -202,7 +202,7 @@ if __name__ == "__main__":
     print("GitHub Commit Change Viewer")
     print("----------------------------")
 
-    repo_url = input("Enter GitHub repository URL (e.g., https://github.com/L33Z22L11/blog-v3): ").strip()
+    repo_url = "https://github.com/L33Z22L11/blog-v3"
     commit_id = input("Enter commit ID (SHA): ").strip()
 
     if not repo_url or not commit_id:
