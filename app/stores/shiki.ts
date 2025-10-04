@@ -73,7 +73,7 @@ export const useShikiStore = defineStore('shiki', () => {
 			const { createOnigurumaEngine } = await import('shiki/engine-oniguruma.mjs')
 			engine = await createOnigurumaEngine(import('https://esm.sh/shiki/wasm' as any))
 		}
-	
+
 		return createHighlighterCore({ themes: [catppuccinLatte, oneDarkPro], engine })
 	}
 

@@ -5,11 +5,10 @@ export const useSearchStore = defineStore('search', () => {
 	const popoverStore = usePopoverStore()
 	const word = ref('')
 
-function toggle() {
-	toggle()
-}
+	function toggle() {
+		toggle()
+	}
 
-	
 	const { open, close } = popoverStore.use(() => h(LazyPopoverSearch))
 
 	watch(() => layoutStore.isOpen('search'), (searchOpen) => {

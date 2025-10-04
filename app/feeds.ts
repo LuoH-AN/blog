@@ -1,5 +1,5 @@
 import type { FeedEntry, FeedGroup } from '~/types/feed'
-import { getFavicon, getGhAvatar, getGhIcon, getQqAvatar, QqAvatarSize } from './utils/img'
+import { getFavicon, getGhAvatar } from './utils/img'
 
 export default [
 	{
@@ -19,7 +19,8 @@ export default [
 				archs: ['ZBlog'],
 				date: '2025-08-17',
 				comment: '',
-			}, {
+			},
+			{
 				author: '纸鹿本鹿',
 				sitenick: '',
 				title: '纸鹿摸鱼处',
@@ -31,7 +32,8 @@ export default [
 				archs: ['ZBlog', 'Vercel'],
 				date: '2025-08-17',
 				comment: '',
-			}, {
+			},
+			{
 				author: 'Mo的记事簿',
 				sitenick: '',
 				title: 'Mo的记事簿',
@@ -43,7 +45,8 @@ export default [
 				archs: ['Hexo', '服务器'],
 				date: '2025-08-18',
 				comment: '',
-			}, {
+			},
+			{
 				author: '清羽飞扬',
 				sitenick: '',
 				title: '清羽飞扬',
@@ -55,7 +58,8 @@ export default [
 				archs: ['Hexo', '服务器'],
 				date: '2025-08-18',
 				comment: '',
-			}, {
+			},
+			{
 				author: '间窗',
 				sitenick: '',
 				title: '间窗的博客',
@@ -67,7 +71,8 @@ export default [
 				archs: [],
 				date: '2025-08-22',
 				comment: '',
-			}, {
+			},
+			{
 				author: '尘',
 				sitenick: '',
 				title: '尘の个人博客',
@@ -79,7 +84,8 @@ export default [
 				archs: ['Hexo', 'Netlify'],
 				date: '2025-08-22',
 				comment: '',
-			}, {
+			},
+			{
 				author: 'H2O',
 				sitenick: '',
 				title: 'THW’s Blog',
@@ -91,7 +97,8 @@ export default [
 				archs: ['Astro', 'Netlify'],
 				date: '2025-08-24',
 				comment: '',
-			}, {
+			},
+			{
 				author: '落尘up',
 				sitenick: '',
 				title: '落尘up',

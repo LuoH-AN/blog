@@ -73,8 +73,8 @@ export async function getCertDomains(options: tls.ConnectionOptions): Promise<st
 		const socket = tls.connect(options, () => {
 			const cert = socket.getPeerCertificate(true)
 			const san: string[] = cert.subjectaltname
-			?.split(', ')
-			.map(s => s.replace(/^DNS:/, '')) ?? []
+				?.split(', ')
+				.map(s => s.replace(/^DNS:/, '')) ?? []
 			const domains = san.length ? san : [cert.subject.CN]
 			resolve(domains)
 			socket.end()
