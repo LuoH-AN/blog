@@ -66,10 +66,84 @@ This is a Nuxt 3-based personal blog called "落憾" (Luoh Blog). It's a Chinese
 - **Search**: MiniSearch integration
 - **Analytics**: Custom Umami and Cloudflare Insights
 
-### Special Components
-- **Prose Components**: Custom styling for markdown content (ProseCode, ProsePre, etc.)
-- **Content Components**: Special content types (MusicScore, Poetry, VideoEmbed)
-- **UI Components**: Reusable components with specific styling patterns
+### Custom Components
+
+#### Layout Components (Z-prefixed, globally registered)
+- **ZPanel** (`ZPanel.vue`) - Main layout panel with sidebar/aside controls and keyboard shortcuts
+- **ZWidget** (`ZWidget.vue`) - Widget container component
+- **ZSidebar** (`ZSidebar.vue`) - Sidebar layout component
+- **ZAside** (`ZAside.vue`) - Aside layout component
+- **ZFooter** (`ZFooter.vue`) - Footer component
+- **ZPopover** (`ZPopover.vue`) - Popover/dropdown wrapper component
+
+#### Post Components
+- **PostHeader** (`post/PostHeader.vue`) - Blog post header with metadata, categories, and sharing
+- **PostFooter** (`post/PostFooter.vue`) - Blog post footer with navigation and tags
+- **PostSurround** (`post/PostSurround.vue`) - Previous/next post navigation
+- **Comment** (`post/Comment.vue`) - Comment integration component (Twikoo)
+- **Excerpt** (`post/Excerpt.vue`) - Post excerpt/card for list views
+- **Slide** (`post/Slide.vue`) - Post slide/carousel component
+
+#### Partial Components (Reusable UI)
+- **SearchItem** (`partial/SearchItem.vue`) - Search result item display
+- **Archive** (`partial/Archive.vue`) - Archive listing component
+- **Expand** (`partial/Expand.vue`) - Expandable content wrapper
+- **IconNavList** (`partial/IconNavList.vue`) - Icon-based navigation list
+- **RawImg** (`partial/RawImg.vue`) - Raw image component with optimization
+- **OrderToggle** (`partial/OrderToggle.vue`) - Order toggle control
+- **Pagination** (`partial/Pagination.vue`) - Pagination navigation
+- **Error** (`partial/Error.vue`) - Error page/notice component
+- **Article** (`partial/Article.vue`) - Article wrapper component
+- **Button** (`partial/Button.vue`) - Custom button component
+- **RawLink** (`partial/RawLink.vue`) - Raw link component
+- **Dropdown** (`partial/Dropdown.vue`) - Dropdown menu component
+- **DlGroup** (`partial/DlGroup.vue`) - Definition list group component
+
+#### Widget Components
+- **Toc** (`widget/Toc.vue`) - Table of contents widget
+- **GithubCard** (`widget/GithubCard.vue`) - GitHub stats/activity card
+- **BlogTech** (`widget/BlogTech.vue`) - Blog tech stack display
+- **Poetry** (`widget/Poetry.vue`) - Poetry display widget
+- **BlogStats** (`widget/BlogStats.vue`) - Blog statistics widget
+- **Empty** (`widget/Empty.vue`) - Empty state component
+- **BlogLog** (`widget/BlogLog.vue`) - Blog changelog/activity log
+
+#### Content Components (Markdown enhancements)
+- **Pic** (`content/Pic.vue`) - Enhanced image component with captions
+- **Badge** (`content/Badge.vue`) - Badge/label component
+- **Tab** (`content/Tab.vue`) - Tab container component
+- **ProseA** (`content/ProseA.vue`) - Custom prose link styling
+- **MdTitle** (`content/MdTitle.vue`) - Markdown title component
+- **Alert** (`content/Alert.vue`) - Alert/notification component
+- **MusicScore** (`content/MusicScore.vue`) - Music score rendering with ABCJS
+- **LinkBanner** (`content/LinkBanner.vue`) - Link banner component
+- **Chat** (`content/Chat.vue`) - Chat/message component
+- **Timeline** (`content/Timeline.vue`) - Timeline display component
+- **ProsePre** (`content/ProsePre.vue`) - Custom code block styling
+- **Key** (`content/Key.vue`) - Keyboard key component
+- **VideoEmbed** (`content/VideoEmbed.vue`) - Video embedding component
+- **Copy** (`content/Copy.vue`) - Copy to clipboard functionality
+- **Poetry** (`content/Poetry.vue`) - Poetry formatting component
+- **Tip** (`content/Tip.vue`) - Tip/callout component
+- **Folding** (`content/Folding.vue`) - Collapsible content component
+- **EmojiClock** (`content/EmojiClock.vue`) - Emoji clock component
+- **Blur** (`content/Blur.vue`) - Blur effect component
+- **CardList** (`content/CardList.vue`) - Card list display
+- **FeedGroup** (`content/FeedGroup.vue`) - Feed grouping component
+- **ProseTable** (`content/ProseTable.vue`) - Custom table styling
+- **LinkCard** (`content/LinkCard.vue`) - Link card component
+- **Quote** (`content/Quote.vue`) - Quote component
+- **FeedCard** (`content/FeedCard.vue`) - Feed card display
+- **ProseCode** (`content/ProseCode.vue`) - Inline code styling
+
+#### Popover Components
+- **Search** (`popover/Search.vue`) - Search popover interface
+- **Lightbox** (`popover/Lightbox.vue`) - Image lightbox viewer
+
+#### Other Components
+- **ThemeToggle** (`ThemeToggle.vue`) - Theme switching (dark/light mode)
+- **SkipToContent** (`SkipToContent.vue`) - Accessibility skip link
+- **ZhiluHeader** (`zhilu/ZhiluHeader.vue`) - Zhilu-specific header component
 
 ### Module Integrations
 - **@nuxt/content**: Content management with SQLite
