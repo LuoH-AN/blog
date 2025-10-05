@@ -107,7 +107,7 @@ const age = new Date().getFullYear() - birthYear
 		</div>
 
 		<div class="card stats-card">
-			<span class="label">网站统计</span>
+			<span class="label">统计</span>
 			<div v-if="loading" class="stats-loading">
 				加载中...
 			</div>
@@ -322,8 +322,7 @@ const age = new Date().getFullYear() - birthYear
 	color: var(--c-text-1);
 
 	h3 {
-		margin: 0.5rem 0;
-		font-size: 3rem;
+		font-size: 2.5rem;
 		font-weight: bold;
 	}
 
@@ -394,6 +393,7 @@ const age = new Date().getFullYear() - birthYear
 
 .stats-card {
 	grid-column: 1 / -1;
+	margin-bottom: 1.5rem;
 	color: var(--c-text-1);
 }
 
@@ -417,9 +417,13 @@ const age = new Date().getFullYear() - birthYear
 
 .stats-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	grid-template-columns: repeat(2, 1fr);
 	gap: 1rem;
 	margin-bottom: 0;
+
+	@media (min-width: 768px) {
+		grid-template-columns: repeat(4, 1fr);
+	}
 }
 
 .stat-item {
