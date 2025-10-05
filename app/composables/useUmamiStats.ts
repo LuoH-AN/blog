@@ -23,6 +23,12 @@ interface UmamiStatsData {
 	}
 }
 
+interface UmamiApiResponse {
+	status: number
+	message: string
+	data: UmamiStatsData
+}
+
 export function useUmamiStats() {
 	const stats = ref<UmamiStatsData | null>(null)
 	const loading = ref<boolean>(true)
@@ -36,11 +42,11 @@ export function useUmamiStats() {
 
 			if (!response.ok) {
 				const errData = await response.json()
-				throw new Error(errData.statusMessage || `HTTP error! status: ${response.status}`)
+				throw new Error(errData.statusMessage || errData.message || `HTTP error! status: ${response.status}`)
 			}
 
-			const result = await response.json()
-			stats.value = result.data as UmamiStatsData
+			const result: UmamiApiResponse = await response.json()
+			stats.value = result.data
 		}
 		catch (err: any) {
 			error.value = err.message || '获取统计数据失败'

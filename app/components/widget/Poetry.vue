@@ -62,30 +62,32 @@ onMounted(() => {
 <style lang="scss" scoped>
 .poetry-content {
 	.sentence {
-        font-size: 1em;
-        line-height: 1.2;
-        margin-bottom: 0.5em;
-        text-align: center;
-        word-break: break-word;
+		margin-bottom: 0.5em;
+		font-size: 1em;
+		line-height: 1.2;
+		word-break: break-word;
+		text-align: center;
 	}
 
 	.info {
-		text-align: right;
+		padding-right: 0.8rem;
 		font-size: 0.9em;
+		text-align: right;
 		color: var(--c-text-2);
-        padding-right: 0.8rem;
+
 		.clickable {
 			cursor: pointer;
+
 			&:hover {
-				color: #2797ff ;
+				color: #2797FF;
 			}
 		}
 	}
 }
 
 .loading, .error {
-	text-align: center;
 	padding: 1em;
+	text-align: center;
 	color: var(--c-text-2);
 }
 </style>

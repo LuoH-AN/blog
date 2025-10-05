@@ -129,18 +129,18 @@ const { word } = storeToRefs(searchStore)
 		color: var(--c-text-3);
 	}
 
-		> .iconify {
-			font-size: 1.5em;
-		}
+	> .iconify {
+		font-size: 1.5em;
+	}
 
-		> .nav-text {
-			flex-grow: 1;
-		}
+	> .nav-text {
+		flex-grow: 1;
+	}
 
-		> .external-tip {
-			opacity: 0.5;
-			font-size: 1em;
-		}
+	> .external-tip {
+		opacity: 0.5;
+		font-size: 1em;
+	}
 }
 
 .search-btn {

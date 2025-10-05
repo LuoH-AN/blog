@@ -123,8 +123,9 @@ export default defineEventHandler(async (_event) => {
 			cachedToken = null
 			tokenExpiry = null
 			throw createError({
-				statusCode: 401,
-				statusMessage: '无效的认证令牌',
+				status: 401,
+				message: '认证失败：密钥错误',
+				data: null,
 			})
 		}
 
@@ -136,14 +137,16 @@ export default defineEventHandler(async (_event) => {
 		const totalStats = await fetchStatsForDefinedRange(token, totalTimeRange)
 
 		return {
-			success: true,
+			status: 200,
+			message: '成功',
 			data: totalStats,
 		}
 	}
 	catch (error: any) {
 		throw createError({
-			statusCode: 500,
-			statusMessage: error.message || '获取 Umami 统计数据失败',
+			status: 500,
+			message: error.message || '获取 Umami 统计数据失败',
+			data: null,
 		})
 	}
 })

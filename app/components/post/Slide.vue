@@ -153,20 +153,23 @@ useEventListener(emblaRef, 'wheel', (e) => {
 			inset: auto 0 0;
 			height: 33.33%;
 			padding: 1em;
+			background:
+				linear-gradient(
+					to top,
+					rgb(0 0 0 / 70%) 0%,
+					rgb(0 0 0 / 50%) 50%,
+					rgb(0 0 0 / 30%) 75%,
+					rgb(0 0 0 / 0%) 100%
+				);
 			backdrop-filter: blur(0.1em);
-			background: linear-gradient(to top,
-				rgba(0, 0, 0, 0.7) 0%,
-				rgba(0, 0, 0, 0.5) 50%,
-				rgba(0, 0, 0, 0.3) 75%,
-				rgba(0, 0, 0, 0) 100%);
 			text-align: center;
 			color: white;
 			transition: backdrop-filter 0.2s;
 
 			> .title {
-				text-wrap: balance;
 				font-size: 1em;
 				font-weight: bold;
+				text-wrap: balance;
 			}
 		}
 

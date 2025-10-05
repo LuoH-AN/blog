@@ -60,10 +60,12 @@ const scroll = ref(true)
 	max-height: 80vh;
 	max-height: 80dvh;
 	margin: auto;
+
 	> thead {
 		position: sticky;
 		top: 0;
 	}
+
 	border-collapse: collapse;
 
 	th {

@@ -22,8 +22,11 @@ watch(authKey, () => {
 })
 
 interface LoginApiResponse {
-	success: boolean
-	message?: string
+	status: number
+	message: string
+	data: {
+		success: boolean
+	}
 }
 
 async function handleLogin() {
@@ -42,15 +45,15 @@ async function handleLogin() {
 			body: { authKey: authKey.value },
 		})
 
-		if (response.success)
+		if (response.data.success)
 			await router.push('/moments')
 		else
 			error.value = response.message || '登录失败'
 	}
 	catch (err: any) {
 		console.error('登录错误:', err)
-		if (err.statusCode === 401 || err.statusCode === 400)
-			error.value = err.data?.message || '认证失败，请检查密钥'
+		if (err.status === 401 || err.status === 400)
+			error.value = err.data?.message
 		else
 			error.value = '登录失败，请检查网络或服务器状态'
 	}
@@ -62,29 +65,60 @@ async function handleLogin() {
 
 <template>
 <div class="login-page">
-	<div class="login-card">
-		<h1>登录</h1>
-		<div class="login-form">
-			<div class="form-group">
-				<label for="authKey">认证密钥</label>
-				<input
-					id="authKey"
-					v-model="authKey"
-					type="password"
-					class="form-input"
-					placeholder="请输入认证密钥"
-					@keyup.enter="handleLogin"
-				>
-			</div>
+	<div class="login-container">
+		<ZWidget card class="login-widget">
+			<template #title>
+				<h1 class="login-title">
+					<Icon name="ph:lock-bold" />
+					登录
+				</h1>
+			</template>
 
-			<div v-if="error" class="error-message" role="alert">
-				{{ error }}
-			</div>
+			<form class="login-form" @submit.prevent="handleLogin">
+				<div class="form-group">
+					<label for="authKey" class="form-label">
+						<Icon name="ph:key-bold" />
+						认证密钥
+					</label>
+					<input
+						id="authKey"
+						v-model="authKey"
+						type="password"
+						class="form-input"
+						placeholder="请输入认证密钥"
+						:disabled="isLoading"
+						@keyup.enter="handleLogin"
+					>
+				</div>
 
-			<button class="login-btn" :disabled="isLoading" @click="handleLogin">
-				<span v-if="!isLoading">登录</span>
-				<div v-else class="loading-spinner" />
-			</button>
+				<div v-if="error" class="alert-error" role="alert">
+					<Icon name="ph:warning-circle-bold" />
+					{{ error }}
+				</div>
+
+				<div v-if="authKey" class="form-actions">
+					<Button
+						type="submit"
+						primary
+						:disabled="isLoading"
+						class="login-btn"
+					>
+						<template v-if="!isLoading">
+							登录
+						</template>
+						<template v-else>
+							登录中...
+						</template>
+					</Button>
+				</div>
+			</form>
+		</ZWidget>
+
+		<div class="login-footer">
+			<p class="login-tip">
+				<Icon name="ph:info-bold" />
+				访问管理功能
+			</p>
 		</div>
 	</div>
 </div>
@@ -92,169 +126,154 @@ async function handleLogin() {
 
 <style lang="scss" scoped>
 .login-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100dvh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100dvh;
+	padding: 1rem;
+	background-color: var(--c-bg-1);
 }
 
-.login-card {
-  width: 100%;
-  max-width: 400px;
-  padding: 32px;
-  border-radius: 20px;
-  background-color: #ffffff;
-  border: 1px solid #d0d0d0;
+.login-container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	width: 100%;
+	max-width: 400px;
 }
 
-.login-card h1 {
-  margin: 0 0 24px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: 600;
-  color: #000000;
+.login-widget {
+	animation: float-in 0.3s ease-out;
+}
+
+.login-title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin: 0;
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--c-text);
 }
 
 .login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }
 
-.form-group label {
-  font-weight: 500;
-  color: #333333;
-  font-size: 14px;
+.form-label {
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+	font-size: 0.9rem;
+	font-weight: 500;
+	color: var(--c-text-2);
 }
 
 .form-input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #cccccc;
-  border-radius: 12px;
-  box-sizing: border-box;
-  font-size: 16px;
-  background-color: #f5f5f5;
-  transition: all 0.2s ease;
-  color: #000000;
+	width: 100%;
+	padding: 0.8rem 1rem;
+	border: 1px solid var(--c-border);
+	border-radius: 0.8rem;
+	box-sizing: border-box;
+	background-color: var(--c-bg-2);
+	font-size: 1rem;
+	color: var(--c-text);
+	transition: all 0.2s ease;
+
+	&:focus {
+		border-color: var(--c-primary);
+		box-shadow: 0 0 0 0.2rem var(--c-primary-soft);
+		outline: none;
+		background-color: var(--c-bg);
+	}
+
+	&:disabled {
+		background-color: var(--c-bg-3);
+		color: var(--c-text-3);
+		cursor: not-allowed;
+	}
+
+	&::placeholder {
+		color: var(--c-text-3);
+	}
 }
 
-.form-input:focus {
-  outline: none;
-  border-color: #999999;
-  background-color: #ffffff;
+.alert-error {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.8rem 1rem;
+	border: 1px solid var(--c-bg-soft);
+	border-radius: 0.8rem;
+	background-color: var(--c-bg-2);
+	font-size: 0.9rem;
+	text-align: center;
+	color: var(--c-text-2);
+
+	.iconify {
+		font-size: 1.1rem;
+		color: var(--c-primary);
+	}
 }
 
-.error-message {
-  padding: 12px;
-  border-radius: 12px;
-  background-color: #f0f0f0;
-  color: #666666;
-  font-size: 14px;
-  text-align: center;
-  border: 1px solid #d0d0d0;
+.form-actions {
+	display: flex;
+	justify-content: center;
+	margin-top: 0.5rem;
 }
 
 .login-btn {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  background-color: #666666;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 48px;
-}
-
-.login-btn:hover {
-  background-color: #444444;
-}
-
-.login-btn:disabled {
-  background-color: #aaaaaa;
-  cursor: not-allowed;
+	width: 100%;
+	min-height: 3rem;
+	font-size: 1rem;
+	font-weight: 500;
 }
 
 .loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 0.8s ease-in-out infinite;
+	width: 1.2rem;
+	height: 1.2rem;
+	border: 2px solid var(--c-text-3);
+	border-top-color: var(--c-text);
+	border-radius: 50%;
+	animation: spin 0.8s ease-in-out infinite;
+}
+
+.login-footer {
+	text-align: center;
+}
+
+.login-tip {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.3rem;
+	margin: 0;
+	font-size: 0.85rem;
+	color: var(--c-text-3);
+
+	.iconify {
+		font-size: 0.9rem;
+	}
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+	to {
+		transform: rotate(360deg);
+	}
 }
 
-@media (max-width: 768px) {
-  .login-card {
-    margin: 16px;
-    padding: 24px;
-  }
-}
-
-.dark .login-card {
-  background-color: #2b2b2b;
-  border-color: #3d3d3d;
-}
-
-.dark .login-card h1 {
-  color: #e0e0e0;
-}
-
-.dark .form-group label {
-  color: #b0b0b0;
-}
-
-.dark .form-input {
-  background-color: #3a3a3a;
-  border-color: #4a4a4a;
-  color: #e0e0e0;
-}
-
-.dark .form-input:focus {
-  border-color: #666;
-  background-color: #3a3a3a;
-}
-
-.dark .error-message {
-  background-color: #3a2a2a;
-  color: #ff8c8c;
-  border-color: #5a3a3a;
-}
-
-.dark .login-btn {
-  background-color: #4a4a4a;
-  color: #e0e0e0;
-}
-
-.dark .login-btn:hover {
-  background-color: #666666;
-}
-
-.dark .login-btn:disabled {
-  background-color: #333333;
-  color: #777777;
-}
-
-.dark .loading-spinner {
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+@media (max-width: $breakpoint-mobile) {
+	.login-container {
+		max-width: 100%;
+	}
 }
 </style>

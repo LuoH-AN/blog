@@ -25,8 +25,9 @@ async function authenticateLogin(event: H3Event) {
 
 	if (!providedKey || providedKey !== LOGIN_AUTH_KEY!) {
 		throw createError({
-			statusCode: 401,
-			statusMessage: 'Invalid authentication key',
+			status: 401,
+			message: '认证密钥无效',
+			data: null,
 		})
 	}
 
@@ -47,15 +48,20 @@ async function authenticateLogin(event: H3Event) {
 		maxAge: 60 * 60 * 24 * 7,
 	})
 
-	return { success: true }
+	return {
+		status: 200,
+		message: '登录成功',
+		data: { success: true },
+	}
 }
 
 export default defineLazyEventHandler(async () => {
 	return defineEventHandler(async (event) => {
 		if (event.method !== 'POST') {
 			throw createError({
-				statusCode: 405,
-				statusMessage: `Method ${event.method} not allowed`,
+				status: 405,
+				message: `方法 ${event.method} 不允许`,
+				data: null,
 			})
 		}
 

@@ -27,8 +27,9 @@ export default defineLazyEventHandler(async () => {
 	return defineEventHandler(async (event) => {
 		if (event.method !== 'GET') {
 			throw createError({
-				statusCode: 405,
-				statusMessage: `Method ${event.method} not allowed`,
+				status: 405,
+				message: `方法 ${event.method} 不允许`,
+				data: null,
 			})
 		}
 
@@ -49,15 +50,23 @@ export default defineLazyEventHandler(async () => {
 			const moments = JSON.parse(data)
 
 			return {
-				isAuthenticated: isAuthenticated(event),
-				moments,
+				status: 200,
+				message: '成功',
+				data: {
+					isAuthenticated: isAuthenticated(event),
+					moments,
+				},
 			}
 		}
 		catch (error: any) {
 			if (error.name === 'NoSuchKey') {
 				return {
-					isAuthenticated: isAuthenticated(event),
-					moments: [],
+					status: 200,
+					message: '成功',
+					data: {
+						isAuthenticated: isAuthenticated(event),
+						moments: [],
+					},
 				}
 			}
 			throw error

@@ -28,18 +28,21 @@ function authenticate(event: H3Event) {
 
 	if (!token) {
 		throw createError({
-			statusCode: 401,
-			statusMessage: 'Unauthorized: No token provided',
+			status: 401,
+			message: '认证失败：未提供密钥',
+			data: null,
 		})
 	}
 
 	try {
 		jwt.verify(token, JWT_SECRET!)
 	}
+
 	catch (error: any) {
 		throw createError({
-			statusCode: 401,
-			statusMessage: `Unauthorized: Invalid token. ${error.message}`,
+			status: 401,
+			message: `认证失败：密钥错误`,
+			data: error,
 		})
 	}
 }
@@ -50,8 +53,9 @@ export default defineLazyEventHandler(async () => {
 	return defineEventHandler(async (event) => {
 		if (event.method !== 'POST') {
 			throw createError({
-				statusCode: 405,
-				statusMessage: `Method ${event.method} not allowed`,
+				status: 405,
+				message: `方法 ${event.method} 不允许`,
+				data: null,
 			})
 		}
 
@@ -68,6 +72,10 @@ export default defineLazyEventHandler(async () => {
 		})
 
 		await r2Client.send(command)
-		return { success: true, message: 'Data saved successfully' }
+		return {
+			status: 200,
+			message: '成功',
+			data: { success: true },
+		}
 	})
 })

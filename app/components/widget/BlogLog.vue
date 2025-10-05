@@ -35,10 +35,10 @@ const blogLog = [
 		list-style: none;
 
 		> dl {
+			display: block;
 			position: relative;
 			margin-bottom: 0.3rem;
 			padding-left: 1.25rem;
-			display: block;
 
 			&:last-child {
 				margin-bottom: 0;
@@ -83,10 +83,10 @@ const blogLog = [
 			margin-bottom: 0.1rem;
 			font-family: var(--font-monospace);
 			font-size: 0.8em;
-			line-height: 1;
-			color: var(--c-text-3);
-			text-align: left;
 			font-weight: normal;
+			line-height: 1;
+			text-align: left;
+			color: var(--c-text-3);
 		}
 
 		> dl > dd {
