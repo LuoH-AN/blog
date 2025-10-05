@@ -214,7 +214,7 @@ const age = new Date().getFullYear() - birthYear
 	padding: 0.5rem 0.8rem;
 	border-radius: 0.8rem;
 	box-shadow: none;
-	background-color: var(--c-bg-2);
+	background-color: var(--ld-bg-card);
 	text-align: center;
 	transform: none;
 	transition: none;
