@@ -153,28 +153,36 @@ useEventListener(emblaRef, 'wheel', (e) => {
 			inset: auto 0 0;
 			height: 33.33%;
 			padding: 1em;
-			background:
-				linear-gradient(
-					to top,
-					rgb(0 0 0 / 70%) 0%,
-					rgb(0 0 0 / 50%) 50%,
-					rgb(0 0 0 / 30%) 75%,
-					rgb(0 0 0 / 0%) 100%
-				);
-			backdrop-filter: blur(0.1em);
 			text-align: center;
 			color: white;
-			transition: backdrop-filter 0.2s;
+			background: transparent;
+			backdrop-filter: blur(4px);
+			-webkit-backdrop-filter: blur(4px);
+			mask: linear-gradient(
+				to bottom,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(0, 0, 0, 0.8) 20%,
+				rgba(0, 0, 0, 1) 100%
+			);
+			-webkit-mask: linear-gradient(
+				to bottom,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(0, 0, 0, 0.8) 20%,
+				rgba(0, 0, 0, 1) 100%
+			);
+			transition: all 0.2s;
 
 			> .title {
 				font-size: 1em;
 				font-weight: bold;
 				text-wrap: balance;
+				text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 			}
 		}
 
 		&:hover > .info {
-			backdrop-filter: blur(0.3em);
+			backdrop-filter: blur(6px);
+			-webkit-backdrop-filter: blur(6px);
 		}
 	}
 }
