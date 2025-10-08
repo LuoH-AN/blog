@@ -7,289 +7,265 @@ const lightboxEl = ref<HTMLImageElement>()
 const isLightboxOpening = ref(false)
 
 function openLightbox(e: Event) {
-	const target = e.target as HTMLElement
-	if (target.tagName === 'IMG' && target.closest('.tk-content')) {
-		lightboxEl.value = target as HTMLImageElement
-		isLightboxOpening.value = true
-	}
+        const target = e.target as HTMLElement
+        if (target.tagName === 'IMG' && target.closest('.tk-content')) {
+                lightboxEl.value = target as HTMLImageElement
+                isLightboxOpening.value = true
+        }
 }
 
 function closeLightbox() {
-	isLightboxOpening.value = false
+        isLightboxOpening.value = false
 }
 
-function setAnonymousComment() {
-	const inputGroups = document.querySelectorAll('.tk-meta-input .el-input-group')
-	let nickInput: HTMLInputElement | null = null
-	let mailInput: HTMLInputElement | null = null
-
-	for (const group of inputGroups) {
-		const prependDiv = group.querySelector('.el-input-group__prepend')
-		if (prependDiv) {
-			if (prependDiv.textContent?.trim() === '昵称')
-				nickInput = group.querySelector('input')
-			else if (prependDiv.textContent?.trim() === '邮箱')
-				mailInput = group.querySelector('input')
-		}
-	}
-
-	if (!nickInput || !mailInput)
-		return
-
-	const disasters = ['台风', '洪水', '地震', '龙卷风', '火山爆发', '海啸', '沙尘暴', '暴风雪']
-	const randomDisaster = disasters[Math.floor(Math.random() * disasters.length)]
-	nickInput.value = `路过的${randomDisaster}`
-	mailInput.value = 'guest@enltlh.me'
-
-	nickInput.dispatchEvent(new Event('input'))
-	mailInput.dispatchEvent(new Event('input'))
-
-	setTimeout(() => {
-		const sendButton = document.querySelector('.tk-send') as HTMLButtonElement
-		if (sendButton) {
-			sendButton.disabled = false
-			sendButton.style.cursor = 'pointer'
-		}
-	}, 100)
-}
+// Removed the setAnonymousComment function
 
 onMounted(() => {
-	window.twikoo?.init({
-		envId: appConfig.twikoo?.envId,
-		el: '#twikoo',
-	})
-	const twikooEl = document.getElementById('twikoo')
-	if (twikooEl)
-		twikooEl.addEventListener('click', openLightbox)
+        window.twikoo?.init({
+                envId: appConfig.twikoo?.envId,
+                el: '#twikoo',
+        })
+        const twikooEl = document.getElementById('twikoo')
+        if (twikooEl)
+                twikooEl.addEventListener('click', openLightbox)
 })
 
 onUnmounted(() => {
-	const twikooEl = document.getElementById('twikoo')
-	if (twikooEl)
-		twikooEl.removeEventListener('click', openLightbox)
+        const twikooEl = document.getElementById('twikoo')
+        if (twikooEl)
+                twikooEl.removeEventListener('click', openLightbox)
 })
 </script>
 
 <template>
 <section id="comment-section" class="z-comment">
-	<div class="comment-header">
-		<h3 class="text-creative">
-			评论区
-		</h3>
-		<button class="anonymous-btn" @click="setAnonymousComment">
-			匿名评论
-		</button>
-	</div>
-	<div id="twikoo">
-		<p>评论加载中...</p>
-	</div>
+        <div class="comment-header">
+                <h3 class="text-creative">
+                        评论区
+                </h3>
+                <!-- Removed the anonymous-btn button -->
+        </div>
+        <div id="twikoo">
+                <p>评论加载中...</p>
+        </div>
 </section>
 <ClientOnly>
-	<Lightbox
-		v-if="lightboxEl"
-		:el="lightboxEl"
-		:is-opening="isLightboxOpening"
-		@close="closeLightbox"
-	/>
+        <Lightbox
+                v-if="lightboxEl"
+                :el="lightboxEl"
+                :is-opening="isLightboxOpening"
+                @close="closeLightbox"
+        />
 </ClientOnly>
 </template>
 
 <style lang="scss" scoped>
 .z-comment {
-	margin: 3rem 1rem;
+        margin: 3rem 1rem;
 
-	> h3 {
-		margin-top: 3rem;
-		font-size: 1.25rem;
-	}
+        > h3 {
+                margin-top: 3rem;
+                font-size: 1.25rem;
+        }
 }
 
 .comment-header {
-	display: flex;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: 0.5rem;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.5rem;
+
+        // Adjusted for when the button is removed,
+        // if only h3 is left, no need for space-between
+        justify-content: flex-start;
 }
 
-.anonymous-btn {
-	border: none;
-	background: none;
-	font-size: 0.9rem;
-	color: var(--c-text-3);
-	transition: color 0.2s;
-	cursor: pointer;
-
-	&:hover {
-		color: var(--c-primary);
-	}
-}
+/* Removed the .anonymous-btn style block */
 
 :deep(#twikoo) {
-	margin: 2em 0;
+        margin: 2em 0;
 
-	.tk-admin-container {
-		position: fixed;
-		z-index: 1;
-	}
+        .tk-admin-container {
+                position: fixed;
+                z-index: 1;
+        }
 
-	.tk-time {
-		color: var(--c-text-3);
-	}
+        .tk-time {
+                color: var(--c-text-3);
+        }
 
-	.tk-main {
-		margin-top: -0.1rem;
-	}
+        .tk-main {
+                margin-top: -0.1rem;
+        }
 
-	.tk-content {
-		margin-top: 0.1rem;
+        .tk-content {
+                margin-top: 0.1rem;
 
-		a {
-			display: inline;
-			background-image: linear-gradient(to right, rgb(128 128 128 / 30%), rgb(128 128 128 / 30%));
-			background-position: left bottom;
-			background-repeat: no-repeat;
-			background-size: 0% 2px;
-			vertical-align: baseline;
-			text-decoration: none;
-			color: #409EFF;
-			transition: background-size 0.3s ease-out, color 0.3s ease-out;
+                a {
+                        display: inline;
+                        background-image: linear-gradient(to right, var(--c-text-3) / 30%, var(--c-text-3) / 30%);
+                        background-position: left bottom;
+                        background-repeat: no-repeat;
+                        background-size: 0% 2px;
+                        vertical-align: baseline;
+                        text-decoration: none;
+                        color: var(--c-primary);
+                        transition: background-size 0.3s ease-out, color 0.3s ease-out;
 
-			&:hover {
-				background-size: 100% 2px;
-				color: #007BFF;
-			}
-		}
-	}
+                        &:hover {
+                                background-size: 100% 2px;
+                                color: var(--c-primary);
+                        }
+                }
+        }
 
-	.tk-comments-title, .tk-nick > strong {
-		font-family: var(--font-creative);
-	}
+        .tk-comments-title, .tk-nick > strong {
+                font-family: var(--font-creative);
+        }
 
-	.tk-owo-emotion {
-		width: auto;
-		height: 1.4em;
-		vertical-align: text-bottom;
-	}
+        .tk-owo-emotion {
+                width: auto;
+                height: 1.4em;
+                vertical-align: text-bottom;
+        }
 
-	.tk-extras, .tk-footer {
-		font-size: 0.7rem;
-		color: var(--c-text-3);
-	}
+        .tk-extras, .tk-footer {
+                font-size: 0.7rem;
+                color: var(--c-text-3);
+        }
 
-	.tk-replies:not(.tk-replies-expand) {
-		mask-image: linear-gradient(#FFF 50%, transparent);
-	}
+        .tk-replies:not(.tk-replies-expand) {
+                mask-image: linear-gradient(var(--c-bg) 50%, transparent);
+        }
 
-	.tk-expand {
-		border-radius: 0.5rem;
-		transition: background-color 0.1s;
-	}
+        .tk-expand {
+                border-radius: 0.5rem;
+                background-color: var(--c-bg-2);
+                color: var(--c-text-1);
+                transition: background-color 0.1s;
 
-	:deep(:where(.tk-preview-container,.tk-content)) {
-		pre {
-			border-radius: 0.5rem;
-			font-size: 0.8125rem;
-		}
+                &:hover {
+                        background-color: var(--c-bg-3);
+                }
+        }
 
-		p {
-			margin: 0.2em 0;
-		}
+        :deep(:where(.tk-preview-container,.tk-content)) {
+                pre {
+                        border-radius: 0.5rem;
+                        font-size: 0.8125rem;
+                        background-color: var(--c-bg-1);
+                        border: 1px solid var(--c-border);
+                        color: var(--c-text-1);
+                }
 
-		img {
-			border-radius: 0.5em;
-		}
+                p {
+                        margin: 0.2em 0;
+                }
 
-		menu, ol, ul {
-			margin: 0.5em 0;
-			padding-inline-start: 1.5em;
-		}
-	}
+                img {
+                        border-radius: 0.5em;
+                }
 
-	.tk-submit {
-		.tk-col {
-			display: flex;
-			flex-direction: column;
-		}
+                menu, ol, ul {
+                        margin: 0.5em 0;
+                        padding-inline-start: 1.5em;
+                }
+        }
 
-		.tk-input {
-			order: 1;
-		}
+        .tk-submit {
+                .tk-col {
+                        display: flex;
+                        flex-direction: column;
+                }
 
-		.tk-meta-input {
-			order: 2;
-			margin-top: 0.75rem;
-			margin-bottom: 0;
-		}
-	}
+                .tk-input {
+                        order: 1;
+                }
 
-	/* stylelint-disable-next-line selector-class-pattern */
-	.el-textarea__inner,
-	.tk-meta-input .el-input-group {
-		border: 1px solid var(--c-border, #DCDFE6);
-		border-radius: 12px;
-		background-color: #E3E3E382;
-		transition: border-color 0.2s, box-shadow 0.2s;
-	}
+                .tk-meta-input {
+                        order: 2;
+                        margin-top: 0.75rem;
+                        margin-bottom: 0;
+                }
+        }
 
-	/* stylelint-disable-next-line selector-class-pattern */
-	.el-textarea__inner {
-		min-height: 120px;
-		padding: 1rem;
-	}
+        /* stylelint-disable-next-line selector-class-pattern */
+        .el-textarea__inner,
+        .tk-meta-input .el-input-group {
+                border: 1.5px solid var(--c-border);
+                border-radius: 12px;
+                background-color: var(--c-bg-2);
+                color: var(--c-text-1);
+                transition: border-color 0.2s, box-shadow 0.2s;
+        }
 
-	.tk-meta-input .el-input-group {
-		overflow: hidden;
-		background-color: transparent;
-	}
+        /* stylelint-disable-next-line selector-class-pattern */
+        .el-textarea__inner {
+                min-height: 120px;
+                padding: 1rem;
+        }
 
-	/* stylelint-disable-next-line selector-class-pattern */
-	.tk-meta-input .el-input-group__prepend {
-		padding: 0 1.25rem;
-		border: none;
-		background-color: #FFF;
-		color: #555;
-	}
+        .tk-meta-input .el-input-group {
+                overflow: hidden;
+                background-color: transparent;
+        }
 
-	/* stylelint-disable-next-line selector-class-pattern */
-	.tk-meta-input .el-input__inner {
-		border: none;
-		background-color: #E3E3E382;
-	}
+        /* stylelint-disable-next-line selector-class-pattern */
+        .tk-meta-input .el-input-group__prepend {
+                padding: 0 1.25rem;
+                border: none;
+                background-color: var(--c-bg-1);
+                color: var(--c-text-2);
+        }
 
-	/* stylelint-disable-next-line selector-class-pattern */
-	.el-textarea__inner:focus,
-	.tk-meta-input .el-input-group:focus-within {
-		border-color: #409EFF;
-		box-shadow: 0 0 0 1px #409EFF;
-	}
+        /* stylelint-disable-next-line selector-class-pattern */
+        .tk-meta-input .el-input__inner {
+                border: none;
+                background-color: var(--c-bg-2);
+                color: var(--c-text-1);
+        }
 
-	.tk-preview,
-	.tk-cancel,
-	.tk-send {
-		border-radius: 8px;
-	}
+        /* stylelint-disable-next-line selector-class-pattern */
+        .el-textarea__inner:focus,
+        .tk-meta-input .el-input-group:focus-within {
+                border-color: var(--c-primary);
+                box-shadow: 0 0 0 1px var(--c-primary);
+        }
+
+        .tk-preview,
+        .tk-cancel {
+                border-radius: 8px;
+                background-color: var(--c-bg-2);
+                color: var(--c-text-1);
+                border: 1px solid var(--c-border);
+
+                &:hover {
+                        background-color: var(--c-bg-3);
+                        border-color: var(--c-primary);
+                }
+        }
+
+        .tk-send {
+                border-radius: 8px;
+                background-color: #409EFF;
+                color: white;
+                border: 1px solid #409EFF;
+
+                &:hover {
+                        background-color: #007BFF;
+                        border-color: #007BFF;
+                }
+
+                .dark & {
+                        background-color: #3A8FE6;
+                        border-color: #3A8FE6;
+
+                        &:hover {
+                                background-color: #2E7FCC;
+                                border-color: #2E7FCC;
+                        }
+                }
+        }
 }
 
-.dark :deep(#twikoo) {
-	/* stylelint-disable-next-line selector-class-pattern */
-	.el-textarea__inner,
-	.tk-meta-input .el-input-group {
-		border-color: #404040;
-		background-color: #1E1E1E;
-		color: #E0E0E0;
-	}
-
-	/* stylelint-disable-next-line selector-class-pattern */
-	.tk-meta-input .el-input-group__prepend {
-		border-right: 1px solid #404040;
-		background-color: #2C2C2E;
-		color: #CCC;
-	}
-
-	/* stylelint-disable-next-line selector-class-pattern */
-	.tk-meta-input .el-input__inner {
-		background-color: #1E1E1E;
-		color: #E0E0E0;
-	}
-}
 </style>

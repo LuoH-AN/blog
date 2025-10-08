@@ -173,6 +173,29 @@ This is a Nuxt 3-based personal blog called "落憾" (Luoh Blog). It's a Chinese
 - Image optimization with multiple formats
 - Custom font loading (Inter, JetBrains Mono, Noto fonts, MiSans)
 
+### Dark Mode Implementation
+- **CSS Variables System**: Uses CSS custom properties defined in `/assets/css/color.scss`
+- **Theme Switching**: Dark mode is activated by adding `.dark` class to the root element
+- **Automatic Adaptation**: Components automatically adapt to dark mode by using CSS variables instead of hardcoded colors
+- **Key Variables**:
+  - Text colors: `--c-text`, `--c-text-1`, `--c-text-2`, `--c-text-3`
+  - Background colors: `--c-bg`, `--c-bg-1`, `--c-bg-2`, `--c-bg-3`
+  - Border color: `--c-border`
+  - Primary color: `--c-primary`
+  - Soft background: `--c-bg-soft`, `--c-primary-soft`
+- **Implementation Rules**:
+  1. Always use CSS variables instead of hardcoded colors
+  2. Do NOT use `.dark &` nested selectors - the variables automatically change when `.dark` class is added
+  3. Replace hardcoded colors with corresponding variables:
+     - `#fff`, `white` → `var(--c-bg)`
+     - `#000`, `black` → `var(--c-text)`
+     - `lightgray`, `#ccc` → `var(--c-border)`
+     - Blue colors (`#409EFF`, `#007BFF`) → `var(--c-primary)`
+     - Light backgrounds (`#f5f5f5`, `#E3E3E3`) → `var(--c-bg-1)`, `var(--c-bg-2)`
+     - Text grays (`#555`, `#666`) → `var(--c-text-1)`, `var(--c-text-2)`
+  4. For gradients, use variables like: `linear-gradient(to right, var(--c-text-3) / 30%, var(--c-text-3) / 30%)`
+  5. Test both light and dark themes when styling components
+
 ### Route Rules
 - Custom redirects defined in `redirects.json`
 - Static generation for RSS feeds and API endpoints
