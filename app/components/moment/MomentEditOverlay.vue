@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue'
 import type { MomentFormItem } from '~/types/moments'
-import blogConfig from '../../blog.config'
+import blogConfig from '../../../blog.config.ts'
 
 const props = defineProps<{
   editingMoment: MomentFormItem | null
