@@ -1,22 +1,22 @@
 diff --git a/lib/server/registry/index.js b/lib/server/registry/index.js
-index 53cd7a0ba186b0fc31bbffdebba6071203134ce5..91c372e32db3d662eb7208ec02552ceabe67ee28 100644
+index 53cd7a0ba186b0fc31bbffdebba6071203134ce5..32a4dad3ad97d7770cdfa630ddf05d760f1271f9 100644
 --- a/lib/server/registry/index.js
 +++ b/lib/server/registry/index.js
 @@ -431,7 +431,7 @@ const registryDirectory = (() => {
- result = envDefined;
- } else {
- let cacheDirectory;
+     result = envDefined;
+   } else {
+     let cacheDirectory;
 -    if (process.platform === "linux")
 +    if (process.platform === "linux" || process.platform === "android")
- cacheDirectory = process.env.XDG_CACHE_HOME || import_path.default.join(import_os.default.homedir(), ".cache");
- else if (process.platform === "darwin")
- cacheDirectory = import_path.default.join(import_os.default.homedir(), "Library", "Caches");
-@@ -1202,7 +1202,7 @@ ${e.stack}`);
- for (const browser of browserList) {
- const { browserName, browserVersion, browserPath } = browser;
- const shouldHaveMarkerFile = browserName === "chromium" && (browserVersion >= 786218 || browserVersion < 3e5) || browserName === "firefox" && browserVersion >= 1128 || browserName === "webkit" && browserVersion >= 1307 || // All new applications have a marker file right away.
--      browserName !== "firefox" && browserName !== "chromium" && browserName !== "webkit";
-+        browserName !== "firefox" && browserName !== "chromium" && browserName !== "webkit";
- if (!shouldHaveMarkerFile || await (0, import_fileUtils.existsAsync)(browserDirectoryToMarkerFilePath(browserPath)))
- usedBrowserPaths.add(browserPath);
- }
+       cacheDirectory = process.env.XDG_CACHE_HOME || import_path.default.join(import_os.default.homedir(), ".cache");
+     else if (process.platform === "darwin")
+       cacheDirectory = import_path.default.join(import_os.default.homedir(), "Library", "Caches");
+@@ -483,7 +483,7 @@ class Registry {
+     const descriptors = readDescriptors(browsersJSON);
+     const findExecutablePath = (dir, name) => {
+       let tokens = void 0;
+-      if (process.platform === "linux")
++      if (process.platform === "linux" || process.platform === "android")
+         tokens = EXECUTABLE_PATHS[name]["linux"];
+       else if (process.platform === "darwin")
+         tokens = EXECUTABLE_PATHS[name]["mac"];
