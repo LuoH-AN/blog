@@ -1,6 +1,0 @@
-{
-  "name": "luoh-blog",
-  "compatibility_date": "2025-10-08",
-  "main": "./.output/server/index.mjs",
-  "compatibility_flags": ["nodejs_compat"]
-}

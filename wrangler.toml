@@ -1,0 +1,8 @@
+name = "blog"
+type = "javascript"
+compatibility_date = "2025-10-08"
+
+main = ".output/server/index.mjs"
+
+[site]
+bucket = ".output/public"
