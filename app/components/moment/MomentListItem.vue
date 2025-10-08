@@ -183,15 +183,11 @@ function getFaviconUrl(url: string): string {
   position: relative;
   margin-bottom: 0.5rem;
   padding: 0.8rem;
-  border: 1px solid #E0E0E0;
+  border: 1px solid var(--c-border);
   border-radius: 15px;
+  background-color: var(--c-bg);
   animation: float-in 0.3s backwards;
   animation-delay: var(--delay);
-}
-
-.dark .talk-item {
-  border-color: #3D3D3D;
-  background-color: #2B2B2B;
 }
 
 .talk-item-actions {
@@ -213,22 +209,12 @@ function getFaviconUrl(url: string): string {
   border-radius: 50%;
   background: rgb(128 128 128 / 10%);
   font-size: 16px;
-  color: gray;
+  color: var(--c-text-2);
   cursor: pointer;
 
   &:hover {
     background: rgb(128 128 128 / 20%);
-    color: #333;
-  }
-}
-
-.dark .icon-action-btn {
-  background: rgb(255 255 255 / 10%);
-  color: #CCC;
-
-  &:hover {
-    background: rgb(255 255 255 / 20%);
-    color: white;
+    color: var(--c-text);
   }
 }
 
@@ -254,24 +240,20 @@ function getFaviconUrl(url: string): string {
     display: flex;
     align-items: center;
     font-weight: 600;
-    color: #333;
-  }
-
-  .dark .talk-nick {
-    color: #E0E0E0;
+    color: var(--c-text);
   }
 
   .talk-nick .verified {
     margin-left: 0.25rem;
     font-size: 1.1em;
     vertical-align: text-bottom;
-    color: #4E9DF8;
+    color: var(--c-primary);
   }
 
   .talk-date {
     font-family: var(--font-monospace);
     font-size: 0.75rem;
-    color: #888;
+    color: var(--c-text-2);
   }
 }
 
@@ -280,11 +262,7 @@ function getFaviconUrl(url: string): string {
     margin: 0 0 0.5rem;
     line-height: 1.6;
     white-space: pre-wrap;
-    color: #333;
-  }
-
-  .dark .content-text {
-    color: #E0E0E0;
+    color: var(--c-text);
   }
 }
 
@@ -313,7 +291,7 @@ function getFaviconUrl(url: string): string {
   justify-content: space-between;
   margin-top: 0.5rem;
   font-size: 0.9rem;
-  color: #888;
+  color: var(--c-text-2);
 }
 
 .talk-meta-info {
@@ -336,10 +314,10 @@ function getFaviconUrl(url: string): string {
   gap: 0.2rem;
   padding: 0.15rem 0.6rem;
   border-radius: 6px;
-  background-color: #EEE;
+  background-color: var(--c-bg-2);
   font-size: 0.75rem;
   white-space: nowrap;
-  color: #888;
+  color: var(--c-text-2);
 }
 
 .talk-address-wrapper {
@@ -353,31 +331,23 @@ function getFaviconUrl(url: string): string {
   gap: 0.2rem;
   padding: 0.15rem 0.6rem;
   border-radius: 6px;
-  background-color: #EEE;
+  background-color: var(--c-bg-2);
   font-size: 0.75rem;
   white-space: nowrap;
-  color: #3B82F6;
+  color: var(--c-primary);
 }
 
-.dark .tag-card {
-  background-color: #3A3A3C;
-  color: #AAA;
-}
-
-.dark .address-card {
-  background-color: #3A3A3C;
-}
 
 .comment-btn {
   border: none;
   background: none;
   font-size: 1.1rem;
-  color: #888;
+  color: var(--c-text-2);
   transition: color 0.2s ease;
   cursor: pointer;
 
   &:hover {
-    color: #3B82F6;
+    color: var(--c-primary);
   }
 }
 
@@ -387,27 +357,16 @@ function getFaviconUrl(url: string): string {
   gap: 10px;
   margin-top: 10px;
   padding: 10px 15px;
-  border: 1px solid #D0D0D0;
+  border: 1px solid var(--c-border);
   border-radius: 10px;
-  background-color: #E0E0E0;
+  background-color: var(--c-bg-1);
   text-decoration: none;
-  color: #333;
+  color: var(--c-text);
   transition: background-color 0.2s ease;
 
   &:hover {
-    border-color: #C0C0C0;
-    background-color: #D0D0D0;
-  }
-
-  .dark & {
-    border: 1px solid #5A5A5C;
-    background-color: #4A4A4C;
-    color: #EEE;
-
-    &:hover {
-      border-color: #6A6A6C;
-      background-color: #5A5A5C;
-    }
+    border-color: var(--c-border);
+    background-color: var(--c-bg-2);
   }
 }
 

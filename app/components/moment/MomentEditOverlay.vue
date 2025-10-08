@@ -417,34 +417,6 @@ function removeImageInput(index: number) {
 }
 
 
-.moment-header-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  padding: 16px 20px;
-  border: 1px solid #E0E0E0;
-  border-radius: 20px;
-  background-color: #FFF;
-}
-
-.dark .moment-header-card {
-  border-color: #3D3D3D;
-  background-color: #2B2B2B;
-}
-
-.moment-header-card h1 {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: #333;
-}
-
-.dark .moment-header-card h1 {
-  color: #E0E0E0;
-}
-
 .header-actions {
   display: flex;
   align-items: center;
@@ -463,16 +435,12 @@ function removeImageInput(index: number) {
   font-size: 18px;
   color: gray;
   cursor: pointer;
+
+  &:hover {
+    background-color: rgb(128 128 128 / 20%);
+  }
 }
 
-.dark .header-action-btn {
-  background-color: rgb(128 128 128 / 20%);
-  color: #CCC;
-}
-
-.header-action-btn:hover {
-  background-color: rgb(128 128 128 / 20%);
-}
 
 /* --- Admin/Edit Styles --- */
 .edit-overlay {
@@ -494,14 +462,9 @@ function removeImageInput(index: number) {
   max-width: 700px;
   max-height: 90vh;
   padding: 12px 20px;
-  border: 1px solid #E0E0E0;
+  border: 1px solid var(--c-border);
   border-radius: 20px;
-  background-color: #FFF;
-}
-
-.dark .moment-edit-card.floating {
-  border-color: #3D3D3D;
-  background-color: #2B2B2B;
+  background-color: var(--c-bg);
 }
 
 .card-top-actions {
@@ -510,11 +473,7 @@ function removeImageInput(index: number) {
   justify-content: space-between;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #F0F0F0;
-}
-
-.dark .card-top-actions {
-  border-bottom-color: #3D3D3D;
+  border-bottom: 1px solid var(--c-border);
 }
 
 .card-top-actions h2 {
@@ -541,38 +500,20 @@ function removeImageInput(index: number) {
 }
 
 .exit-btn {
-  background-color: rgb(245 166 35 / 10%);
-  color: #F5A623;
+  background-color: var(--c-primary-soft);
+  color: var(--c-primary);
 
   &:hover {
-    background-color: rgb(245 166 35 / 20%);
-  }
-}
-
-.dark .exit-btn {
-  background-color: rgb(255 193 7 / 10%);
-  color: #FFC107;
-
-  &:hover {
-    background-color: rgb(255 193 7 / 20%);
+    background-color: var(--c-primary-soft);
   }
 }
 
 .save-btn {
-  background-color: rgb(92 184 92 / 10%);
-  color: #5CB85C;
+  background-color: var(--c-primary-soft);
+  color: var(--c-primary);
 
   &:hover {
-    background-color: rgb(92 184 92 / 20%);
-  }
-}
-
-.dark .save-btn {
-  background-color: rgb(102 187 106 / 10%);
-  color: #66BB6A;
-
-  &:hover {
-    background-color: rgb(102 187 106 / 20%);
+    background-color: var(--c-primary-soft);
   }
 }
 
@@ -585,42 +526,26 @@ function removeImageInput(index: number) {
   margin-bottom: 4px;
   font-size: 14px;
   font-weight: 500;
-  color: #555;
-}
-
-.dark .form-group label {
-  color: #B0B0B0;
+  color: var(--c-text-1);
 }
 
 .form-input,
 .form-textarea {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #DDD;
+  border: 1px solid var(--c-border);
   border-radius: 12px;
   box-sizing: border-box;
-  background-color: #F9F9F9;
+  background-color: var(--c-bg-1);
   font-size: 14px;
-}
-
-.dark .form-input,
-.dark .form-textarea {
-  border-color: #4A4A4A;
-  background-color: #3A3A3A;
-  color: #E0E0E0;
+  color: var(--c-text);
 }
 
 .form-input:focus,
 .form-textarea:focus {
-  border-color: #999;
+  border-color: var(--c-text-2);
   outline: none;
-  background-color: #FFF;
-}
-
-.dark .form-input:focus,
-.dark .form-textarea:focus {
-  border-color: #666;
-  background-color: #3A3A3A;
+  background-color: var(--c-bg);
 }
 
 .form-textarea {
@@ -647,13 +572,12 @@ function removeImageInput(index: number) {
   border-radius: 12px;
   background-color: rgb(128 128 128 / 10%);
   font-size: 14px;
-  color: gray;
+  color: var(--c-text-2);
   cursor: pointer;
-}
 
-.dark .time-btn {
-  background-color: rgb(128 128 128 / 20%);
-  color: #CCC;
+  &:hover {
+    background-color: rgb(128 128 128 / 20%);
+  }
 }
 
 .images-input {
@@ -679,8 +603,12 @@ function removeImageInput(index: number) {
   border: none;
   border-radius: 12px;
   background-color: rgb(128 128 128 / 10%);
-  color: gray;
+  color: var(--c-text-2);
   cursor: pointer;
+
+  &:hover {
+    background-color: rgb(128 128 128 / 20%);
+  }
 }
 
 .card-header {
@@ -698,16 +626,10 @@ function removeImageInput(index: number) {
 .images-card {
   margin-top: 0;
   padding: 8px;
-  border: 1px solid #E0E0E0;
+  border: 1px solid var(--c-border);
   border-radius: 12px;
-  background-color: #F9F9F9;
+  background-color: var(--c-bg-1);
   cursor: default;
-}
-
-.dark .tags-card,
-.dark .images-card {
-  border-color: #4A4A4A;
-  background-color: #3A3A3A;
 }
 
 .empty-tags,
@@ -720,12 +642,7 @@ function removeImageInput(index: number) {
   font-size: 14px;
   font-style: italic;
   text-align: center;
-  color: #999;
-}
-
-.dark .empty-tags,
-.dark .empty-images {
-  color: #888;
+  color: var(--c-text-2);
 }
 
 .add-tag-btn,
@@ -740,14 +657,12 @@ function removeImageInput(index: number) {
   border-radius: 8px;
   background-color: rgb(128 128 128 / 10%);
   font-size: 16px;
-  color: gray;
+  color: var(--c-text-2);
   cursor: pointer;
-}
 
-.dark .add-tag-btn,
-.dark .add-image-btn {
-  background-color: rgb(128 128 128 / 20%);
-  color: #CCC;
+  &:hover {
+    background-color: rgb(128 128 128 / 20%);
+  }
 }
 
 .tags-container {
@@ -767,12 +682,8 @@ function removeImageInput(index: number) {
   cursor: pointer;
 
   &:hover {
-    background-color: #E0E0E0;
+    background-color: var(--c-bg-2);
   }
-}
-
-.dark .tag-card.editable:hover {
-  background-color: #5A5A5A;
 }
 
 .tag-overlay {
@@ -784,7 +695,7 @@ function removeImageInput(index: number) {
   border: 1px solid rgb(255 255 255 / 18%);
   border-radius: 12px;
   box-shadow: 0 8px 32px 0 rgb(31 38 135 / 15%);
-  background: rgb(255 255 255 / 25%);
+  background: var(--c-bg-soft);
   backdrop-filter: blur(8px);
   animation: overlayFadeIn 0.3s ease-out forwards;
 }
@@ -854,46 +765,20 @@ function removeImageInput(index: number) {
 }
 
 .tag-edit-btn {
-  color: #4A90E2;
-}
+  color: var(--c-primary);
+  background-color: var(--c-bg-1);
 
-.tag-edit-btn:hover {
-  background-color: rgb(74 144 226 / 20%);
+  &:hover {
+    background-color: var(--c-bg-2);
+  }
 }
 
 .tag-delete-btn {
-  color: #D9534F;
-}
+  color: var(--c-primary);
+  background-color: var(--c-bg-1);
 
-.tag-delete-btn:hover {
-  background-color: rgb(217 83 79 / 20%);
-}
-
-.dark .tag-overlay {
-  border: 1px solid rgb(61 61 61 / 18%);
-  box-shadow: 0 8px 32px 0 rgb(0 0 0 / 15%);
-  background: rgb(43 43 43 / 25%);
-}
-
-.dark .tag-edit-btn,
-.dark .tag-delete-btn {
-  background-color: rgb(60 60 60 / 90%);
-  color: #CCC;
-}
-
-.dark .tag-edit-btn {
-  color: #6DA2E9;
-}
-
-.dark .tag-edit-btn:hover {
-  background-color: rgb(109 162 233 / 20%);
-}
-
-.dark .tag-delete-btn {
-  color: #EF5350;
-}
-
-.dark .tag-delete-btn:hover {
-  background-color: rgb(239 83 80 / 20%);
+  &:hover {
+    background-color: var(--c-bg-2);
+  }
 }
 </style>

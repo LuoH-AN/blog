@@ -87,14 +87,9 @@ function requestAddMoment() {
   justify-content: space-between;
   margin-bottom: 24px;
   padding: 16px 20px;
-  border: 1px solid #E0E0E0;
+  border: 1px solid var(--c-border);
   border-radius: 20px;
-  background-color: #FFF;
-}
-
-.dark .moment-header-card {
-  border-color: #3D3D3D;
-  background-color: #2B2B2B;
+  background-color: var(--c-bg);
 }
 
 .moment-header-card h1 {
@@ -102,11 +97,7 @@ function requestAddMoment() {
   font-size: 22px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  color: #333;
-}
-
-.dark .moment-header-card h1 {
-  color: #E0E0E0;
+  color: var(--c-text);
 }
 
 .header-actions {
@@ -123,19 +114,14 @@ function requestAddMoment() {
   height: 40px;
   border: none;
   border-radius: 8px;
-  background-color: rgb(128 128 128 / 10%);
+  background-color: var(--c-bg-1);
   font-size: 18px;
-  color: gray;
+  color: var(--c-text-2);
   cursor: pointer;
-}
 
-.dark .header-action-btn {
-  background-color: rgb(128 128 128 / 20%);
-  color: #CCC;
-}
-
-.header-action-btn:hover {
-  background-color: rgb(128 128 128 / 20%);
+  &:hover {
+    background-color: var(--c-bg-2);
+  }
 }
 
 .action-icon {

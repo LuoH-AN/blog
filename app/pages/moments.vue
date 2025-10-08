@@ -304,38 +304,24 @@ const { lightboxEl, isLightboxOpening, openLightbox, closeLightbox } = useLightb
 .no-data {
 	margin-bottom: 16px;
 	padding: 40px 20px;
-	border: 1px solid #E0E0E0;
+	border: 1px solid var(--c-border);
 	border-radius: 20px;
-	background-color: #F9F9F9;
+	background-color: var(--c-bg-1);
 	font-size: 16px;
 	text-align: center;
 }
 
 .loading {
-	color: #666;
+	color: var(--c-text-2);
 }
 
 .error {
-	border-color: #FFE0E0;
-	background-color: #FFF5F5;
-	color: #D9534F;
+	border-color: var(--c-border);
+	background-color: var(--c-bg-1);
+	color: var(--c-text);
 }
 
 .no-data {
-	color: #888;
-}
-
-.dark .loading,
-.dark .error,
-.dark .no-data {
-	border-color: #3D3D3D;
-	background-color: #2B2B2B;
-	color: #CCC;
-}
-
-.dark .error {
-	border-color: #5A3A3A;
-	background-color: #3A2A2A;
-	color: #FF8C8C;
+	color: var(--c-text-2);
 }
 </style>
