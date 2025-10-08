@@ -50,6 +50,7 @@
     "plain-shiki": "catalog:content",
     "radash": "catalog:util",
     "shiki": "catalog:content",
+    "shikiji": "^0.10.2",
     "vue": "catalog:framework",
     "vue-router": "catalog:framework",
     "vue-tippy": "catalog:ui",

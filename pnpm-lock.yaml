@@ -320,6 +320,9 @@ importers:
       shiki:
         specifier: catalog:content
         version: 3.13.0
+      shikiji:
+        specifier: ^0.10.2
+        version: 0.10.2
       vue:
         specifier: catalog:framework
         version: 3.5.22(typescript@5.9.3)
@@ -6261,6 +6264,14 @@ packages:
 
   shiki@3.13.0:
     resolution: {integrity: sha512-aZW4l8Og16CokuCLf8CF8kq+KK2yOygapU5m3+hoGw0Mdosc6fPitjM+ujYarppj5ZIKGyPDPP1vqmQhr+5/0g==}
+
+  shikiji-core@0.10.2:
+    resolution: {integrity: sha512-9Of8HMlF96usXJHmCL3Gd0Fcf0EcyJUF9m8EoAKKd98mHXi0La2AZl1h6PegSFGtiYcBDK/fLuKbDa1l16r1fA==}
+    deprecated: Deprecated, use @shikijs/core instead
+
+  shikiji@0.10.2:
+    resolution: {integrity: sha512-wtZg3T0vtYV2PnqusWQs3mDaJBdCPWxFDrBM/SE5LfrX92gjUvfEMlc+vJnoKY6Z/S44OWaCRzNIsdBRWcTAiw==}
+    deprecated: Deprecated, use shiki instead
 
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
@@ -14584,6 +14595,12 @@ snapshots:
       '@shikijs/types': 3.13.0
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.4
+
+  shikiji-core@0.10.2: {}
+
+  shikiji@0.10.2:
+    dependencies:
+      shikiji-core: 0.10.2
 
   signal-exit@4.1.0: {}
 
