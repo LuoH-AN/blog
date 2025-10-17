@@ -1,3 +1,4 @@
+/* stylelint-disable declaration-no-important */
 :root {
 	--max-bezier-to-full: cubic-bezier(0.5, 0, 1, 0.5);
 	--max-bezier-to-collapse: cubic-bezier(0, 0.5, 0.5, 1);
@@ -17,12 +18,15 @@
 
 .float-in-enter-active,
 .float-in-leave-active {
-	transition: all 0.2s;
+	transition: all 0.2s !important;
 }
 
 .float-in-leave-active {
-	/* stylelint-disable-next-line declaration-no-important */
 	position: absolute !important;
+}
+
+.float-in-move {
+	transition: transform 0.2s !important;
 }
 
 .float-in-enter-from,

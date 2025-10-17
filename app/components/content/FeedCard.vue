@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
 import type { FeedEntry } from '~/types/feed'
-import { ZRawLink } from '#components'
 
 const props = defineProps<FeedEntry & { inspect?: boolean }>()
 
@@ -146,6 +145,8 @@ onMounted(() => {
 // https://vue-tippy.netlify.app/props#appendto
 // Tooltip 位于组件根部时，interactive tippy 会插入到父组件
 :deep() ~ [data-tippy-root] > .tippy-box {
+	overflow: hidden;
+	overflow: clip;
 	padding: 0;
 
 	&[data-placement="top"] > .tippy-svg-arrow {
@@ -168,6 +169,7 @@ onMounted(() => {
 
 	.site-info {
 		flex: 1;
+		margin-inline-end: 0.5em;
 
 		.domain {
 			font-size: 0.9em;
@@ -182,9 +184,7 @@ onMounted(() => {
 
 .desc-content {
 	position: relative;
-	overflow: hidden;
 	padding: 0.5em 1em;
-	border-radius: 0 0 0.5em 0.5em;
 	background-color: var(--c-bg-1);
 
 	p + p {
