@@ -366,6 +366,9 @@ importers:
       '@iconify-json/uim':
         specifier: catalog:ui
         version: 1.2.3
+      '@resvg/resvg-js-android-arm64':
+        specifier: ^2.6.2
+        version: 2.6.2
       '@types/jsonwebtoken':
         specifier: catalog:util
         version: 9.0.10
@@ -9485,8 +9488,7 @@ snapshots:
   '@resvg/resvg-js-android-arm-eabi@2.6.2':
     optional: true
 
-  '@resvg/resvg-js-android-arm64@2.6.2':
-    optional: true
+  '@resvg/resvg-js-android-arm64@2.6.2': {}
 
   '@resvg/resvg-js-darwin-arm64@2.6.2':
     optional: true
