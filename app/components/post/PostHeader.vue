@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ArticleProps from '~/types/article'
 import { getPostTypeClassName } from '~/composables/useArticle'
-import { useImageShare } from '~/composables/useCopy'
+import useCopy, { useImageShare } from '~/composables/useCopy'
 import { formatNumber } from '~/utils/str'
 import { getIsoDatetime, getLocaleDatetime, getPostDate, isTimeDiffSignificant } from '~/utils/time'
 

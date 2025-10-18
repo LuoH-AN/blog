@@ -67,7 +67,6 @@ catalogs:
     '@vueuse/router': 13.9.0
     date-fns: 4.1.0
     fast-xml-parser: 5.3.0
-    html2canvas: 1.4.1
     jsonwebtoken: 9.0.2
     minisearch: 7.2.0
     nanoid: 5.1.6
