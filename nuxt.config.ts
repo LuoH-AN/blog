@@ -112,6 +112,7 @@ export default defineNuxtConfig({
 		'@nuxtjs/seo',
 		'@pinia/nuxt',
 		'@vueuse/nuxt',
+		'nuxt-llms',
 		'unplugin-yaml/nuxt',
 	],
 
@@ -187,6 +188,12 @@ ${packageJson.homepage}
 		],
 	},
 
+	llms: {
+		domain: blogConfig.url,
+		title: blogConfig.title,
+		description: blogConfig.description,
+	},
+
 	robots: {
 		disableNuxtContentIntegration: true,
 		disallow: blogConfig.robotsNotIndex,
@@ -197,8 +204,4 @@ ${packageJson.homepage}
 		url: blogConfig.url,
 		defaultLocale: blogConfig.language,
 	},
-
-    nitro: {
-      preset: 'cloudflare'
-    }
 })

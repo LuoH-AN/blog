@@ -63,18 +63,16 @@ const yearlyWordCount = computed(() => {
 			</div>
 		</div>
 
-		<menu class="archive-list">
-			<TransitionGroup appear name="float-in">
-				<ZArchive
-					v-for="article, index in yearGroup"
-					:key="article.path"
-					v-bind="article"
-					:to="article.path"
-					:use-updated="sortOrder === 'updated'"
-					:style="{ '--delay': `${index * 0.03}s` }"
-				/>
-			</TransitionGroup>
-		</menu>
+		<TransitionGroup tag="menu" class="archive-list" name="float-in">
+			<ZArchive
+				v-for="article, index in yearGroup"
+				:key="article.path"
+				v-bind="article"
+				:to="article.path"
+				:use-updated="sortOrder === 'updated'"
+				:style="{ '--delay': `${index * 0.03}s` }"
+			/>
+		</TransitionGroup>
 	</section>
 </div>
 </template>
@@ -82,6 +80,7 @@ const yearlyWordCount = computed(() => {
 <style lang="scss" scoped>
 .archive {
 	margin: 1rem;
+	min-height: 70vh;
 	mask-image: linear-gradient(#FFF 50%, #FFF5);
 }
 
@@ -111,7 +110,11 @@ const yearlyWordCount = computed(() => {
 	> .archive-year, .archive-age {
 		margin-bottom: -0.3em;
 		mask-image: linear-gradient(#FFF 50%, transparent);
-		font: 800 3em / 1 var(--font-stroke-free);
+		font-family: var(--font-stroke-free);
+		font-size: 3em;
+		font-variant-numeric: tabular-nums;
+		font-weight: 800;
+		line-height: 1;
 		z-index: -1;
 		-webkit-text-stroke: 1px var(--c-text-3);
 	}
