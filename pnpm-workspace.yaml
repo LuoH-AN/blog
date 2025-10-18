@@ -76,6 +76,7 @@ catalogs:
     radash: 12.1.1
     rimraf: ^6.0.1
     strip-ansi: 7.1.2
+    '@resvg/resvg-js': ^2.6.2
 
 engineStrict: true
 
@@ -99,5 +100,3 @@ patchedDependencies:
   playwright-core: patches/playwright-core.patch
 
 shamefullyHoist: true
-catalog:
-  '@resvg/resvg-js': ^2.6.2

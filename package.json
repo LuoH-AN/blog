@@ -73,7 +73,7 @@
     "@iconify-json/svg-spinners": "catalog:ui",
     "@iconify-json/tabler": "catalog:ui",
     "@iconify-json/uim": "catalog:ui",
-    "@resvg/resvg-js": "^2.6.2",
+    "@resvg/resvg-js": "catalog:util",
     "@types/jsonwebtoken": "catalog:util",
     "@zinkawaii/stylelint-config": "catalog:quality",
     "better-sqlite3": "catalog:content",
