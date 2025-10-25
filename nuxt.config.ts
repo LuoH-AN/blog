@@ -208,4 +208,6 @@ ${packageJson.homepage}
     nitro: {
         preset: 'cloudflare',
     },
+
+    ssr: true,
 })
