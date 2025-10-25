@@ -204,4 +204,8 @@ ${packageJson.homepage}
 		url: blogConfig.url,
 		defaultLocale: blogConfig.language,
 	},
+
+    nitro: {
+        preset: 'cloudflare',
+    },
 })
