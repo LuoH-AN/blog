@@ -1,5 +1,5 @@
 diff --git a/lib/server/registry/index.js b/lib/server/registry/index.js
-index 53cd7a0ba186b0fc31bbffdebba6071203134ce5..32a4dad3ad97d7770cdfa630ddf05d760f1271f9 100644
+index db598f19493c257070e5889be80c1dafd09c4d75..60b63ebce0f385009294b588f4d36efe2d00cc82 100644
 --- a/lib/server/registry/index.js
 +++ b/lib/server/registry/index.js
 @@ -431,7 +431,7 @@ const registryDirectory = (() => {
@@ -11,12 +11,3 @@ index 53cd7a0ba186b0fc31bbffdebba6071203134ce5..32a4dad3ad97d7770cdfa630ddf05d76
        cacheDirectory = process.env.XDG_CACHE_HOME || import_path.default.join(import_os.default.homedir(), ".cache");
      else if (process.platform === "darwin")
        cacheDirectory = import_path.default.join(import_os.default.homedir(), "Library", "Caches");
-@@ -483,7 +483,7 @@ class Registry {
-     const descriptors = readDescriptors(browsersJSON);
-     const findExecutablePath = (dir, name) => {
-       let tokens = void 0;
--      if (process.platform === "linux")
-+      if (process.platform === "linux" || process.platform === "android")
-         tokens = EXECUTABLE_PATHS[name]["linux"];
-       else if (process.platform === "darwin")
-         tokens = EXECUTABLE_PATHS[name]["mac"];
