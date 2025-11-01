@@ -34,7 +34,7 @@ const yearlyWordCount = computed(() => {
 </script>
 
 <template>
-<div class="archive">
+<div class="archive proper-height">
 	<ZOrderToggle
 		v-model:is-ascending="isAscending"
 		v-model:sort-order="sortOrder"
@@ -80,7 +80,6 @@ const yearlyWordCount = computed(() => {
 <style lang="scss" scoped>
 .archive {
 	margin: 1rem;
-	min-height: 70vh;
 	mask-image: linear-gradient(#FFF 50%, #FFF5);
 }
 

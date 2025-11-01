@@ -4,9 +4,7 @@ import { alphabetical } from 'radash'
 
 export function useArticleIndex(path = 'posts/%') {
 	return useAsyncData(
-		// https://github.com/nuxt/nuxt/pull/33505
-		// key 不能包含 %，否则会导致多处共用数据时随机产生空 payload
-		`index_${path.replaceAll('%', '__percent__')}`,
+		`index_${path}`,
 		() => queryCollection('content')
 			.where('stem', 'LIKE', path)
 			.select('categories', 'date', 'description', 'image', 'path', 'readingTime', 'recommend', 'title', 'type', 'updated', 'tags')
@@ -59,13 +57,10 @@ export function getCategoryIcon(category?: string) {
 	return appConfig.article.categories[category!]?.icon ?? 'ph:folder-bold'
 }
 
-export function getPostTypeClassName(type?: string, options = {
+export function getPostTypeClassName(type = 'tech', options = {
 	prefix: 'text',
 }) {
-	if (!type)
-		type = 'tech'
-
-	const { prefix } = options
+	const { prefix = 'text' } = options
 
 	return `${prefix}-${type}`
 }
