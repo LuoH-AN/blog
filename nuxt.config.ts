@@ -56,6 +56,10 @@ export default defineNuxtConfig({
 		'@/assets/css/reusable.scss',
 	],
 
+	experimental: {
+		typescriptPlugin: true,
+	},
+
 	features: {
 		inlineStyles: false,
 	},
@@ -173,7 +177,7 @@ ${packageJson.homepage}
 				return
 			}
 			// 在 URL 中隐藏文件路由自动生成的 /posts 路径前缀
-			if (blogConfig.hidePostPrefix) {
+			if (blogConfig.article.hidePostPrefix) {
 				const realPath = ctx.content.path as string | undefined
 				ctx.content.path = realPath?.replace(/^\/posts/, '')
 			}
@@ -181,12 +185,12 @@ ${packageJson.homepage}
 	},
 
 	icon: {
-		customCollections: [
-			{ prefix: 'zi', dir: './app/assets/icons' },
-		],
+		// customCollections: [
+		//	{ prefix: 'zi', dir: './app/assets/icons' },
+		// ],
 		clientBundle: {
 			scan: {
-				globInclude: ['**/*.{vue,jsx,tsx,ts,md,mdc,mdx}'],
+				globInclude: ['**\/*.{vue,jsx,tsx,ts,md,mdc,mdx}'],
 			},
 		},
 	},
@@ -214,7 +218,7 @@ ${packageJson.homepage}
 
 	robots: {
 		disableNuxtContentIntegration: true,
-		disallow: blogConfig.robotsNotIndex,
+		disallow: blogConfig.article.robotsNotIndex,
 	},
 
 	site: {
