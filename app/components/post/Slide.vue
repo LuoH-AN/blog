@@ -171,12 +171,14 @@ useEventListener(emblaRef, 'wheel', (e) => {
 				rgba(0, 0, 0, 1) 100%
 			);
 			transition: all 0.2s;
+			z-index: 2;
 
 			> .title {
 				font-size: 1em;
 				font-weight: bold;
 				text-wrap: balance;
 				text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+				font-family: var(--font-stroke-free, var(--font-creative, sans-serif));
 			}
 		}
 
