@@ -61,7 +61,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "catalog:quality",
     "@clack/prompts": "catalog:util",
-    "@dxup/nuxt": "catalog:framework",
     "@iconify/json": "catalog:ui",
     "@resvg/resvg-js": "catalog:util",
     "@types/jsonwebtoken": "catalog:util",
